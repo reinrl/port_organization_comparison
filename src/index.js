@@ -87,10 +87,14 @@ async function fetchData(envName) {
         },
       });
 
+      if (!response.data?.[variable]) {
+        throw new Error("Incorrect response array variable name specified");
+      }
+
       dataToReturn[variable] = response.data[variable];
     } catch (error) {
       console.error(
-        `Error fetching data from endpoint "${endpoint}" for ${envName}: ${error.message} (will not write ${variable}.json)`
+        `Error fetching data from endpoint "${endpoint}" for "${envName}": ${error.message} (will not write ${variable}.json)`
       );
     }
   }
