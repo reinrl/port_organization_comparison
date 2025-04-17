@@ -11637,7 +11637,7 @@
                   "sortBy": [
                     {
                       "order": "asc",
-                      "property": "is_production"
+                      "property": "impactedEntities"
                     }
                   ]
                 }
@@ -11652,11 +11652,6 @@
                   "operator": "=",
                   "property": "$blueprint",
                   "value": "dynatraceProblem"
-                },
-                {
-                  "operator": "=",
-                  "property": "status",
-                  "value": "OPEN"
                 }
               ]
             },
@@ -11667,7 +11662,7 @@
             "id": "Dn4TP59CMvluVOq9",
             "title": "Problems",
             "type": "table-entities-explorer",
-            "updatedAt": "2025-04-10T18:21:27.932Z",
+            "updatedAt": "2025-04-17T20:15:10.496Z",
             "updatedBy": "auth0|671699a323a7ad0cf3fe5042"
           },
           {

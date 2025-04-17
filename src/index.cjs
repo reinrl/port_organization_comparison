@@ -12,6 +12,15 @@ const KEYS_TO_EXCLUDE = [
   "updatedBy",
 ];
 
+// Add additional endpoints here as needed
+const dataTypes = [
+  { endpoint: "/actions", variable: "actions" },
+  { endpoint: "/blueprints", variable: "blueprints" },
+  { endpoint: "/integration", variable: "integrations" },
+  { endpoint: "/pages", variable: "pages" },
+  { endpoint: "/scorecards", variable: "scorecards" },
+];
+
 // This is the directory where the environment configs are stored
 const envsDir = path.join(__dirname, "envs");
 
@@ -65,15 +74,6 @@ async function fetchData(envName) {
 
   let dataToReturn = {};
 
-  // Add additional endpoints here as needed
-  const dataTypes = [
-    { endpoint: "/actions", variable: "actions" },
-    { endpoint: "/blueprints", variable: "blueprints" },
-    { endpoint: "/integration", variable: "integrations" },
-    { endpoint: "/pages", variable: "pages" },
-    { endpoint: "/scorecards", variable: "scorecards" },
-  ];
-
   for (const { endpoint, variable } of dataTypes) {
     try {
       const response = await axios.request({
@@ -115,10 +115,24 @@ async function fetchData(envName) {
       await fs.promises.rm(outputDir, { recursive: true, force: true });
     }
     await fs.promises.mkdir(outputDir, { recursive: true });
+    // remove /util/configs.ts file if it exists
+    const configTsFilePath = path.join(__dirname, "util", "configs.ts");
+    if (
+      await fs.promises
+        .access(configTsFilePath)
+        .then(() => true)
+        .catch(() => false)
+    ) {
+      await fs.promises.rm(configTsFilePath, { force: true });
+    }
 
     // Get all of the environment configs
     const importedConfigs = await loadEnvironmentConfigs(envsDir);
     const environments = importedConfigs.map((config) => config.envName);
+
+    // Initialize a variable to hold the string contents of a file
+    let fileContents = "";
+    let exportables = [];
 
     // For each environment, retrieve the data and write it to a file
     await Promise.all(
@@ -146,6 +160,18 @@ async function fetchData(envName) {
               );
             }
           }
+
+          // TODO: Append to file contents with information about the environment
+          for (const type of dataTypes) {
+            fileContents += `import ${env}${type.variable} from "../output/${env}/${type.variable}.json";\n`;
+          }
+          fileContents += `\nconst ${env}Config = {\n`;
+          for (const type of dataTypes) {
+            fileContents += `\t${env}${type.variable},\n`;
+          }
+          fileContents += `};\n\n`;
+
+          exportables.push(`${env}Config`);
         } catch (error) {
           console.error(
             `Error processing environment "${env}":`,
@@ -154,6 +180,11 @@ async function fetchData(envName) {
         }
       })
     );
+
+    // Write out config file (for diff viewer to use)
+    fileContents += `export { ${exportables.join(",")} };\n`;
+    const configFilePath = path.join(__dirname, "util", "configs.ts");
+    await fs.promises.writeFile(configFilePath, fileContents, "utf-8");
   } catch (error) {
     console.log(error);
   }

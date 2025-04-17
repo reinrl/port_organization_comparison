@@ -154,11 +154,11 @@
     },
     "resyncState": {
       "intervalInMinuets": 60,
-      "lastResyncEnd": "2025-04-17T15:46:21.978777+00:00",
-      "lastResyncStart": "2025-04-17T15:30:06.161447+00:00",
-      "nextResync": "2025-04-17T16:30:55.409000+00:00",
+      "lastResyncEnd": "2025-04-17T20:45:33.248993+00:00",
+      "lastResyncStart": "2025-04-17T20:30:06.959171+00:00",
+      "nextResync": "2025-04-17T21:30:55.409000+00:00",
       "status": "completed",
-      "updatedAt": "2025-04-17T15:46:21.986Z"
+      "updatedAt": "2025-04-17T20:45:33.260Z"
     },
     "spec": {
       "appSpec": {
@@ -327,11 +327,11 @@
     },
     "resyncState": {
       "intervalInMinuets": 60,
-      "lastResyncEnd": "2025-04-17T15:59:12.909707+00:00",
-      "lastResyncStart": "2025-04-17T15:50:08.449918+00:00",
-      "nextResync": "2025-04-17T16:50:53.341000+00:00",
+      "lastResyncEnd": "2025-04-17T20:58:57.329886+00:00",
+      "lastResyncStart": "2025-04-17T20:50:14.105167+00:00",
+      "nextResync": "2025-04-17T21:50:53.341000+00:00",
       "status": "completed",
-      "updatedAt": "2025-04-17T15:59:12.917Z"
+      "updatedAt": "2025-04-17T20:58:57.337Z"
     },
     "spec": {
       "appSpec": {
@@ -499,11 +499,11 @@
     },
     "resyncState": {
       "intervalInMinuets": 60,
-      "lastResyncEnd": "2025-04-17T15:59:22.734977+00:00",
-      "lastResyncStart": "2025-04-17T15:50:08.440505+00:00",
-      "nextResync": "2025-04-17T16:50:43.632000+00:00",
+      "lastResyncEnd": "2025-04-17T20:59:38.810950+00:00",
+      "lastResyncStart": "2025-04-17T20:50:06.675799+00:00",
+      "nextResync": "2025-04-17T21:50:43.632000+00:00",
       "status": "completed",
-      "updatedAt": "2025-04-17T15:59:22.744Z"
+      "updatedAt": "2025-04-17T20:59:38.819Z"
     },
     "spec": {
       "appSpec": {
@@ -699,11 +699,11 @@
     },
     "resyncState": {
       "intervalInMinuets": 60,
-      "lastResyncEnd": "2025-04-17T15:34:16.338500+00:00",
-      "lastResyncStart": "2025-04-17T15:34:06.047851+00:00",
-      "nextResync": "2025-04-17T16:34:08.478000+00:00",
+      "lastResyncEnd": "2025-04-17T20:34:18.757068+00:00",
+      "lastResyncStart": "2025-04-17T20:34:05.751512+00:00",
+      "nextResync": "2025-04-17T21:34:08.478000+00:00",
       "status": "completed",
-      "updatedAt": "2025-04-17T15:34:16.364Z"
+      "updatedAt": "2025-04-17T20:34:18.765Z"
     },
     "spec": {
       "appSpec": {
@@ -960,11 +960,11 @@
     },
     "resyncState": {
       "intervalInMinuets": 1440,
-      "lastResyncEnd": "2025-04-16T18:58:07.546192+00:00",
-      "lastResyncStart": "2025-04-16T18:43:33.402998+00:00",
-      "nextResync": "2025-04-17T18:43:32.525296+00:00",
+      "lastResyncEnd": "2025-04-17T18:57:32.068857+00:00",
+      "lastResyncStart": "2025-04-17T18:43:33.415031+00:00",
+      "nextResync": "2025-04-18T18:43:32.525296+00:00",
       "status": "completed",
-      "updatedAt": "2025-04-16T18:58:07.571Z"
+      "updatedAt": "2025-04-17T18:57:32.102Z"
     },
     "version": "0.1.143"
   }

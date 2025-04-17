@@ -967,6 +967,10 @@
     "icon": "Dynatrace",
     "identifier": "dynatraceProblem",
     "mirrorProperties": {},
+    "ownership": {
+      "path": "impactedEntities.namespace.repository.ado_repo_to_team",
+      "type": "Inherited"
+    },
     "relations": {
       "impactedEntities": {
         "many": true,
@@ -5678,6 +5682,14 @@
         "store": {
           "title": "Store",
           "type": "string"
+        },
+        "subscriber_count": {
+          "title": "Subscriber Count",
+          "type": "number"
+        },
+        "subscription_count": {
+          "title": "Subscription Count",
+          "type": "number"
         }
       },
       "required": []
