@@ -1,7 +1,7 @@
 const axios = require("axios");
 const fs = require("fs");
 const path = require("path");
-const { listFiles, sortArrayOfItems } = require("./util/utilFunctions");
+const { listFiles, sortArrayOfItems } = require("./util/utilFunctions.cjs");
 
 // These are the keys that we want to ignore when comparing items across environments
 const KEYS_TO_EXCLUDE = [
@@ -105,7 +105,7 @@ async function fetchData(envName) {
 (async () => {
   try {
     // Clear out ./output directory of any contents
-    const outputDir = path.join(__dirname, "..", "output");
+    const outputDir = path.join(__dirname, "output");
     if (
       await fs.promises
         .access(outputDir)

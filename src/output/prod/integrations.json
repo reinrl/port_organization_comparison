@@ -1,0 +1,971 @@
+[
+  {
+    "_id": "integration_dnO4nqgNjFtC4a3n",
+    "_orgId": "org_AV8HkRzYzFkEh7Mc",
+    "changelogDestination": {},
+    "clientId": "",
+    "config": {
+      "createMissingRelatedEntities": false,
+      "deleteDependentEntities": true,
+      "enableMergeEntity": true,
+      "resources": [
+        {
+          "kind": "project",
+          "port": {
+            "entity": {
+              "mappings": {
+                "blueprint": "\"project\"",
+                "identifier": ".id | gsub(\" \"; \"\")",
+                "properties": {
+                  "defaultTeam": ".defaultTeam.name",
+                  "link": ".url | gsub(\"_apis/projects/\"; \"\")",
+                  "project_title": ".name",
+                  "revision": ".revision",
+                  "state": ".state",
+                  "visibility": ".visibility"
+                },
+                "title": ".name"
+              }
+            }
+          },
+          "selector": {
+            "defaultTeam": true,
+            "query": ".name==\"Federated Projects\""
+          }
+        },
+        {
+          "kind": "pull-request",
+          "port": {
+            "entity": {
+              "mappings": {
+                "blueprint": "\"azure_dev_ops_pull_request\"",
+                "description": ".description",
+                "identifier": "\"\\(.repository.project.name | ascii_downcase | gsub(\"[ ();]\"; \"\"))/\\(.repository.name | ascii_downcase | gsub(\"[ ();]\"; \"\"))/\\(.pullRequestId)\"",
+                "properties": {
+                  "created_by": ".createdBy.uniqueName | ascii_downcase?",
+                  "merge_status": ".mergeStatus",
+                  "project_title": ".repository.project.name",
+                  "pull_request_id": ".pullRequestId",
+                  "reviewers": ".reviewers | map(.uniqueName | ascii_downcase)",
+                  "source_branch": ".sourceRefName | gsub(\"refs/heads/\"; \"\")",
+                  "status": ".status",
+                  "target_branch": ".targetRefName | gsub(\"refs/heads/\"; \"\")"
+                },
+                "relations": {
+                  "repository": "\"\\(.repository.project.name | ascii_downcase | gsub(\"[ ();]\"; \"\"))/\\(.repository.name | ascii_downcase | gsub(\"[ ();]\"; \"\"))\"            "
+                },
+                "title": ".title"
+              }
+            }
+          },
+          "selector": {
+            "query": ".repository.project.name==\"Federated Projects\" and .status==\"active\""
+          }
+        },
+        {
+          "kind": "repository-policy",
+          "port": {
+            "entity": {
+              "mappings": {
+                "blueprint": "\"service\"",
+                "identifier": "\"\\(.__repository.project.name | ascii_downcase | gsub(\"[ ();]\"; \"\"))/\\(.__repository.name | ascii_downcase | gsub(\"[ ();]\"; \"\"))\"",
+                "properties": {
+                  "minimumApproverCount": ".settings.minimumApproverCount"
+                }
+              }
+            }
+          },
+          "selector": {
+            "query": ".project.name==\"Federated Projects\" and .type.displayName==\"Minimum number of reviewers\""
+          }
+        },
+        {
+          "kind": "repository-policy",
+          "port": {
+            "entity": {
+              "mappings": {
+                "blueprint": "\"service\"",
+                "identifier": "\"\\(.__repository.project.name | ascii_downcase | gsub(\"[ ();]\"; \"\"))/\\(.__repository.name | ascii_downcase | gsub(\"[ ();]\"; \"\"))\"",
+                "properties": {
+                  "workItemLinking": ".isEnabled and .isBlocking"
+                }
+              }
+            }
+          },
+          "selector": {
+            "query": ".project.name==\"Federated Projects\" and .type.displayName==\"Work item linking\""
+          }
+        },
+        {
+          "kind": "repository",
+          "port": {
+            "entity": {
+              "mappings": {
+                "blueprint": "\"service\"",
+                "identifier": "\"\\(.project.name | ascii_downcase | gsub(\"[ ();]\"; \"\"))/\\(.name | ascii_downcase | gsub(\"[ ();]\"; \"\"))\"",
+                "properties": {
+                  "default_branch": "(.defaultBranch // \"\") | gsub(\"refs/heads/\"; \"\")",
+                  "readme": "file://README.md",
+                  "url": ".webUrl"
+                },
+                "relations": {
+                  "ado_repo_to_team": ".name | split(\"_\") | .[0] | ascii_downcase",
+                  "project": ".project.id | gsub(\" \"; \"\")"
+                },
+                "title": ".name"
+              }
+            }
+          },
+          "selector": {
+            "query": ".project.name==\"Federated Projects\""
+          }
+        },
+        {
+          "kind": "team",
+          "port": {
+            "entity": {
+              "mappings": {
+                "blueprint": "\"ado_team\"",
+                "identifier": "\"\\(.projectName | ascii_downcase | gsub(\"[ ();]\"; \"\"))/\\(.name | ascii_downcase | gsub(\"[ ();]\"; \"\"))\"",
+                "properties": {
+                  "name": ".name"
+                },
+                "relations": {
+                  "project": ".projectId | gsub(\" \"; \"\")"
+                },
+                "title": ".name"
+              }
+            }
+          },
+          "selector": {
+            "query": ".projectName==\"Federated Projects\""
+          }
+        }
+      ]
+    },
+    "identifier": "azure-devops",
+    "installationAppType": "azure-devops",
+    "installationId": "azure-devops",
+    "installationType": "Saas",
+    "integrationType": "azure-devops",
+    "logAttributes": {
+      "ingestId": "QE1A9fTD6qoSrrPN",
+      "ingestUrl": "https://ingest.us.getport.io/logs/integration/QE1A9fTD6qoSrrPN"
+    },
+    "resyncState": {
+      "intervalInMinuets": 60,
+      "lastResyncEnd": "2025-04-17T15:46:21.978777+00:00",
+      "lastResyncStart": "2025-04-17T15:30:06.161447+00:00",
+      "nextResync": "2025-04-17T16:30:55.409000+00:00",
+      "status": "completed",
+      "updatedAt": "2025-04-17T15:46:21.986Z"
+    },
+    "spec": {
+      "appSpec": {
+        "liveEventsEnabled": false,
+        "scheduledResyncInterval": "1h",
+        "sendRawDataExamples": true
+      },
+      "integrationSpec": {
+        "isProjectsLimited": true,
+        "organizationUrl": "_AZURE_DEVOPS_ORGANIZATION_URL",
+        "personalAccessToken": "_AZURE_DEVOPS_PERSONAL_ACCESS_TOKEN"
+      }
+    },
+    "statusInfo": {
+      "createdAt": "2025-01-22T16:30:55.409Z",
+      "integrationStatus": {
+        "lastSyncedAt": "2025-02-20T10:19:33Z",
+        "status": "Running"
+      },
+      "updatedAt": "2025-01-22T16:30:55.409Z"
+    },
+    "version": "0.1.146"
+  },
+  {
+    "_id": "integration_PHaGWeHegnA3hwnu",
+    "_orgId": "org_AV8HkRzYzFkEh7Mc",
+    "changelogDestination": {},
+    "clientId": "",
+    "config": {
+      "createMissingRelatedEntities": false,
+      "deleteDependentEntities": true,
+      "enableMergeEntity": true,
+      "resources": [
+        {
+          "kind": "entity",
+          "port": {
+            "entity": {
+              "mappings": {
+                "blueprint": "\"dynatraceCloudApplication\"",
+                "identifier": ".entityId",
+                "properties": {
+                  "dynatrace_entity_url": ".entityId as $id | \"https://elq45057.live.dynatrace.com/ui/entity/\" + $id",
+                  "firstSeen": ".firstSeenTms / 1000 | todate",
+                  "from_relationships": ".fromRelationships",
+                  "lastSeen": ".lastSeenTms / 1000 | todate",
+                  "management_zones": ".managementZones[].stringRepresentation",
+                  "properties": ".properties",
+                  "repo_name": ".properties.cloudApplicationLabels.\"fed.openshift.ado.repo.name\"",
+                  "security_role": ".properties.cloudApplicationLabels.\"fed.openshift.security.role\"",
+                  "tags": ".tags[].stringRepresentation",
+                  "to_relationships": ".toRelationships",
+                  "type": ".type"
+                },
+                "relations": {
+                  "repository": ".properties.cloudApplicationLabels.\"fed.openshift.ado.repo.name\" as $repo | if $repo != null then \"federatedprojects/\" + $repo | ascii_downcase else null end"
+                },
+                "title": ".displayName"
+              }
+            }
+          },
+          "selector": {
+            "entityFields": "firstSeenTms,lastSeenTms,tags,properties,managementZones,fromRelationships,toRelationships",
+            "entityTypes": [
+              "CLOUD_APPLICATION"
+            ],
+            "query": "true"
+          }
+        },
+        {
+          "kind": "entity",
+          "port": {
+            "entity": {
+              "mappings": {
+                "blueprint": "\"dynatraceEntity\"",
+                "identifier": ".entityId",
+                "properties": {
+                  "dynatrace_entity_url": ".entityId as $id | \"https://elq45057.live.dynatrace.com/ui/entity/\" + $id",
+                  "firstSeen": ".firstSeenTms / 1000 | todate",
+                  "from_relationships": ".fromRelationships",
+                  "lastSeen": ".lastSeenTms / 1000 | todate",
+                  "management_zones": ".managementZones[].stringRepresentation",
+                  "properties": ".properties",
+                  "tags": ".tags[].stringRepresentation",
+                  "to_relationships": ".toRelationships",
+                  "type": ".type"
+                },
+                "title": ".displayName"
+              }
+            }
+          },
+          "selector": {
+            "entityFields": "firstSeenTms,lastSeenTms,tags,properties,managementZones,fromRelationships,toRelationships",
+            "entityTypes": [
+              "APPLICATION",
+              "SERVICE"
+            ],
+            "query": "true"
+          }
+        },
+        {
+          "kind": "problem",
+          "port": {
+            "entity": {
+              "mappings": {
+                "blueprint": "\"dynatraceProblem\"",
+                "identifier": ".problemId",
+                "properties": {
+                  "endTime": ".endTime | if . == -1 then null else (./1000 | todate) end",
+                  "entityTags": ".entityTags[].stringRepresentation",
+                  "evidenceDetails": ".evidenceDetails.details[].displayName",
+                  "managementZones": ".managementZones[].name",
+                  "problemFilters": ".problemFilters[].name",
+                  "severityLevel": ".severityLevel",
+                  "startTime": ".startTime / 1000 | todate",
+                  "status": ".status"
+                },
+                "relations": {
+                  "impactedEntities": ".impactedEntities[].entityId.id",
+                  "linkedProblemInfo": ".linkedProblemInfo.problemId",
+                  "rootCauseEntity": ".rootCauseEntity.entityId.id"
+                },
+                "title": ".title"
+              }
+            }
+          },
+          "selector": {
+            "query": "true"
+          }
+        },
+        {
+          "kind": "slo",
+          "port": {
+            "entity": {
+              "mappings": {
+                "blueprint": "\"dynatraceSlo\"",
+                "identifier": ".id",
+                "properties": {
+                  "enabled": ".enabled",
+                  "error": ".error",
+                  "errorBudget": ".errorBudget",
+                  "evaluatedPercentage": ".evaluatedPercentage",
+                  "evaluationType": ".evaluationType",
+                  "filter": ".filter",
+                  "status": ".status",
+                  "target": ".target",
+                  "warning": ".warning"
+                },
+                "title": ".name"
+              }
+            }
+          },
+          "selector": {
+            "query": "true"
+          }
+        }
+      ]
+    },
+    "identifier": "dynatrace-dev",
+    "installationAppType": "dynatrace",
+    "installationId": "dynatrace-dev",
+    "installationType": "Saas",
+    "integrationType": "dynatrace",
+    "logAttributes": {
+      "ingestId": "UndUQdIxYMuk8B1j",
+      "ingestUrl": "https://ingest.us.getport.io/logs/integration/UndUQdIxYMuk8B1j"
+    },
+    "resyncState": {
+      "intervalInMinuets": 60,
+      "lastResyncEnd": "2025-04-17T15:59:12.909707+00:00",
+      "lastResyncStart": "2025-04-17T15:50:08.449918+00:00",
+      "nextResync": "2025-04-17T16:50:53.341000+00:00",
+      "status": "completed",
+      "updatedAt": "2025-04-17T15:59:12.917Z"
+    },
+    "spec": {
+      "appSpec": {
+        "liveEventsEnabled": false,
+        "scheduledResyncInterval": "1h",
+        "sendRawDataExamples": true
+      },
+      "integrationSpec": {
+        "dynatraceApiKey": "_DYNATRACE_DEV_DYNATRACE_API_KEY",
+        "dynatraceHostUrl": "https://elq45057.live.dynatrace.com"
+      }
+    },
+    "statusInfo": {
+      "createdAt": "2025-01-22T16:26:42.829Z",
+      "integrationStatus": {
+        "lastSyncedAt": "2025-02-20T10:19:35Z",
+        "status": "Running"
+      },
+      "updatedAt": "2025-01-22T16:50:53.341Z"
+    },
+    "version": "0.1.119"
+  },
+  {
+    "_id": "integration_JPLYnJtN4ZPnmZrE",
+    "_orgId": "org_AV8HkRzYzFkEh7Mc",
+    "changelogDestination": {},
+    "clientId": "",
+    "config": {
+      "createMissingRelatedEntities": false,
+      "deleteDependentEntities": true,
+      "enableMergeEntity": true,
+      "resources": [
+        {
+          "kind": "entity",
+          "port": {
+            "entity": {
+              "mappings": {
+                "blueprint": "\"dynatraceCloudApplication\"",
+                "identifier": ".entityId",
+                "properties": {
+                  "dynatrace_entity_url": ".entityId as $id | \"https://aig80554.live.dynatrace.com/ui/entity/\" + $id",
+                  "firstSeen": ".firstSeenTms / 1000 | todate",
+                  "from_relationships": ".fromRelationships",
+                  "lastSeen": ".lastSeenTms / 1000 | todate",
+                  "management_zones": ".managementZones[].stringRepresentation",
+                  "properties": ".properties",
+                  "repo_name": ".properties.cloudApplicationLabels.\"fed.openshift.ado.repo.name\"",
+                  "security_role": ".properties.cloudApplicationLabels.\"fed.openshift.security.role\"",
+                  "tags": ".tags[].stringRepresentation",
+                  "to_relationships": ".toRelationships",
+                  "type": ".type"
+                },
+                "relations": {
+                  "repository": ".properties.cloudApplicationLabels.\"fed.openshift.ado.repo.name\" as $repo | if $repo != null then \"federatedprojects/\" + $repo | ascii_downcase else null end"
+                },
+                "title": ".displayName"
+              }
+            }
+          },
+          "selector": {
+            "entityFields": "firstSeenTms,lastSeenTms,tags,properties,managementZones,fromRelationships,toRelationships",
+            "entityTypes": [
+              "CLOUD_APPLICATION"
+            ],
+            "query": "true"
+          }
+        },
+        {
+          "kind": "entity",
+          "port": {
+            "entity": {
+              "mappings": {
+                "blueprint": "\"dynatraceEntity\"",
+                "identifier": ".entityId",
+                "properties": {
+                  "dynatrace_entity_url": ".entityId as $id | \"https://aig80554.live.dynatrace.com/ui/entity/\" + $id",
+                  "firstSeen": ".firstSeenTms / 1000 | todate",
+                  "from_relationships": ".fromRelationships",
+                  "lastSeen": ".lastSeenTms / 1000 | todate",
+                  "management_zones": ".managementZones[].stringRepresentation",
+                  "properties": ".properties",
+                  "tags": ".tags[].stringRepresentation",
+                  "to_relationships": ".toRelationships",
+                  "type": ".type"
+                },
+                "title": ".displayName"
+              }
+            }
+          },
+          "selector": {
+            "entityFields": "firstSeenTms,lastSeenTms,tags,properties,managementZones,fromRelationships,toRelationships",
+            "entityTypes": [
+              "APPLICATION",
+              "SERVICE"
+            ],
+            "query": "true"
+          }
+        },
+        {
+          "kind": "problem",
+          "port": {
+            "entity": {
+              "mappings": {
+                "blueprint": "\"dynatraceProblem\"",
+                "identifier": ".problemId",
+                "properties": {
+                  "endTime": ".endTime | if . == -1 then null else (./1000 | todate) end",
+                  "entityTags": ".entityTags[].stringRepresentation",
+                  "evidenceDetails": ".evidenceDetails.details[].displayName",
+                  "managementZones": ".managementZones[].name",
+                  "problemFilters": ".problemFilters[].name",
+                  "severityLevel": ".severityLevel",
+                  "startTime": ".startTime / 1000 | todate",
+                  "status": ".status"
+                },
+                "relations": {
+                  "impactedEntities": ".impactedEntities[].entityId.id",
+                  "linkedProblemInfo": ".linkedProblemInfo.problemId",
+                  "rootCauseEntity": ".rootCauseEntity.entityId.id"
+                },
+                "title": ".title"
+              }
+            }
+          },
+          "selector": {
+            "query": "true"
+          }
+        },
+        {
+          "kind": "slo",
+          "port": {
+            "entity": {
+              "mappings": {
+                "blueprint": "\"dynatraceSlo\"",
+                "identifier": ".id",
+                "properties": {
+                  "enabled": ".enabled",
+                  "error": ".error",
+                  "errorBudget": ".errorBudget",
+                  "evaluatedPercentage": ".evaluatedPercentage",
+                  "evaluationType": ".evaluationType",
+                  "filter": ".filter",
+                  "status": ".status",
+                  "target": ".target",
+                  "warning": ".warning"
+                },
+                "title": ".name"
+              }
+            }
+          },
+          "selector": {
+            "query": "true"
+          }
+        }
+      ]
+    },
+    "identifier": "dynatrace-prod",
+    "installationAppType": "dynatrace",
+    "installationId": "dynatrace-prod",
+    "installationType": "Saas",
+    "integrationType": "dynatrace",
+    "logAttributes": {
+      "ingestId": "OIMmwwJ5FY2A4Tcl",
+      "ingestUrl": "https://ingest.us.getport.io/logs/integration/OIMmwwJ5FY2A4Tcl"
+    },
+    "resyncState": {
+      "intervalInMinuets": 60,
+      "lastResyncEnd": "2025-04-17T15:59:22.734977+00:00",
+      "lastResyncStart": "2025-04-17T15:50:08.440505+00:00",
+      "nextResync": "2025-04-17T16:50:43.632000+00:00",
+      "status": "completed",
+      "updatedAt": "2025-04-17T15:59:22.744Z"
+    },
+    "spec": {
+      "appSpec": {
+        "liveEventsEnabled": false,
+        "scheduledResyncInterval": "1h",
+        "sendRawDataExamples": true
+      },
+      "integrationSpec": {
+        "dynatraceApiKey": "_DYNATRACE_DYNATRACE_API_KEY",
+        "dynatraceHostUrl": "https://aig80554.live.dynatrace.com"
+      }
+    },
+    "statusInfo": {
+      "createdAt": "2025-01-22T16:24:51.667Z",
+      "integrationStatus": {
+        "lastSyncedAt": "2025-02-20T10:19:37Z",
+        "status": "Running"
+      },
+      "updatedAt": "2025-01-22T16:50:43.632Z"
+    },
+    "version": "0.1.119"
+  },
+  {
+    "_id": "integration_68YWJCC08rQf8nLU",
+    "_orgId": "org_AV8HkRzYzFkEh7Mc",
+    "changelogDestination": {},
+    "clientId": "",
+    "config": {
+      "createMissingRelatedEntities": true,
+      "deleteDependentEntities": true,
+      "enableMergeEntity": true,
+      "resources": [
+        {
+          "kind": "incident",
+          "port": {
+            "entity": {
+              "mappings": {
+                "blueprint": "\"opsGenieIncident\"",
+                "identifier": ".id",
+                "properties": {
+                  "createdAt": ".createdAt",
+                  "description": ".description",
+                  "priority": ".priority",
+                  "status": ".status",
+                  "tags": ".tags",
+                  "updatedAt": ".updatedAt"
+                },
+                "relations": {
+                  "respondingTeam": ".responders | [.[] | select(.type == \"team\") | .id]",
+                  "services": ".impactedServices"
+                },
+                "title": ".message"
+              }
+            }
+          },
+          "selector": {
+            "apiQueryParams": {
+              "status": "open"
+            },
+            "query": ".createdAt > (now - 30*24*60*60 | strflocaltime(\"%Y-%m-%dT%H:%M:%S\"))"
+          }
+        },
+        {
+          "kind": "schedule",
+          "port": {
+            "entity": {
+              "mappings": {
+                "blueprint": "\"opsGenieRotation\"",
+                "identifier": ".id + \"_\" + .item.id",
+                "properties": {
+                  "description": ".item.name",
+                  "endDate": ".item.endDate",
+                  "rotationType": ".item.type",
+                  "startDate": ".item.startDate",
+                  "users": "[.item.participants[] | select(has(\"username\")) | .username]"
+                },
+                "relations": {
+                  "schedule": ".id"
+                },
+                "title": ".item.name"
+              }
+            },
+            "itemsToParse": ".rotations"
+          },
+          "selector": {
+            "apiQueryParams": {
+              "expand": "rotation"
+            },
+            "query": "true"
+          }
+        },
+        {
+          "kind": "schedule",
+          "port": {
+            "entity": {
+              "mappings": {
+                "blueprint": "\"opsGenieSchedule\"",
+                "identifier": ".id",
+                "properties": {
+                  "description": ".name",
+                  "timezone": ".timezone"
+                },
+                "relations": {
+                  "ownerTeam": ".ownerTeam.id"
+                },
+                "title": ".name"
+              }
+            }
+          },
+          "selector": {
+            "query": "true"
+          }
+        },
+        {
+          "kind": "service",
+          "port": {
+            "entity": {
+              "mappings": {
+                "blueprint": "\"opsGenieService\"",
+                "identifier": ".id",
+                "properties": {
+                  "description": ".description",
+                  "tags": ".tags"
+                },
+                "relations": {
+                  "ownerTeam": ".teamId"
+                },
+                "title": ".name"
+              }
+            }
+          },
+          "selector": {
+            "query": "true"
+          }
+        },
+        {
+          "kind": "team",
+          "port": {
+            "entity": {
+              "mappings": {
+                "blueprint": "\"opsGenieTeam\"",
+                "identifier": ".id",
+                "properties": {
+                  "description": ".description",
+                  "team_members": "if .__members != null then .__members | map(.user.username) else [] end"
+                },
+                "relations": {
+                  "members": "if .__members != null then .__members | map(.user.id) else [] end"
+                },
+                "title": ".name"
+              }
+            }
+          },
+          "selector": {
+            "includeMembers": true,
+            "query": "true"
+          }
+        },
+        {
+          "kind": "user",
+          "port": {
+            "entity": {
+              "mappings": {
+                "blueprint": "\"opsGenieUser\"",
+                "identifier": ".id",
+                "properties": {
+                  "address": ".userAddress",
+                  "createdAt": ".createdAt",
+                  "email": ".username",
+                  "isBlocked": ".blocked",
+                  "isVerified": ".verified",
+                  "role": ".role.name",
+                  "timeZone": ".timeZone"
+                },
+                "title": ".fullName"
+              }
+            }
+          },
+          "selector": {
+            "query": "true"
+          }
+        }
+      ]
+    },
+    "identifier": "opsgenie",
+    "installationAppType": "opsgenie",
+    "installationId": "opsgenie",
+    "installationType": "Saas",
+    "integrationType": "opsgenie",
+    "logAttributes": {
+      "ingestId": "fz9bi7rVS7mvckHB",
+      "ingestUrl": "https://ingest.us.getport.io/logs/integration/fz9bi7rVS7mvckHB"
+    },
+    "resyncState": {
+      "intervalInMinuets": 60,
+      "lastResyncEnd": "2025-04-17T15:34:16.338500+00:00",
+      "lastResyncStart": "2025-04-17T15:34:06.047851+00:00",
+      "nextResync": "2025-04-17T16:34:08.478000+00:00",
+      "status": "completed",
+      "updatedAt": "2025-04-17T15:34:16.364Z"
+    },
+    "spec": {
+      "appSpec": {
+        "liveEventsEnabled": false,
+        "scheduledResyncInterval": "1h",
+        "sendRawDataExamples": true
+      },
+      "integrationSpec": {
+        "apiToken": "_OPSGENIE_API_TOKEN",
+        "apiUrl": "https://api.opsgenie.com"
+      }
+    },
+    "statusInfo": {
+      "createdAt": "2024-12-05T14:34:08.478Z",
+      "integrationStatus": {
+        "lastSyncedAt": "2025-02-20T10:19:43Z",
+        "status": "Running"
+      },
+      "updatedAt": "2024-12-05T14:34:08.478Z"
+    },
+    "title": null,
+    "version": "0.2.66"
+  },
+  {
+    "_id": "integration_aYMflE1QeRE14aO6",
+    "_orgId": "org_AV8HkRzYzFkEh7Mc",
+    "changelogDestination": {},
+    "clientId": "",
+    "config": {
+      "createMissingRelatedEntities": false,
+      "deleteDependentEntities": true,
+      "enableMergeEntity": true,
+      "resources": [
+        {
+          "kind": "work-item",
+          "port": {
+            "entity": {
+              "mappings": {
+                "blueprint": "\"workItem\"",
+                "identifier": ".id | tostring",
+                "properties": {
+                  "assigned_to": ".fields.\"System.AssignedTo\".uniqueName | ascii_downcase?",
+                  "changedBy": ".fields.\"System.ChangedBy\".uniqueName? | ascii_downcase?",
+                  "changedDate": ".fields.\"System.ChangedDate\"",
+                  "completed_work": ".fields.\"Microsoft.VSTS.Scheduling.CompletedWork\"",
+                  "createdBy": ".fields.\"System.CreatedBy\".uniqueName? | ascii_downcase?",
+                  "createdDate": ".fields.\"System.CreatedDate\"",
+                  "description": ".fields.\"System.Description\"",
+                  "effort": ".fields.\"Microsoft.VSTS.Scheduling.Effort\"",
+                  "effort_size": ".fields.\"Microsoft.VSTS.Scheduling.Size\"",
+                  "is_request_number": ".fields.\"Federated.IS.RequestNumber\"",
+                  "iteration": ".fields.\"System.IterationPath\"",
+                  "link": "._links.html.href",
+                  "original_estimate": ".fields.\"Microsoft.VSTS.Scheduling.OriginalEstimate\"",
+                  "priority": ".fields.\"Microsoft.VSTS.Common.Priority\"",
+                  "reason": ".fields.\"System.Reason\"",
+                  "remaining_work": ".fields.\"Microsoft.VSTS.Scheduling.RemainingWork\"",
+                  "state": ".fields.\"System.State\"",
+                  "tags": "(.fields.\"System.Tags\" | split(\"; \"))?",
+                  "type": ".fields.\"System.WorkItemType\""
+                },
+                "relations": {
+                  "parent_work_item": "try (.relations[]? | select(.rel == \"System.LinkTypes.Hierarchy-Reverse\" and .attributes.name == \"Parent\") | .url | split(\"/\")[-1]) // null",
+                  "project": ".__project.id | gsub(\" \"; \"\")",
+                  "work_item_iteration": ".fields.\"System.IterationId\" | tostring"
+                },
+                "title": ".fields.\"System.Title\""
+              }
+            }
+          },
+          "selector": {
+            "query": "true",
+            "wiql": "[System.ChangedDate] >= @Today-366 AND NOT [State] in ('Done','Closed','Removed','Resolved','Completed') AND [System.WorkItemType] IN ('Task') AND [System.TeamProject] = 'Federated Projects' ORDER BY [System.Id] DESC"
+          }
+        },
+        {
+          "kind": "work-item",
+          "port": {
+            "entity": {
+              "mappings": {
+                "blueprint": "\"workItem\"",
+                "identifier": ".id | tostring",
+                "properties": {
+                  "assigned_to": ".fields.\"System.AssignedTo\".uniqueName | ascii_downcase?",
+                  "changedBy": ".fields.\"System.ChangedBy\".uniqueName? | ascii_downcase?",
+                  "changedDate": ".fields.\"System.ChangedDate\"",
+                  "completed_work": ".fields.\"Microsoft.VSTS.Scheduling.CompletedWork\"",
+                  "createdBy": ".fields.\"System.CreatedBy\".uniqueName? | ascii_downcase?",
+                  "createdDate": ".fields.\"System.CreatedDate\"",
+                  "description": ".fields.\"System.Description\"",
+                  "effort": ".fields.\"Microsoft.VSTS.Scheduling.Effort\"",
+                  "effort_size": ".fields.\"Microsoft.VSTS.Scheduling.Size\"",
+                  "is_request_number": ".fields.\"Federated.IS.RequestNumber\"",
+                  "iteration": ".fields.\"System.IterationPath\"",
+                  "link": "._links.html.href",
+                  "original_estimate": ".fields.\"Microsoft.VSTS.Scheduling.OriginalEstimate\"",
+                  "priority": ".fields.\"Microsoft.VSTS.Common.Priority\"",
+                  "reason": ".fields.\"System.Reason\"",
+                  "remaining_work": ".fields.\"Microsoft.VSTS.Scheduling.RemainingWork\"",
+                  "state": ".fields.\"System.State\"",
+                  "tags": "(.fields.\"System.Tags\" | split(\"; \"))?",
+                  "type": ".fields.\"System.WorkItemType\""
+                },
+                "relations": {
+                  "parent_work_item": "try (.relations[]? | select(.rel == \"System.LinkTypes.Hierarchy-Reverse\" and .attributes.name == \"Parent\") | .url | split(\"/\")[-1]) // null",
+                  "project": ".__project.id | gsub(\" \"; \"\")",
+                  "work_item_iteration": ".fields.\"System.IterationId\" | tostring"
+                },
+                "title": ".fields.\"System.Title\""
+              }
+            }
+          },
+          "selector": {
+            "query": "true",
+            "wiql": "NOT [State] in ('Done','Closed','Removed','Resolved','Completed') AND [System.WorkItemType] IN ('Epic') AND [System.TeamProject] = 'Federated Projects'  "
+          }
+        },
+        {
+          "kind": "work-item",
+          "port": {
+            "entity": {
+              "mappings": {
+                "blueprint": "\"workItem\"",
+                "identifier": ".id | tostring",
+                "properties": {
+                  "assigned_to": ".fields.\"System.AssignedTo\".uniqueName | ascii_downcase?",
+                  "changedBy": ".fields.\"System.ChangedBy\".uniqueName? | ascii_downcase?",
+                  "changedDate": ".fields.\"System.ChangedDate\"",
+                  "completed_work": ".fields.\"Microsoft.VSTS.Scheduling.CompletedWork\"",
+                  "createdBy": ".fields.\"System.CreatedBy\".uniqueName? | ascii_downcase?",
+                  "createdDate": ".fields.\"System.CreatedDate\"",
+                  "description": ".fields.\"System.Description\"",
+                  "effort": ".fields.\"Microsoft.VSTS.Scheduling.Effort\"",
+                  "effort_size": ".fields.\"Microsoft.VSTS.Scheduling.Size\"",
+                  "is_request_number": ".fields.\"Federated.IS.RequestNumber\"",
+                  "iteration": ".fields.\"System.IterationPath\"",
+                  "link": "._links.html.href",
+                  "original_estimate": ".fields.\"Microsoft.VSTS.Scheduling.OriginalEstimate\"",
+                  "priority": ".fields.\"Microsoft.VSTS.Common.Priority\"",
+                  "reason": ".fields.\"System.Reason\"",
+                  "remaining_work": ".fields.\"Microsoft.VSTS.Scheduling.RemainingWork\"",
+                  "state": ".fields.\"System.State\"",
+                  "tags": "(.fields.\"System.Tags\" | split(\"; \"))?",
+                  "type": ".fields.\"System.WorkItemType\""
+                },
+                "relations": {
+                  "parent_work_item": "try (.relations[]? | select(.rel == \"System.LinkTypes.Hierarchy-Reverse\" and .attributes.name == \"Parent\") | .url | split(\"/\")[-1]) // null",
+                  "project": ".__project.id | gsub(\" \"; \"\")",
+                  "work_item_iteration": ".fields.\"System.IterationId\" | tostring"
+                },
+                "title": ".fields.\"System.Title\""
+              }
+            }
+          },
+          "selector": {
+            "query": "true",
+            "wiql": "NOT [State] in ('Done','Closed','Removed','Resolved','Completed') AND [System.WorkItemType] IN ('Feature') AND [System.TeamProject] = 'Federated Projects' "
+          }
+        },
+        {
+          "kind": "work-item",
+          "port": {
+            "entity": {
+              "mappings": {
+                "blueprint": "\"workItem\"",
+                "identifier": ".id | tostring",
+                "properties": {
+                  "assigned_to": ".fields.\"System.AssignedTo\".uniqueName | ascii_downcase?",
+                  "changedBy": ".fields.\"System.ChangedBy\".uniqueName? | ascii_downcase?",
+                  "changedDate": ".fields.\"System.ChangedDate\"",
+                  "completed_work": ".fields.\"Microsoft.VSTS.Scheduling.CompletedWork\"",
+                  "createdBy": ".fields.\"System.CreatedBy\".uniqueName? | ascii_downcase?",
+                  "createdDate": ".fields.\"System.CreatedDate\"",
+                  "description": ".fields.\"System.Description\"",
+                  "effort": ".fields.\"Microsoft.VSTS.Scheduling.Effort\"",
+                  "effort_size": ".fields.\"Microsoft.VSTS.Scheduling.Size\"",
+                  "is_request_number": ".fields.\"Federated.IS.RequestNumber\"",
+                  "iteration": ".fields.\"System.IterationPath\"",
+                  "link": "._links.html.href",
+                  "original_estimate": ".fields.\"Microsoft.VSTS.Scheduling.OriginalEstimate\"",
+                  "priority": ".fields.\"Microsoft.VSTS.Common.Priority\"",
+                  "reason": ".fields.\"System.Reason\"",
+                  "remaining_work": ".fields.\"Microsoft.VSTS.Scheduling.RemainingWork\"",
+                  "state": ".fields.\"System.State\"",
+                  "tags": "(.fields.\"System.Tags\" | split(\"; \"))?",
+                  "type": ".fields.\"System.WorkItemType\""
+                },
+                "relations": {
+                  "parent_work_item": "try (.relations[]? | select(.rel == \"System.LinkTypes.Hierarchy-Reverse\" and .attributes.name == \"Parent\") | .url | split(\"/\")[-1]) // null",
+                  "project": ".__project.id | gsub(\" \"; \"\")",
+                  "work_item_iteration": ".fields.\"System.IterationId\" | tostring"
+                },
+                "title": ".fields.\"System.Title\""
+              }
+            }
+          },
+          "selector": {
+            "query": "true",
+            "wiql": "NOT [State] in ('Done','Closed','Removed','Resolved','Completed') AND [System.WorkItemType] IN ('Issue', 'Bug', 'Requirement') AND [System.TeamProject] = 'Federated Projects' "
+          }
+        },
+        {
+          "kind": "work-item",
+          "port": {
+            "entity": {
+              "mappings": {
+                "blueprint": "\"workItem\"",
+                "identifier": ".id | tostring",
+                "properties": {
+                  "assigned_to": ".fields.\"System.AssignedTo\".uniqueName | ascii_downcase?",
+                  "changedBy": ".fields.\"System.ChangedBy\".uniqueName? | ascii_downcase?",
+                  "changedDate": ".fields.\"System.ChangedDate\"",
+                  "completed_work": ".fields.\"Microsoft.VSTS.Scheduling.CompletedWork\"",
+                  "createdBy": ".fields.\"System.CreatedBy\".uniqueName? | ascii_downcase?",
+                  "createdDate": ".fields.\"System.CreatedDate\"",
+                  "description": ".fields.\"System.Description\"",
+                  "effort": ".fields.\"Microsoft.VSTS.Scheduling.Effort\"",
+                  "effort_size": ".fields.\"Microsoft.VSTS.Scheduling.Size\"",
+                  "is_request_number": ".fields.\"Federated.IS.RequestNumber\"",
+                  "iteration": ".fields.\"System.IterationPath\"",
+                  "link": "._links.html.href",
+                  "original_estimate": ".fields.\"Microsoft.VSTS.Scheduling.OriginalEstimate\"",
+                  "priority": ".fields.\"Microsoft.VSTS.Common.Priority\"",
+                  "reason": ".fields.\"System.Reason\"",
+                  "remaining_work": ".fields.\"Microsoft.VSTS.Scheduling.RemainingWork\"",
+                  "state": ".fields.\"System.State\"",
+                  "tags": "(.fields.\"System.Tags\" | split(\"; \"))?",
+                  "type": ".fields.\"System.WorkItemType\""
+                },
+                "relations": {
+                  "parent_work_item": "try (.relations[]? | select(.rel == \"System.LinkTypes.Hierarchy-Reverse\" and .attributes.name == \"Parent\") | .url | split(\"/\")[-1]) // null",
+                  "project": ".__project.id | gsub(\" \"; \"\")",
+                  "work_item_iteration": ".fields.\"System.IterationId\" | tostring"
+                },
+                "title": ".fields.\"System.Title\""
+              }
+            }
+          },
+          "selector": {
+            "query": "true",
+            "wiql": "NOT [State] in ('Done','Closed','Removed','Resolved','Completed') AND [System.WorkItemType] IN ('Product Backlog Item', 'User Story') AND [System.TeamProject] = 'Federated Projects' "
+          }
+        }
+      ]
+    },
+    "identifier": "work-items-local",
+    "installationAppType": "azure-devops",
+    "installationId": "work-items-local",
+    "installationType": "OnPrem",
+    "integrationType": "azure-devops",
+    "logAttributes": {
+      "ingestId": "MQRmIn43wF5fVajd",
+      "ingestUrl": "https://ingest.us.getport.io/logs/integration/MQRmIn43wF5fVajd"
+    },
+    "resyncState": {
+      "intervalInMinuets": 1440,
+      "lastResyncEnd": "2025-04-16T18:58:07.546192+00:00",
+      "lastResyncStart": "2025-04-16T18:43:33.402998+00:00",
+      "nextResync": "2025-04-17T18:43:32.525296+00:00",
+      "status": "completed",
+      "updatedAt": "2025-04-16T18:58:07.571Z"
+    },
+    "version": "0.1.143"
+  }
+]

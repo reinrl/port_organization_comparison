@@ -1,4 +1,4 @@
-Create one file per environment (Port organization). It should follow this format:
+Create one `.cjs` file per environment (Port organization). It should follow this format:
 
 ```js
 const portConfig = {

@@ -1,0 +1,2733 @@
+[
+  {
+    "description": "Acknowledge the notification",
+    "icon": "OpsGenie",
+    "identifier": "acknowledge_opsgenie_alert",
+    "invocationMethod": {
+      "payload": {
+        "{{ spreadValue() }}": "{{ .inputs }}",
+        "port_context": {
+          "action_id": "{{ .action.identifier }}",
+          "blueprint_id": "{{ .action.blueprint }}",
+          "entity_id": "{{ .entity.identifier }}",
+          "run_id": "{{ .run.id }}",
+          "trigger_by_email": "{{ .trigger.by.user.email }}"
+        }
+      },
+      "type": "KAFKA"
+    },
+    "requiredApproval": false,
+    "title": "Acknowledge Opsgenie Alert",
+    "trigger": {
+      "blueprintIdentifier": "opsGenieAlert",
+      "operation": "DAY-2",
+      "type": "self-service",
+      "userInputs": {
+        "properties": {
+          "note": {
+            "icon": "DefaultProperty",
+            "maxLength": 5000,
+            "minLength": 2,
+            "title": "Note",
+            "type": "string"
+          },
+          "tags": {
+            "description": "Note: to add tags, they must be in an array format like [\"one\", \"two\"]",
+            "icon": "DefaultProperty",
+            "items": {
+              "maxLength": 50,
+              "type": "string"
+            },
+            "title": "Tags",
+            "type": "array"
+          }
+        },
+        "required": []
+      }
+    }
+  },
+  {
+    "description": "Add Note to Opsgenie Alert",
+    "icon": "OpsGenie",
+    "identifier": "add_note_opsgenie_alert",
+    "invocationMethod": {
+      "payload": {
+        "{{ spreadValue() }}": "{{ .inputs }}",
+        "port_context": {
+          "action_id": "{{ .action.identifier }}",
+          "blueprint_id": "{{ .action.blueprint }}",
+          "entity_id": "{{ .entity.identifier }}",
+          "run_id": "{{ .run.id }}",
+          "trigger_by_email": "{{ .trigger.by.user.email }}"
+        }
+      },
+      "type": "KAFKA"
+    },
+    "requiredApproval": false,
+    "title": "Add Note",
+    "trigger": {
+      "blueprintIdentifier": "opsGenieAlert",
+      "operation": "DAY-2",
+      "type": "self-service",
+      "userInputs": {
+        "order": [
+          "note"
+        ],
+        "properties": {
+          "note": {
+            "icon": "DefaultProperty",
+            "maxLength": 5000,
+            "minLength": 2,
+            "title": "Note",
+            "type": "string"
+          }
+        },
+        "required": [
+          "note"
+        ]
+      }
+    }
+  },
+  {
+    "description": "This action is used to add/remove a repository from your list of favorites.",
+    "icon": "AzureDevops",
+    "identifier": "add_remove_repo_from_favorites",
+    "invocationMethod": {
+      "blueprintIdentifier": "service",
+      "mapping": {
+        "identifier": "{{.entity.identifier}}",
+        "properties": {
+          "favorites": "{{if .inputs.operation == \"Add\" then (.entity.properties.favorites + [.trigger.by.user.email] | unique) else (.entity.properties.favorites - [.trigger.by.user.email] | unique) end}}"
+        }
+      },
+      "type": "UPSERT_ENTITY"
+    },
+    "requiredApproval": false,
+    "title": "Add/Remove Repo from Favorites",
+    "trigger": {
+      "blueprintIdentifier": "service",
+      "operation": "DAY-2",
+      "type": "self-service",
+      "userInputs": {
+        "order": [
+          "operation"
+        ],
+        "properties": {
+          "operation": {
+            "enum": [
+              "Add",
+              "Remove"
+            ],
+            "enumColors": {
+              "Add": "green",
+              "Remove": "red"
+            },
+            "icon": "DefaultProperty",
+            "title": "Operation",
+            "type": "string"
+          }
+        },
+        "required": []
+      }
+    }
+  },
+  {
+    "description": "Add Responder to Opsgenie Alert",
+    "icon": "OpsGenie",
+    "identifier": "add_responder_opsgenie_alert",
+    "invocationMethod": {
+      "payload": {
+        "{{ spreadValue() }}": "{{ .inputs }}",
+        "port_context": {
+          "action_id": "{{ .action.identifier }}",
+          "blueprint_id": "{{ .action.blueprint }}",
+          "entity_id": "{{ .entity.identifier }}",
+          "run_id": "{{ .run.id }}",
+          "trigger_by_email": "{{ .trigger.by.user.email }}"
+        }
+      },
+      "type": "KAFKA"
+    },
+    "requiredApproval": false,
+    "title": "Add Responder",
+    "trigger": {
+      "blueprintIdentifier": "opsGenieAlert",
+      "operation": "DAY-2",
+      "type": "self-service",
+      "userInputs": {
+        "order": [
+          "add_user"
+        ],
+        "properties": {
+          "add_team": {
+            "blueprint": "opsGenieTeam",
+            "format": "entity",
+            "icon": "OpsGenie",
+            "sort": {
+              "order": "ASC",
+              "property": "$title"
+            },
+            "title": "Add Team",
+            "type": "string"
+          },
+          "add_user": {
+            "description": "Add User",
+            "format": "user",
+            "icon": "User",
+            "title": "Add User",
+            "type": "string"
+          }
+        },
+        "required": []
+      }
+    }
+  },
+  {
+    "description": "Add Tag(s) to Opsgenie Alert",
+    "icon": "OpsGenie",
+    "identifier": "add_tags_opsgenie_alert",
+    "invocationMethod": {
+      "payload": {
+        "{{ spreadValue() }}": "{{ .inputs }}",
+        "port_context": {
+          "action_id": "{{ .action.identifier }}",
+          "blueprint_id": "{{ .action.blueprint }}",
+          "entity_id": "{{ .entity.identifier }}",
+          "run_id": "{{ .run.id }}",
+          "trigger_by_email": "{{ .trigger.by.user.email }}"
+        }
+      },
+      "type": "KAFKA"
+    },
+    "requiredApproval": false,
+    "title": "Add Tags",
+    "trigger": {
+      "blueprintIdentifier": "opsGenieAlert",
+      "operation": "DAY-2",
+      "type": "self-service",
+      "userInputs": {
+        "order": [
+          "tags"
+        ],
+        "properties": {
+          "tags": {
+            "description": "Note: to add tags, they must be in an array format like [\"one\", \"two\"]",
+            "icon": "DefaultProperty",
+            "items": {
+              "maxLength": 50,
+              "type": "string"
+            },
+            "title": "Tags",
+            "type": "array"
+          }
+        },
+        "required": [
+          "tags"
+        ]
+      }
+    }
+  },
+  {
+    "description": "Upserts a repo team name on new ado team creation",
+    "identifier": "ado_team_to_ad_group_created",
+    "invocationMethod": {
+      "blueprintIdentifier": "repo_team_name",
+      "mapping": {
+        "identifier": "{{ .event.diff.after.properties.ado_team_name }}",
+        "title": "{{ .event.diff.after.properties.ado_team_name }}"
+      },
+      "type": "UPSERT_ENTITY"
+    },
+    "publish": true,
+    "title": "ADO Team to AD Group Created",
+    "trigger": {
+      "event": {
+        "blueprintIdentifier": "ado_team_to_ad_group",
+        "type": "ENTITY_CREATED"
+      },
+      "type": "automation"
+    }
+  },
+  {
+    "description": "Assign Work Item",
+    "icon": "AzureDevops",
+    "identifier": "ado_workitem_assign_user",
+    "invocationMethod": {
+      "payload": {
+        "{{ spreadValue() }}": "{{ .inputs }}",
+        "port_context": {
+          "action_id": "{{ .action.identifier }}",
+          "blueprint_id": "{{ .action.blueprint }}",
+          "entity_id": "{{ .entity.identifier }}",
+          "run_id": "{{ .run.id }}",
+          "trigger_by_email": "{{ .trigger.by.user.email }}"
+        }
+      },
+      "type": "KAFKA"
+    },
+    "requiredApproval": false,
+    "title": "Assign User",
+    "trigger": {
+      "blueprintIdentifier": "workItem",
+      "operation": "DAY-2",
+      "type": "self-service",
+      "userInputs": {
+        "order": [
+          "assign_to"
+        ],
+        "properties": {
+          "assign_to": {
+            "format": "user",
+            "icon": "User",
+            "title": "Assign To",
+            "type": "string"
+          }
+        },
+        "required": [
+          "assign_to"
+        ]
+      }
+    }
+  },
+  {
+    "description": "Change State of Work Item",
+    "icon": "AzureDevops",
+    "identifier": "ado_workitem_change_state",
+    "invocationMethod": {
+      "payload": {
+        "{{ spreadValue() }}": "{{ .inputs }}",
+        "port_context": {
+          "action_id": "{{ .action.identifier }}",
+          "blueprint_id": "{{ .action.blueprint }}",
+          "entity_id": "{{ .entity.identifier }}",
+          "run_id": "{{ .run.id }}",
+          "trigger_by_email": "{{ .trigger.by.user.email }}"
+        }
+      },
+      "type": "KAFKA"
+    },
+    "requiredApproval": false,
+    "title": "Change State",
+    "trigger": {
+      "blueprintIdentifier": "workItem",
+      "operation": "DAY-2",
+      "type": "self-service",
+      "userInputs": {
+        "order": [
+          "state"
+        ],
+        "properties": {
+          "state": {
+            "enum": [
+              "Approved",
+              "Done",
+              "In Progress",
+              "Removed",
+              "To Do"
+            ],
+            "enumColors": {
+              "Approved": "lightGray",
+              "Done": "lightGray",
+              "In Progress": "lightGray",
+              "Removed": "lightGray",
+              "To Do": "lightGray"
+            },
+            "icon": "DefaultProperty",
+            "title": "State",
+            "type": "string"
+          }
+        },
+        "required": [
+          "state"
+        ]
+      }
+    }
+  },
+  {
+    "description": "Create a message to be displayed on the home page",
+    "identifier": "announce_message",
+    "invocationMethod": {
+      "blueprintIdentifier": "announcement",
+      "mapping": {
+        "icon": "DefaultBlueprint",
+        "properties": {
+          "message": "{{.inputs.message}}",
+          "read_users": []
+        },
+        "title": "{{.inputs.title_of_message}}"
+      },
+      "type": "UPSERT_ENTITY"
+    },
+    "requiredApproval": false,
+    "title": "Add announcement",
+    "trigger": {
+      "blueprintIdentifier": "announcement",
+      "operation": "CREATE",
+      "type": "self-service",
+      "userInputs": {
+        "properties": {
+          "message": {
+            "default": "---\ntitle: \"Announcement Title Here\"\ndate: \"Date Here\"\n---\n\n# Important Update\n\nHello everyone,\n\nWe're excited to share that **[topic or key update]** will be happening on **[specific date]**. Here’s what you need to know:\n\n- **Detail 1:** Brief explanation or impact of the update.\n- **Detail 2:** Any necessary steps or actions users need to take.\n- **Detail 3:** Additional resources or contact info for further questions.\n\nPlease ensure you read and understand the changes. If you have any questions, feel free to reach out or comment below.\n\nThank you,\n**[Your Team or Name]**\n",
+            "format": "markdown",
+            "title": "Message",
+            "type": "string"
+          },
+          "title_of_message": {
+            "description": "This will be the title Users will see before reading the message itself",
+            "title": "Title of message",
+            "type": "string"
+          }
+        },
+        "required": []
+      }
+    }
+  },
+  {
+    "description": "Assign the alert",
+    "icon": "OpsGenie",
+    "identifier": "assign_opsgenie_alert",
+    "invocationMethod": {
+      "payload": {
+        "{{ spreadValue() }}": "{{ .inputs }}",
+        "port_context": {
+          "action_id": "{{ .action.identifier }}",
+          "blueprint_id": "{{ .action.blueprint }}",
+          "entity_id": "{{ .entity.identifier }}",
+          "run_id": "{{ .run.id }}",
+          "trigger_by_email": "{{ .trigger.by.user.email }}"
+        }
+      },
+      "type": "KAFKA"
+    },
+    "requiredApproval": false,
+    "title": "Assign Opsgenie Alert",
+    "trigger": {
+      "blueprintIdentifier": "opsGenieAlert",
+      "operation": "DAY-2",
+      "type": "self-service",
+      "userInputs": {
+        "properties": {
+          "assigned_to": {
+            "blueprint": "opsGenieUser",
+            "dataset": {
+              "combinator": "or",
+              "rules": [
+                {
+                  "blueprint": "opsGenieTeam",
+                  "operator": "relatedTo",
+                  "value": {
+                    "jqQuery": ".entity.relations.respondingTeam"
+                  }
+                },
+                {
+                  "operator": "in",
+                  "property": "email",
+                  "value": {
+                    "jqQuery": ".entity.properties.respondingUsers"
+                  }
+                }
+              ]
+            },
+            "format": "entity",
+            "sort": {
+              "order": "ASC",
+              "property": "$title"
+            },
+            "title": "Assigned To",
+            "type": "string"
+          }
+        },
+        "required": []
+      }
+    }
+  },
+  {
+    "description": "Use this action to make a feedback request as \"Exploring\", assign it to myself, and (optionally) related it to a work item",
+    "icon": "AddUser",
+    "identifier": "assign_to_myself",
+    "invocationMethod": {
+      "blueprintIdentifier": "portal_use_case_request",
+      "mapping": {
+        "identifier": "{{.entity.identifier}}",
+        "properties": {
+          "status": "Exploring"
+        },
+        "relations": {
+          "assigned_to": "{{.trigger.by.user.email}}",
+          "work_item": "{{.inputs.related_work_item.identifier}}"
+        }
+      },
+      "type": "UPSERT_ENTITY"
+    },
+    "requiredApproval": false,
+    "title": "Assign to Myself",
+    "trigger": {
+      "blueprintIdentifier": "portal_use_case_request",
+      "operation": "DAY-2",
+      "type": "self-service",
+      "userInputs": {
+        "order": [],
+        "properties": {
+          "related_work_item": {
+            "blueprint": "workItem",
+            "description": "Use this field to relate this feedback request to an existing Azure DevOps work item",
+            "format": "entity",
+            "title": "Related work item",
+            "type": "string"
+          }
+        },
+        "required": []
+      }
+    }
+  },
+  {
+    "description": "Change Priority of Opsgenie Alert",
+    "icon": "OpsGenie",
+    "identifier": "change_priority_opsgenie_alert",
+    "invocationMethod": {
+      "payload": {
+        "{{ spreadValue() }}": "{{ .inputs }}",
+        "port_context": {
+          "action_id": "{{ .action.identifier }}",
+          "blueprint_id": "{{ .action.blueprint }}",
+          "entity_id": "{{ .entity.identifier }}",
+          "run_id": "{{ .run.id }}",
+          "trigger_by_email": "{{ .trigger.by.user.email }}"
+        }
+      },
+      "type": "KAFKA"
+    },
+    "requiredApproval": false,
+    "title": "Change Priority",
+    "trigger": {
+      "blueprintIdentifier": "opsGenieAlert",
+      "operation": "DAY-2",
+      "type": "self-service",
+      "userInputs": {
+        "order": [
+          "priority"
+        ],
+        "properties": {
+          "priority": {
+            "enum": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5"
+            ],
+            "enumColors": {
+              "P1": "red",
+              "P2": "orange",
+              "P3": "yellow",
+              "P4": "turquoise",
+              "P5": "green"
+            },
+            "icon": "DefaultProperty",
+            "title": "Priority",
+            "type": "string"
+          }
+        },
+        "required": []
+      }
+    }
+  },
+  {
+    "description": "Close the notification",
+    "icon": "OpsGenie",
+    "identifier": "close_opsgenie_alert",
+    "invocationMethod": {
+      "payload": {
+        "{{ spreadValue() }}": "{{ .inputs }}",
+        "port_context": {
+          "action_id": "{{ .action.identifier }}",
+          "blueprint_id": "{{ .action.blueprint }}",
+          "entity_id": "{{ .entity.identifier }}",
+          "run_id": "{{ .run.id }}",
+          "trigger_by_email": "{{ .trigger.by.user.email }}"
+        }
+      },
+      "type": "KAFKA"
+    },
+    "requiredApproval": false,
+    "title": "Close Opsgenie Alert",
+    "trigger": {
+      "blueprintIdentifier": "opsGenieAlert",
+      "operation": "DAY-2",
+      "type": "self-service",
+      "userInputs": {
+        "properties": {
+          "note": {
+            "icon": "DefaultProperty",
+            "maxLength": 5000,
+            "minLength": 2,
+            "title": "Note",
+            "type": "string"
+          },
+          "tags": {
+            "description": "Note: to add tags, they must be in an array format like [\"one\", \"two\"]",
+            "icon": "DefaultProperty",
+            "items": {
+              "maxLength": 50,
+              "type": "string"
+            },
+            "title": "Tags",
+            "type": "array"
+          }
+        },
+        "required": []
+      }
+    }
+  },
+  {
+    "description": "Paved Road for dbt",
+    "icon": "DBT",
+    "identifier": "create_dbt_repo",
+    "invocationMethod": {
+      "org": "fedins",
+      "payload": {
+        "port_context": {
+          "blueprint": "{{ .action.blueprint }}",
+          "env": "dev",
+          "runId": "{{ .run.id }}"
+        },
+        "request_context": {
+          "{{ spreadValue() }}": "{{ .inputs }}",
+          "triggeredByUserEmail": "{{ .trigger.by.user.email }}"
+        }
+      },
+      "type": "AZURE_DEVOPS",
+      "webhook": "port_dev_create_dbt_webhook"
+    },
+    "requiredApproval": false,
+    "title": "Create a new dbt project",
+    "trigger": {
+      "blueprintIdentifier": "dbt_project",
+      "operation": "CREATE",
+      "type": "self-service",
+      "userInputs": {
+        "order": [
+          "app_name",
+          "system"
+        ],
+        "properties": {
+          "app_name": {
+            "icon": "DefaultProperty",
+            "pattern": "^[a-zA-Z0-9_]+$",
+            "title": "Application Name",
+            "type": "string"
+          },
+          "system": {
+            "blueprint": "repo_team_name",
+            "description": "System/Team Name",
+            "format": "entity",
+            "sort": {
+              "order": "ASC",
+              "property": "$identifier"
+            },
+            "title": "System",
+            "type": "string"
+          }
+        },
+        "required": [
+          "app_name",
+          "system"
+        ]
+      }
+    }
+  },
+  {
+    "description": "Initialize a new Spring Batch Job",
+    "icon": "AzurePipline",
+    "identifier": "create_spring_batch_job",
+    "invocationMethod": {
+      "agent": false,
+      "body": {
+        "{{ spreadValue() }}": "{{ .inputs }}",
+        "port_context": {
+          "blueprint": "{{ .action.blueprint }}",
+          "runId": "{{ .run.id }}"
+        }
+      },
+      "headers": {
+        "RUN_ID": "{{ .run.id }}"
+      },
+      "method": "POST",
+      "synchronized": false,
+      "type": "WEBHOOK",
+      "url": "https://example.com"
+    },
+    "requiredApproval": false,
+    "title": "Create Spring Batch Job",
+    "trigger": {
+      "operation": "CREATE",
+      "type": "self-service",
+      "userInputs": {
+        "order": [
+          "system_name",
+          "system"
+        ],
+        "properties": {
+          "system": {
+            "blueprint": "repo_team_name",
+            "description": "System/Team name",
+            "format": "entity",
+            "title": "System",
+            "type": "string"
+          },
+          "system_name": {
+            "description": "test",
+            "icon": "DefaultProperty",
+            "pattern": "^[a-zA-Z_]+$",
+            "title": "System Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "system_name",
+          "system"
+        ]
+      }
+    }
+  },
+  {
+    "description": "Initialize a Spring JMS Listener",
+    "icon": "AzurePipline",
+    "identifier": "create_spring_jms_listener",
+    "invocationMethod": {
+      "agent": false,
+      "body": {
+        "{{ spreadValue() }}": "{{ .inputs }}",
+        "port_context": {
+          "blueprint": "{{ .action.blueprint }}",
+          "runId": "{{ .run.id }}"
+        }
+      },
+      "headers": {
+        "RUN_ID": "{{ .run.id }}"
+      },
+      "method": "POST",
+      "synchronized": false,
+      "type": "WEBHOOK",
+      "url": "https://example.com"
+    },
+    "requiredApproval": false,
+    "title": "Create Spring JMS Listener",
+    "trigger": {
+      "operation": "CREATE",
+      "type": "self-service",
+      "userInputs": {
+        "order": [],
+        "properties": {},
+        "required": []
+      }
+    }
+  },
+  {
+    "approvalNotification": {
+      "type": "email"
+    },
+    "description": "Initialize a Spring Rest Service",
+    "icon": "AzurePipline",
+    "identifier": "create_spring_rest_service",
+    "invocationMethod": {
+      "org": "fedins-dev",
+      "payload": {
+        "{{ spreadValue() }}": "{{ .inputs }}",
+        "port_context": {
+          "blueprint": "{{ .action.blueprint }}",
+          "runId": "{{ .run.id }}"
+        }
+      },
+      "type": "AZURE_DEVOPS",
+      "webhook": "port_create_spring_api_webhook"
+    },
+    "requiredApproval": {
+      "type": "ANY"
+    },
+    "title": "Create Spring Rest Service",
+    "trigger": {
+      "operation": "CREATE",
+      "type": "self-service",
+      "userInputs": {
+        "order": [
+          "app_name",
+          "app_prefix",
+          "system_name"
+        ],
+        "properties": {
+          "app_name": {
+            "description": "Application Name (i.e. description of service and/or domain)",
+            "icon": "AzureDevops",
+            "minLength": 2,
+            "title": "App Name",
+            "type": "string"
+          },
+          "app_prefix": {
+            "description": "Application Prefix - many times a two letter code for system (i.e. tl)",
+            "enum": [
+              "ms",
+              "tl"
+            ],
+            "enumColors": {
+              "ms": "lightGray",
+              "tl": "lightGray"
+            },
+            "icon": "AzureDevops",
+            "maxLength": 10,
+            "minLength": 2,
+            "title": "App Prefix",
+            "type": "string"
+          },
+          "system_name": {
+            "description": "System Name/Team Name (i.e. toolslang)",
+            "enum": [
+              "myshield",
+              "toolslang"
+            ],
+            "enumColors": {
+              "myshield": "lightGray",
+              "toolslang": "lightGray"
+            },
+            "icon": "AzureDevops",
+            "maxLength": 30,
+            "minLength": 2,
+            "title": "System Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "app_name",
+          "app_prefix",
+          "system_name"
+        ]
+      }
+    }
+  },
+  {
+    "description": "Initialize a new Spring WebService",
+    "icon": "Spring",
+    "identifier": "create_spring_web_service",
+    "invocationMethod": {
+      "payload": {
+        "{{ spreadValue() }}": "{{ .inputs }}",
+        "port_context": {
+          "action_id": "{{ .action.identifier }}",
+          "blueprint_id": "{{ .action.blueprint }}",
+          "entity_id": "JUNK",
+          "run_id": "{{ .run.id }}",
+          "trigger_by_email": "{{ .trigger.by.user.email }}"
+        }
+      },
+      "type": "KAFKA"
+    },
+    "requiredApproval": false,
+    "title": "Create Spring WebService",
+    "trigger": {
+      "operation": "CREATE",
+      "type": "self-service",
+      "userInputs": {
+        "order": [
+          "app_name",
+          "app_prefix",
+          "system_name"
+        ],
+        "properties": {
+          "app_name": {
+            "description": "Application Name (i.e. description of service and/or domain)",
+            "icon": "AzureDevops",
+            "minLength": 2,
+            "title": "App Name",
+            "type": "string"
+          },
+          "app_prefix": {
+            "description": "Application Prefix - many times a two letter code for system (i.e. tl)",
+            "enum": [
+              "ms",
+              "tl"
+            ],
+            "enumColors": {
+              "ms": "lightGray",
+              "tl": "lightGray"
+            },
+            "icon": "AzureDevops",
+            "maxLength": 10,
+            "minLength": 2,
+            "title": "App Prefix",
+            "type": "string"
+          },
+          "system_name": {
+            "description": "System Name/Team Name (i.e. toolslang)",
+            "enum": [
+              "myshield",
+              "toolslang"
+            ],
+            "enumColors": {
+              "myshield": "lightGray",
+              "toolslang": "lightGray"
+            },
+            "icon": "AzureDevops",
+            "maxLength": 30,
+            "minLength": 2,
+            "title": "System Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "app_name",
+          "app_prefix",
+          "system_name"
+        ]
+      }
+    }
+  },
+  {
+    "icon": "Health",
+    "identifier": "internal_developer_portal_feedback_survey",
+    "invocationMethod": {
+      "agent": false,
+      "body": {
+        "port_context": {
+          "actionId": "{{ .action.identifier }}",
+          "runId": "{{ .run.id }}",
+          "teams": "{{ .inputs.user.team }}",
+          "user": "{{ .trigger.by.user.email }}",
+          "version": "{{ .inputs.version }}"
+        },
+        "responses": "{{ .inputs | del(.[\"user\"]) | to_entries | map( if ((.value | type) == \"array\") then (. as {key: $k, value: $vals} | $vals | map({\"key\": $k, \"value\": .})) else {\"key\": .key, \"value\": .value} end ) | flatten }}"
+      },
+      "headers": {
+        "RUN_ID": "{{ .run.id }}"
+      },
+      "method": "POST",
+      "synchronized": true,
+      "type": "WEBHOOK",
+      "url": "https://ingest.getport.io/JxfpPQ0uCkvWmPZz"
+    },
+    "requiredApproval": false,
+    "title": "Developer Workbench Feedback Survey",
+    "trigger": {
+      "blueprintIdentifier": "survey_template",
+      "operation": "CREATE",
+      "type": "self-service",
+      "userInputs": {
+        "properties": {
+          "additional_feedback": {
+            "icon": "DefaultProperty",
+            "title": "Do you have any other comments or suggestions regarding the Developer Workbench?",
+            "type": "string"
+          },
+          "comparative_reflection": {
+            "enum": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "enumColors": {
+              "1": "lightGray",
+              "2": "lightGray",
+              "3": "lightGray",
+              "4": "lightGray",
+              "5": "lightGray"
+            },
+            "icon": "DefaultProperty",
+            "title": "Compared to your initial expectations, how has the Developer Workbench met your needs? (1 = Lowest, 5 = Highest)",
+            "type": "number"
+          },
+          "design_improvements": {
+            "icon": "DefaultProperty",
+            "title": "What design changes or improvements would you suggest?",
+            "type": "string"
+          },
+          "developer_pages_rating": {
+            "enum": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "enumColors": {
+              "1": "lightGray",
+              "2": "lightGray",
+              "3": "lightGray",
+              "4": "lightGray",
+              "5": "lightGray"
+            },
+            "icon": "DefaultProperty",
+            "title": "How satisfied are you with the Developer pages? (1 = Lowest, 5 = Highest)",
+            "type": "number"
+          },
+          "documentation_improvements": {
+            "icon": "DefaultProperty",
+            "title": "What changes would improve the documentation?",
+            "type": "string"
+          },
+          "documentation_quality": {
+            "enum": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "enumColors": {
+              "1": "lightGray",
+              "2": "lightGray",
+              "3": "lightGray",
+              "4": "lightGray",
+              "5": "lightGray"
+            },
+            "icon": "DefaultProperty",
+            "title": "How would you rate the quality and clarity of the Developer Workbench’s documentation? (1 = Lowest, 5 = Highest)",
+            "type": "number"
+          },
+          "ease_of_navigation": {
+            "enum": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "enumColors": {
+              "1": "lightGray",
+              "2": "lightGray",
+              "3": "lightGray",
+              "4": "lightGray",
+              "5": "lightGray"
+            },
+            "icon": "DefaultProperty",
+            "title": "How easy is it to navigate the Developer Workbench? (1 = Lowest, 5 = Highest)",
+            "type": "number"
+          },
+          "feature_gaps": {
+            "icon": "DefaultProperty",
+            "title": "Are there any features or functionalities that you feel are missing?",
+            "type": "string"
+          },
+          "feedback_rating": {
+            "enum": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "enumColors": {
+              "1": "lightGray",
+              "2": "lightGray",
+              "3": "lightGray",
+              "4": "lightGray",
+              "5": "lightGray"
+            },
+            "icon": "DefaultProperty",
+            "title": "How satisfied are you with the built-in feedback system? (1 = Lowest, 5 = Highest)",
+            "type": "number"
+          },
+          "frequency_of_use": {
+            "enum": [
+              "1 - Never",
+              "2 - Rarely",
+              "3 - Once a week",
+              "4 - Several times a week",
+              "5 - Daily"
+            ],
+            "icon": "DefaultProperty",
+            "title": "How often do you use the Developer Workbench?",
+            "type": "string"
+          },
+          "onboarding_effectiveness": {
+            "enum": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "enumColors": {
+              "1": "lightGray",
+              "2": "lightGray",
+              "3": "lightGray",
+              "4": "lightGray",
+              "5": "lightGray"
+            },
+            "icon": "DefaultProperty",
+            "title": "How effective was the training/onboarding process for the Developer Workbench when you first started using it? (1 = Lowest, 5 = Highest)",
+            "type": "number"
+          },
+          "overall_satisfaction": {
+            "enum": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "enumColors": {
+              "1": "lightGray",
+              "2": "lightGray",
+              "3": "lightGray",
+              "4": "lightGray",
+              "5": "lightGray"
+            },
+            "icon": "DefaultProperty",
+            "title": "Overall, how satisfied are you with the Developer Workbench? (1 = Lowest, 5 = Highest)",
+            "type": "number"
+          },
+          "primary_tasks": {
+            "description": "Select all that apply",
+            "icon": "DefaultProperty",
+            "items": {
+              "enum": [
+                "Accessing my work items",
+                "Accessing tool information/documentation",
+                "Data toolbox-related development",
+                "Other",
+                "Responding to support issues"
+              ],
+              "type": "string"
+            },
+            "title": "Which of the following tasks do you primarily use the Developer Workbench for?",
+            "type": "array"
+          },
+          "primary_tasks_other_specify": {
+            "icon": "DefaultProperty",
+            "title": "If Other, please specify",
+            "type": "string",
+            "visible": {
+              "jqQuery": ".form.primary_tasks | index(\"Other\") != null"
+            }
+          },
+          "productivity_impact": {
+            "enum": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "enumColors": {
+              "1": "lightGray",
+              "2": "lightGray",
+              "3": "lightGray",
+              "4": "lightGray",
+              "5": "lightGray"
+            },
+            "icon": "DefaultProperty",
+            "title": "To what extent has the Developer Workbench improved your overall productivity? (1 = Lowest, 5 = Highest)",
+            "type": "number"
+          },
+          "role_context": {
+            "enum": [
+              "Back-end developer",
+              "DevSecOps/SRE",
+              "Front-end developer",
+              "Manager",
+              "Other",
+              "QA",
+              "Support developer"
+            ],
+            "icon": "DefaultProperty",
+            "title": "What is your primary role?",
+            "type": "string"
+          },
+          "role_context_other_specify": {
+            "icon": "DefaultProperty",
+            "title": "If Other, please specify",
+            "type": "string",
+            "visible": {
+              "jqQuery": ".form.role_context == \"Other\""
+            }
+          },
+          "self_service_rating": {
+            "enum": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "enumColors": {
+              "1": "lightGray",
+              "2": "lightGray",
+              "3": "lightGray",
+              "4": "lightGray",
+              "5": "lightGray"
+            },
+            "icon": "DefaultProperty",
+            "title": "How satisfied are you with the Self-service capabilities of the Developer Workbench? (1 = Lowest, 5 = Highest)",
+            "type": "number"
+          },
+          "support_experience": {
+            "enum": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "enumColors": {
+              "1": "lightGray",
+              "2": "lightGray",
+              "3": "lightGray",
+              "4": "lightGray",
+              "5": "lightGray"
+            },
+            "icon": "DefaultProperty",
+            "title": "When issues arise, how satisfied are you with the support provided by the Developer Enablement team? (1 = Lowest, 5 = Highest)",
+            "type": "number"
+          },
+          "support_pages_rating": {
+            "enum": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "enumColors": {
+              "1": "lightGray",
+              "2": "lightGray",
+              "3": "lightGray",
+              "4": "lightGray",
+              "5": "lightGray"
+            },
+            "icon": "DefaultProperty",
+            "title": "How satisfied are you with the Support pages? (1 = Lowest, 5 = Highest)",
+            "type": "number"
+          },
+          "tools_pages_rating": {
+            "enum": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "enumColors": {
+              "1": "lightGray",
+              "2": "lightGray",
+              "3": "lightGray",
+              "4": "lightGray",
+              "5": "lightGray"
+            },
+            "icon": "DefaultProperty",
+            "title": "How satisfied are you with the Tools pages? (1 = Lowest, 5 = Highest)",
+            "type": "number"
+          },
+          "top_improvement_request": {
+            "icon": "DefaultProperty",
+            "title": "What is the one change you believe would most improve the Developer Workbench?",
+            "type": "string"
+          },
+          "training_improvements": {
+            "icon": "DefaultProperty",
+            "title": "What additional resources or improvements would help new users get up to speed faster?",
+            "type": "string"
+          },
+          "user": {
+            "blueprint": "_user",
+            "default": {
+              "jqQuery": ".user.email"
+            },
+            "format": "entity",
+            "title": "User",
+            "type": "string",
+            "visible": false
+          },
+          "user_interface_design": {
+            "enum": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "enumColors": {
+              "1": "lightGray",
+              "2": "lightGray",
+              "3": "lightGray",
+              "4": "lightGray",
+              "5": "lightGray"
+            },
+            "icon": "DefaultProperty",
+            "title": "How would you rate the overall design and layout of the Developer Workbench? (1 = Lowest, 5 = Highest)",
+            "type": "number"
+          },
+          "version": {
+            "default": "Q1 2025",
+            "icon": "DefaultProperty",
+            "title": "Version",
+            "type": "string",
+            "visible": false
+          },
+          "workflow_example": {
+            "icon": "DefaultProperty",
+            "title": "Can you share an example where the Developer Workbench significantly helped (or hindered) your workflow?",
+            "type": "string"
+          },
+          "workflow_integration": {
+            "enum": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "enumColors": {
+              "1": "lightGray",
+              "2": "lightGray",
+              "3": "lightGray",
+              "4": "lightGray",
+              "5": "lightGray"
+            },
+            "icon": "DefaultProperty",
+            "title": "How seamlessly does the Developer Workbench integrate with your daily development tools and processes? (1 = Lowest, 5 = Highest)",
+            "type": "number"
+          }
+        },
+        "required": [
+          "version"
+        ],
+        "steps": [
+          {
+            "order": [
+              "additional_feedback",
+              "comparative_reflection",
+              "overall_satisfaction",
+              "top_improvement_request",
+              "user",
+              "version"
+            ],
+            "title": "Overall Satisfaction"
+          },
+          {
+            "order": [
+              "design_improvements",
+              "ease_of_navigation",
+              "user_interface_design"
+            ],
+            "title": "Usability & Navigation"
+          },
+          {
+            "order": [
+              "developer_pages_rating",
+              "feature_gaps",
+              "feedback_rating",
+              "self_service_rating",
+              "support_pages_rating",
+              "tools_pages_rating"
+            ],
+            "title": "Features & Functionality"
+          },
+          {
+            "order": [
+              "documentation_improvements",
+              "documentation_quality",
+              "support_experience"
+            ],
+            "title": "Documentation & Support"
+          },
+          {
+            "order": [
+              "frequency_of_use",
+              "primary_tasks_other_specify",
+              "primary_tasks",
+              "role_context_other_specify",
+              "role_context"
+            ],
+            "title": "Usage & Overview"
+          },
+          {
+            "order": [
+              "onboarding_effectiveness",
+              "productivity_impact",
+              "training_improvements",
+              "workflow_example",
+              "workflow_integration"
+            ],
+            "title": "Integration & Workflow"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "description": "Share feedback with the Developer Enablement Team about your experience with the Developer Workbench. If you have file attachments that would be helpful in explaining your feedback, please email them to <a href=\"mailto:#is-dent@fedins.com\">#IS -Dent</a> (and please reference the title of this item).",
+    "icon": "Updates",
+    "identifier": "leave_a_feedback_the_portal",
+    "invocationMethod": {
+      "blueprintIdentifier": "portal_use_case_request",
+      "mapping": {
+        "identifier": "{{.inputs.title | gsub(\" \";\"-\") | gsub(\"[^A-Za-z0-9@_.+:\\/=-]\"; \"\") | ascii_downcase }}",
+        "properties": {
+          "description": "{{.inputs.description}}",
+          "improving_metric": "{{.inputs.what_will_be_improved}}",
+          "page_url": "{{.inputs.page_url}}",
+          "priority": "{{.inputs.priority}}",
+          "requestor": "{{.trigger.by.user.email }}",
+          "role": "{{.inputs.my_role}}"
+        },
+        "title": "{{.inputs.title}}"
+      },
+      "type": "UPSERT_ENTITY"
+    },
+    "requiredApproval": false,
+    "title": "Leave feedback about the workbench",
+    "trigger": {
+      "blueprintIdentifier": "portal_use_case_request",
+      "operation": "CREATE",
+      "type": "self-service",
+      "userInputs": {
+        "order": [
+          "description",
+          "page_url",
+          "priority",
+          "title",
+          "what_will_be_improved"
+        ],
+        "properties": {
+          "description": {
+            "icon": "DefaultProperty",
+            "title": "Description",
+            "type": "string"
+          },
+          "page_url": {
+            "title": "Page URL",
+            "type": "string",
+            "visible": false
+          },
+          "priority": {
+            "default": "3 - Nice to have",
+            "enum": [
+              "1 - Must have",
+              "2 - Important",
+              "3 - Nice to have"
+            ],
+            "icon": "DefaultProperty",
+            "title": "Priority",
+            "type": "string"
+          },
+          "title": {
+            "icon": "DefaultProperty",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Title",
+            "type": "string"
+          },
+          "what_will_be_improved": {
+            "icon": "DefaultProperty",
+            "items": {
+              "enum": [
+                "Average time for a code change",
+                "Convenience/ease of use",
+                "Deployment Frequency",
+                "I will be happier",
+                "Onboarding time",
+                "Time to resolve an incident"
+              ],
+              "type": "string"
+            },
+            "title": "What will be improved?",
+            "type": "array"
+          }
+        },
+        "required": []
+      }
+    }
+  },
+  {
+    "description": "Use this action to mark the selected feedback request as \"Done\" (and add a resolution comment)",
+    "icon": "Edit",
+    "identifier": "mark_as_done",
+    "invocationMethod": {
+      "blueprintIdentifier": "portal_use_case_request",
+      "mapping": {
+        "identifier": "{{.entity.identifier}}",
+        "properties": {
+          "resolution_comments": "{{.inputs.resolution_comment}}",
+          "status": "Done"
+        },
+        "relations": {
+          "assigned_to": "{{.trigger.by.user.email}}",
+          "work_item": "{{.inputs.related_work_item.identifier}}"
+        }
+      },
+      "type": "UPSERT_ENTITY"
+    },
+    "requiredApproval": false,
+    "title": "Mark as Done",
+    "trigger": {
+      "blueprintIdentifier": "portal_use_case_request",
+      "operation": "DAY-2",
+      "type": "self-service",
+      "userInputs": {
+        "order": [],
+        "properties": {
+          "resolution_comment": {
+            "format": "markdown",
+            "title": "Resolution comment",
+            "type": "string"
+          }
+        },
+        "required": [
+          "resolution_comment"
+        ]
+      }
+    }
+  },
+  {
+    "description": "Mark this work item as complete",
+    "identifier": "mark_complete",
+    "invocationMethod": {
+      "agent": false,
+      "body": {
+        "{{ spreadValue() }}": "{{ .inputs }}",
+        "port_context": {
+          "blueprint": "{{ .action.blueprint }}",
+          "entity": "{{ .entity }}",
+          "runId": "{{ .run.id }}"
+        }
+      },
+      "headers": {
+        "RUN_ID": "{{ .run.id }}"
+      },
+      "method": "POST",
+      "synchronized": false,
+      "type": "WEBHOOK",
+      "url": "https://example.com"
+    },
+    "requiredApproval": false,
+    "title": "Mark Complete",
+    "trigger": {
+      "blueprintIdentifier": "workItem",
+      "operation": "DAY-2",
+      "type": "self-service",
+      "userInputs": {
+        "order": [],
+        "properties": {},
+        "required": []
+      }
+    }
+  },
+  {
+    "description": "Mark this work item as in progress",
+    "identifier": "mark_in_progress",
+    "invocationMethod": {
+      "agent": false,
+      "body": {
+        "{{ spreadValue() }}": "{{ .inputs }}",
+        "port_context": {
+          "blueprint": "{{ .action.blueprint }}",
+          "entity": "{{ .entity }}",
+          "runId": "{{ .run.id }}"
+        }
+      },
+      "headers": {
+        "RUN_ID": "{{ .run.id }}"
+      },
+      "method": "POST",
+      "synchronized": false,
+      "type": "WEBHOOK",
+      "url": "https://example.com"
+    },
+    "requiredApproval": false,
+    "title": "Mark In Progress",
+    "trigger": {
+      "blueprintIdentifier": "workItem",
+      "operation": "DAY-2",
+      "type": "self-service",
+      "userInputs": {
+        "order": [],
+        "properties": {},
+        "required": []
+      }
+    }
+  },
+  {
+    "description": "Send message that alert was closed",
+    "identifier": "opsgenie_alert_closed",
+    "invocationMethod": {
+      "payload": {
+        "port_context": {
+          "action_id": "opsgenie_alert_create",
+          "blueprint_id": "{{ .event.context.blueprintIdentifier }}",
+          "entity_id": "{{ .event.context.entityIdentifier }}",
+          "run_id": "{{ .run.id }}"
+        }
+      },
+      "type": "KAFKA"
+    },
+    "publish": true,
+    "title": "Alert Update Automation",
+    "trigger": {
+      "condition": {
+        "combinator": "and",
+        "expressions": [
+          ".diff.after.properties.status == \"closed\"",
+          ".diff.before.properties.status != \"closed\""
+        ],
+        "type": "JQ"
+      },
+      "event": {
+        "blueprintIdentifier": "opsGenieAlert",
+        "type": "ENTITY_UPDATED"
+      },
+      "type": "automation"
+    }
+  },
+  {
+    "description": "Send message that alert was created in Port",
+    "identifier": "opsgenie_alert_create",
+    "invocationMethod": {
+      "payload": {
+        "port_context": {
+          "action_id": "opsgenie_alert_create",
+          "blueprint_id": "{{ .event.context.blueprintIdentifier }}",
+          "entity_id": "{{ .event.context.entityIdentifier }}",
+          "run_id": "{{ .run.id }}",
+          "trigger_by_email": "{{ .trigger.by.user.email }}"
+        }
+      },
+      "type": "KAFKA"
+    },
+    "publish": true,
+    "title": "Alert Creation Automation",
+    "trigger": {
+      "event": {
+        "blueprintIdentifier": "opsGenieAlert",
+        "type": "ENTITY_CREATED"
+      },
+      "type": "automation"
+    }
+  },
+  {
+    "description": "Send message that an alert note was created in Port",
+    "identifier": "opsgenie_alert_note_create",
+    "invocationMethod": {
+      "payload": {
+        "port_context": {
+          "action_id": "opsgenie_alert_note_create",
+          "blueprint_id": "{{ .event.context.blueprintIdentifier }}",
+          "entity_id": "{{ .event.context.entityIdentifier }}",
+          "run_id": "{{ .run.id }}",
+          "trigger_by_email": "{{ .trigger.by.user.email }}"
+        }
+      },
+      "type": "KAFKA"
+    },
+    "publish": true,
+    "title": "Alert Note Creation Automation",
+    "trigger": {
+      "event": {
+        "blueprintIdentifier": "opsGenieAlertNote",
+        "type": "ENTITY_CREATED"
+      },
+      "type": "automation"
+    }
+  },
+  {
+    "description": "Send message that alert is opened that wasn't previously",
+    "identifier": "opsgenie_alert_reopen",
+    "invocationMethod": {
+      "payload": {
+        "port_context": {
+          "action_id": "opsgenie_alert_create",
+          "blueprint_id": "{{ .event.context.blueprintIdentifier }}",
+          "entity_id": "{{ .event.context.entityIdentifier }}",
+          "run_id": "{{ .run.id }}"
+        }
+      },
+      "type": "KAFKA"
+    },
+    "publish": true,
+    "title": "Alert Reopen Automation",
+    "trigger": {
+      "condition": {
+        "combinator": "and",
+        "expressions": [
+          ".diff.after.properties.status == \"open\"",
+          ".diff.before.properties.status != \"open\""
+        ],
+        "type": "JQ"
+      },
+      "event": {
+        "blueprintIdentifier": "opsGenieAlert",
+        "type": "ENTITY_UPDATED"
+      },
+      "type": "automation"
+    }
+  },
+  {
+    "description": "Update an existing dbt repository to point to a specific set of databases for the beta environment. If the database that you wish to use is not listed below, you might need to first <a href=\"https://federatedinsurance.service-now.com/sp?id=sc_cat_item&table=sc_cat_item&sys_id=612570ed1b130a106975dc25cc4bcb29&searchTerm=create%20new%20database\" target=\"_blank\">request a new database</a> or <a href=\"https://federatedinsurance.service-now.com/sp?id=sc_cat_item&table=sc_cat_item&sys_id=086e3cec1ba04290102311b6bc4bcb9f&recordUrl=com.glideapp.servicecatalog_cat_item_view.do%3Fv%3D1&sysparm_id=086e3cec1ba04290102311b6bc4bcb9f\" target=\"_blank\">update an existing database to be accessed via dbt</a>.",
+    "icon": "DBT",
+    "identifier": "point_my_dbt_project_to_a_beta_db",
+    "invocationMethod": {
+      "org": "fedins",
+      "payload": {
+        "db_context": {
+          "destinationDb": "{{ .inputs.reporting_database.properties.name }}",
+          "env": "beta",
+          "instance": "{{ .inputs.instance.properties.name }}",
+          "sourceDb": "{{ .inputs.source_database.properties.name }}",
+          "tempDb": "{{ .inputs.temp_database.properties.name }}"
+        },
+        "opwise_credential_identifier": "{{ .inputs.opswise_dbt_user.identifier }}",
+        "port_context": {
+          "blueprint": "{{ .action.blueprint }}",
+          "entity": {
+            "blueprint": "{{ .entity.blueprint }}",
+            "createdAt": "{{ .entity.createdAt }}",
+            "createdBy": "{{ .entity.createdBy }}",
+            "identifier": "{{ .entity.identifier }}",
+            "properties": "{{ .entity.properties }}",
+            "relations": {
+              "dev_opswise_credential": "{{ .entity.relations.dev_opswise_credential }}",
+              "related_repository": "{{ .entity.relations.related_repository }}",
+              "related_repository_name": "{{ .entity.relations.related_repository | split(\"/\") | last }}"
+            },
+            "team": "{{ .entity.team }}",
+            "title": "{{ .entity.title }}",
+            "updatedAt": "{{ .entity.updatedAt }}",
+            "updatedBy": "{{ .entity.updatedBy }}"
+          },
+          "env": "dev",
+          "runId": "{{ .run.id }}"
+        }
+      },
+      "type": "AZURE_DEVOPS",
+      "webhook": "port_dev_dbtlinkdb_webhook"
+    },
+    "requiredApproval": false,
+    "title": "Point my dbt project to a beta DB",
+    "trigger": {
+      "blueprintIdentifier": "dbt_project",
+      "condition": {
+        "combinator": "and",
+        "rules": [
+          {
+            "operator": "!=",
+            "property": "beta_db",
+            "value": true
+          },
+          {
+            "operator": "=",
+            "property": "dev_db",
+            "value": true
+          }
+        ],
+        "type": "SEARCH"
+      },
+      "operation": "DAY-2",
+      "type": "self-service",
+      "userInputs": {
+        "order": [
+          "opswise_dbt_user",
+          "reporting_database",
+          "reporting_schema",
+          "source_database",
+          "source_schema",
+          "temp_database",
+          "temp_schema"
+        ],
+        "properties": {
+          "opswise_dbt_user": {
+            "blueprint": "opswise_credential",
+            "dataset": {
+              "combinator": "and",
+              "rules": [
+                {
+                  "operator": "contains",
+                  "property": "$title",
+                  "value": "dbt"
+                },
+                {
+                  "operator": "contains",
+                  "property": "environment",
+                  "value": "Development"
+                },
+                {
+                  "operator": "containsAny",
+                  "property": "$team",
+                  "value": {
+                    "jqQuery": ".user.team"
+                  }
+                }
+              ]
+            },
+            "default": {
+              "jqQuery": ".entity.relations.dev_opswise_credential"
+            },
+            "format": "entity",
+            "icon": "DefaultProperty",
+            "title": "Non-prod Opswise dbt user",
+            "type": "string"
+          },
+          "reporting_database": {
+            "blueprint": "dbt_database",
+            "dataset": {
+              "combinator": "and",
+              "rules": [
+                {
+                  "blueprint": "dbt_schema",
+                  "direction": "downstream",
+                  "operator": "relatedTo",
+                  "value": {
+                    "jqQuery": ".entity.properties.destination_schema"
+                  }
+                },
+                {
+                  "operator": "=",
+                  "property": "dbt_instance_identifier",
+                  "value": {
+                    "jqQuery": ".form.source_database.properties.dbt_instance_identifier"
+                  }
+                },
+                {
+                  "operator": "=",
+                  "property": "type",
+                  "value": "destination"
+                }
+              ]
+            },
+            "format": "entity",
+            "icon": "DefaultProperty",
+            "title": "Reporting Database",
+            "type": "string"
+          },
+          "reporting_schema": {
+            "default": {
+              "jqQuery": ".entity.properties.destination_schema"
+            },
+            "title": "Reporting Schema",
+            "type": "string",
+            "visible": false
+          },
+          "source_database": {
+            "blueprint": "dbt_database",
+            "dataset": {
+              "combinator": "and",
+              "rules": [
+                {
+                  "blueprint": "dbt_schema",
+                  "direction": "downstream",
+                  "operator": "relatedTo",
+                  "value": {
+                    "jqQuery": ".entity.properties.source_schema"
+                  }
+                },
+                {
+                  "operator": "=",
+                  "property": "type",
+                  "value": "source"
+                },
+                {
+                  "operator": "=",
+                  "property": "user",
+                  "value": {
+                    "jqQuery": ".form.opswise_dbt_user.properties.runtime_user | ascii_downcase"
+                  }
+                }
+              ]
+            },
+            "format": "entity",
+            "icon": "DefaultProperty",
+            "title": "Source Database",
+            "type": "string"
+          },
+          "source_schema": {
+            "default": {
+              "jqQuery": ".entity.properties.source_schema"
+            },
+            "title": "Source Schema",
+            "type": "string",
+            "visible": false
+          },
+          "temp_database": {
+            "blueprint": "dbt_database",
+            "dataset": {
+              "combinator": "and",
+              "rules": [
+                {
+                  "blueprint": "dbt_schema",
+                  "direction": "downstream",
+                  "operator": "relatedTo",
+                  "value": {
+                    "jqQuery": ".entity.properties.temp_schema"
+                  }
+                },
+                {
+                  "operator": "=",
+                  "property": "dbt_instance_identifier",
+                  "value": {
+                    "jqQuery": ".form.source_database.properties.dbt_instance_identifier"
+                  }
+                },
+                {
+                  "operator": "=",
+                  "property": "type",
+                  "value": "temp"
+                }
+              ]
+            },
+            "format": "entity",
+            "icon": "DefaultProperty",
+            "title": "Temp Database",
+            "type": "string"
+          },
+          "temp_schema": {
+            "default": {
+              "jqQuery": ".entity.properties.temp_schema"
+            },
+            "title": "Temp Schema",
+            "type": "string",
+            "visible": false
+          }
+        },
+        "required": [
+          "opswise_dbt_user",
+          "reporting_database",
+          "reporting_schema",
+          "source_database",
+          "source_schema",
+          "temp_database",
+          "temp_schema"
+        ]
+      }
+    }
+  },
+  {
+    "description": "Update an existing dbt repository to point to a specific set of databases for your local and dev environments. If the database that you wish to use is not listed below, you might need to first <a href=\"https://federatedinsurance.service-now.com/sp?id=sc_cat_item&table=sc_cat_item&sys_id=612570ed1b130a106975dc25cc4bcb29&searchTerm=create%20new%20database\" target=\"_blank\">request a new database</a> or <a href=\"https://federatedinsurance.service-now.com/sp?id=sc_cat_item&table=sc_cat_item&sys_id=086e3cec1ba04290102311b6bc4bcb9f&recordUrl=com.glideapp.servicecatalog_cat_item_view.do%3Fv%3D1&sysparm_id=086e3cec1ba04290102311b6bc4bcb9f\" target=\"_blank\">update an existing database to be accessed via dbt</a>.",
+    "icon": "DBT",
+    "identifier": "point_my_dbt_project_to_a_dev_db",
+    "invocationMethod": {
+      "org": "fedins",
+      "payload": {
+        "db_context": {
+          "destinationDb": "{{ .inputs.reporting_database.properties.name }}",
+          "destinationSchema": "{{ .inputs.reporting_schema.properties.name }}",
+          "env": "dev",
+          "instance": "{{ .inputs.instance.properties.name }}",
+          "sourceDb": "{{ .inputs.source_database.properties.name }}",
+          "sourceSchema": "{{ .inputs.source_schema.properties.name }}",
+          "tempDb": "{{ .inputs.temp_database.properties.name }}",
+          "tempSchema": "{{ .inputs.temp_schema }}"
+        },
+        "opwise_credential_identifier": "{{ .inputs.opswise_dbt_user.identifier }}",
+        "port_context": {
+          "entity": {
+            "blueprint": "{{ .entity.blueprint }}",
+            "createdAt": "{{ .entity.createdAt }}",
+            "createdBy": "{{ .entity.createdBy }}",
+            "identifier": "{{ .entity.identifier }}",
+            "properties": "{{ .entity.properties }}",
+            "relations": {
+              "dev_opswise_credential": "{{ .entity.relations.dev_opswise_credential }}",
+              "related_repository": "{{ .entity.relations.related_repository }}",
+              "related_repository_name": "{{ .entity.relations.related_repository | split(\"/\") | last }}"
+            },
+            "team": "{{ .entity.team }}",
+            "title": "{{ .entity.title }}",
+            "updatedAt": "{{ .entity.updatedAt }}",
+            "updatedBy": "{{ .entity.updatedBy }}"
+          },
+          "env": "dev",
+          "runId": "{{ .run.id }}"
+        }
+      },
+      "type": "AZURE_DEVOPS",
+      "webhook": "port_dev_dbtlinkdb_webhook"
+    },
+    "requiredApproval": false,
+    "title": "Point my dbt project to a dev DB",
+    "trigger": {
+      "blueprintIdentifier": "dbt_project",
+      "condition": {
+        "combinator": "and",
+        "rules": [
+          {
+            "operator": "!=",
+            "property": "dev_db",
+            "value": true
+          }
+        ],
+        "type": "SEARCH"
+      },
+      "operation": "DAY-2",
+      "type": "self-service",
+      "userInputs": {
+        "order": [
+          "opswise_dbt_user",
+          "reporting_database",
+          "reporting_schema",
+          "source_database",
+          "source_schema",
+          "temp_database",
+          "temp_schema"
+        ],
+        "properties": {
+          "opswise_dbt_user": {
+            "blueprint": "opswise_credential",
+            "dataset": {
+              "combinator": "and",
+              "rules": [
+                {
+                  "operator": "contains",
+                  "property": "$title",
+                  "value": "dbt"
+                },
+                {
+                  "operator": "contains",
+                  "property": "environment",
+                  "value": "Development"
+                },
+                {
+                  "operator": "containsAny",
+                  "property": "$team",
+                  "value": {
+                    "jqQuery": ".user.team"
+                  }
+                }
+              ]
+            },
+            "default": {
+              "jqQuery": ".entity.relations.dev_opswise_credential"
+            },
+            "format": "entity",
+            "icon": "DefaultProperty",
+            "title": "Non-prod Opswise dbt user",
+            "type": "string"
+          },
+          "reporting_database": {
+            "blueprint": "dbt_database",
+            "dataset": {
+              "combinator": "and",
+              "rules": [
+                {
+                  "operator": "=",
+                  "property": "dbt_instance_identifier",
+                  "value": {
+                    "jqQuery": ".form.source_database.properties.dbt_instance_identifier"
+                  }
+                },
+                {
+                  "operator": "=",
+                  "property": "type",
+                  "value": "destination"
+                }
+              ]
+            },
+            "format": "entity",
+            "icon": "DefaultProperty",
+            "title": "Reporting Database",
+            "type": "string"
+          },
+          "reporting_schema": {
+            "blueprint": "dbt_schema",
+            "dataset": {
+              "combinator": "and",
+              "rules": [
+                {
+                  "blueprint": "dbt_database",
+                  "operator": "relatedTo",
+                  "value": {
+                    "jqQuery": ".form.reporting_database.identifier"
+                  }
+                }
+              ]
+            },
+            "format": "entity",
+            "icon": "DefaultProperty",
+            "title": "Reporting Schema",
+            "type": "string"
+          },
+          "source_database": {
+            "blueprint": "dbt_database",
+            "dataset": {
+              "combinator": "and",
+              "rules": [
+                {
+                  "operator": "=",
+                  "property": "type",
+                  "value": "source"
+                },
+                {
+                  "operator": "=",
+                  "property": "user",
+                  "value": {
+                    "jqQuery": ".form.opswise_dbt_user.properties.runtime_user | ascii_downcase"
+                  }
+                }
+              ]
+            },
+            "format": "entity",
+            "icon": "DefaultProperty",
+            "title": "Source Database",
+            "type": "string"
+          },
+          "source_schema": {
+            "blueprint": "dbt_schema",
+            "dataset": {
+              "combinator": "and",
+              "rules": [
+                {
+                  "blueprint": "dbt_database",
+                  "operator": "relatedTo",
+                  "value": {
+                    "jqQuery": ".form.source_database.identifier"
+                  }
+                }
+              ]
+            },
+            "format": "entity",
+            "icon": "DefaultProperty",
+            "title": "Source Schema",
+            "type": "string"
+          },
+          "temp_database": {
+            "blueprint": "dbt_database",
+            "dataset": {
+              "combinator": "and",
+              "rules": [
+                {
+                  "operator": "=",
+                  "property": "dbt_instance_identifier",
+                  "value": {
+                    "jqQuery": ".form.source_database.properties.dbt_instance_identifier"
+                  }
+                },
+                {
+                  "operator": "=",
+                  "property": "type",
+                  "value": "temp"
+                }
+              ]
+            },
+            "format": "entity",
+            "icon": "DefaultProperty",
+            "title": "Temp Database",
+            "type": "string"
+          },
+          "temp_schema": {
+            "default": "dbo",
+            "title": "Temp Schema",
+            "type": "string",
+            "visible": false
+          }
+        },
+        "required": [
+          "opswise_dbt_user",
+          "reporting_database",
+          "reporting_schema",
+          "source_database",
+          "source_schema",
+          "temp_database",
+          "temp_schema"
+        ]
+      }
+    }
+  },
+  {
+    "description": "Update an announcement to be visible on the landing page",
+    "identifier": "publish_announcement",
+    "invocationMethod": {
+      "blueprintIdentifier": "announcement",
+      "mapping": {
+        "identifier": "{{.entity.identifier}}",
+        "properties": {
+          "published": true
+        }
+      },
+      "type": "UPSERT_ENTITY"
+    },
+    "requiredApproval": false,
+    "title": "Publish announcement",
+    "trigger": {
+      "blueprintIdentifier": "announcement",
+      "condition": {
+        "combinator": "and",
+        "rules": [
+          {
+            "operator": "=",
+            "property": "published",
+            "value": false
+          }
+        ],
+        "type": "SEARCH"
+      },
+      "operation": "DAY-2",
+      "type": "self-service",
+      "userInputs": {
+        "order": [],
+        "properties": {},
+        "required": []
+      }
+    }
+  },
+  {
+    "identifier": "read_announcement",
+    "invocationMethod": {
+      "blueprintIdentifier": "announcement",
+      "mapping": {
+        "identifier": "{{.entity.identifier}}",
+        "properties": {
+          "read_users": "{{.entity.properties.read_users + [.trigger.by.user.email]}}"
+        }
+      },
+      "type": "UPSERT_ENTITY"
+    },
+    "publish": true,
+    "requiredApproval": false,
+    "title": "Mark as read",
+    "trigger": {
+      "blueprintIdentifier": "announcement",
+      "operation": "DAY-2",
+      "type": "self-service",
+      "userInputs": {
+        "properties": {},
+        "required": []
+      }
+    }
+  },
+  {
+    "description": "This action opens a feature request on your behalf for a new self-service action associated with Azure DevOps work items",
+    "icon": "AzureDevops",
+    "identifier": "request_a_new_self_service_action_ado_work_item",
+    "invocationMethod": {
+      "blueprintIdentifier": "portal_use_case_request",
+      "mapping": {
+        "identifier": "ado-work-item-ssa-{{.inputs.what_action_would_you_like | gsub(\" \";\"-\") | gsub(\"[^A-Za-z0-9@_.+:\\/=-]\"; \"\") | ascii_downcase }}",
+        "properties": {
+          "description": "{{.inputs.what_action_would_you_like}}",
+          "improving_metric": [
+            "Convenience/ease of use"
+          ],
+          "page_url": "/my_stuff",
+          "portal_pillar": "Self-service action",
+          "priority": "2 - Important",
+          "requestor": "{{.trigger.by.user.email }}"
+        },
+        "title": "Request new ADO Work Item Self-Service Action: {{.inputs.what_action_would_you_like}}"
+      },
+      "type": "UPSERT_ENTITY"
+    },
+    "requiredApproval": false,
+    "title": "Request a new action",
+    "trigger": {
+      "blueprintIdentifier": "workItem",
+      "operation": "DAY-2",
+      "type": "self-service",
+      "userInputs": {
+        "order": [
+          "what_action_would_you_like"
+        ],
+        "properties": {
+          "what_action_would_you_like": {
+            "icon": "Bulb",
+            "title": "What action(s) would you like to be able to take on this work item?",
+            "type": "string"
+          }
+        },
+        "required": [
+          "what_action_would_you_like"
+        ]
+      }
+    }
+  },
+  {
+    "description": "Takes you to the Pull Request Review interface",
+    "identifier": "review",
+    "invocationMethod": {
+      "agent": false,
+      "body": {
+        "{{ spreadValue() }}": "{{ .inputs }}",
+        "port_context": {
+          "blueprint": "{{ .action.blueprint }}",
+          "entity": "{{ .entity }}",
+          "runId": "{{ .run.id }}"
+        }
+      },
+      "headers": {
+        "RUN_ID": "{{ .run.id }}"
+      },
+      "method": "POST",
+      "synchronized": false,
+      "type": "WEBHOOK",
+      "url": "https://example.com"
+    },
+    "publish": true,
+    "requiredApproval": false,
+    "title": "Review",
+    "trigger": {
+      "operation": "DAY-2",
+      "type": "self-service",
+      "userInputs": {
+        "properties": {},
+        "required": []
+      }
+    }
+  },
+  {
+    "description": "Marks an orphaned NexusIQ project as \"reviewed\"",
+    "identifier": "review_orphaned_nexus_iq_project",
+    "invocationMethod": {
+      "blueprintIdentifier": "nexus_iq_report",
+      "mapping": {
+        "identifier": "{{.entity.identifier}}",
+        "properties": {
+          "is_orphan_reviewed": true
+        }
+      },
+      "type": "UPSERT_ENTITY"
+    },
+    "requiredApproval": false,
+    "title": "Review Orphaned NexusIQ Project",
+    "trigger": {
+      "blueprintIdentifier": "nexus_iq_report",
+      "condition": {
+        "combinator": "and",
+        "rules": [
+          {
+            "operator": "=",
+            "property": "is_orphan_reviewed",
+            "value": false
+          },
+          {
+            "operator": "isEmpty",
+            "property": "team"
+          }
+        ],
+        "type": "SEARCH"
+      },
+      "operation": "DAY-2",
+      "type": "self-service",
+      "userInputs": {
+        "order": [],
+        "properties": {},
+        "required": []
+      }
+    }
+  },
+  {
+    "description": "Marks an Orphaned SonarQube project as \"reviewed\"",
+    "identifier": "review_orphaned_sonar_qube_project",
+    "invocationMethod": {
+      "blueprintIdentifier": "sonarQubeProject",
+      "mapping": {
+        "identifier": "{{.entity.identifier}}",
+        "properties": {
+          "is_orphan_reviewed": true
+        }
+      },
+      "type": "UPSERT_ENTITY"
+    },
+    "requiredApproval": false,
+    "title": "Review Orphaned SonarQube Project",
+    "trigger": {
+      "blueprintIdentifier": "sonarQubeProject",
+      "condition": {
+        "combinator": "and",
+        "rules": [
+          {
+            "operator": "=",
+            "property": "is_orphan_reviewed",
+            "value": false
+          },
+          {
+            "operator": "isEmpty",
+            "property": "team"
+          }
+        ],
+        "type": "SEARCH"
+      },
+      "operation": "DAY-2",
+      "type": "self-service",
+      "userInputs": {
+        "order": [],
+        "properties": {},
+        "required": []
+      }
+    }
+  },
+  {
+    "description": "Assign this incident to myself",
+    "icon": "Servicenow",
+    "identifier": "servicenow_assign_to_me",
+    "invocationMethod": {
+      "payload": {
+        "{{ spreadValue() }}": "{{ .inputs }}",
+        "port_context": {
+          "action_id": "{{ .action.identifier }}",
+          "blueprint_id": "{{ .action.blueprint }}",
+          "entity_id": "{{ .entity.identifier }}",
+          "run_id": "{{ .run.id }}",
+          "trigger_by_email": "{{ .trigger.by.user.email }}"
+        }
+      },
+      "type": "KAFKA"
+    },
+    "requiredApproval": false,
+    "title": "Assign to Me",
+    "trigger": {
+      "blueprintIdentifier": "servicenowIncident",
+      "condition": {
+        "combinator": "and",
+        "rules": [
+          {
+            "operator": "!=",
+            "property": "assigned_to",
+            "value": "{{getUserEmail()}}"
+          }
+        ],
+        "type": "SEARCH"
+      },
+      "operation": "DAY-2",
+      "type": "self-service",
+      "userInputs": {
+        "order": [],
+        "properties": {
+          "me": {
+            "default": {
+              "jqQuery": "[.user] | tojson"
+            },
+            "title": "me",
+            "type": "string"
+          }
+        },
+        "required": []
+      }
+    }
+  },
+  {
+    "description": "Assign this incident to the selected user",
+    "icon": "Servicenow",
+    "identifier": "servicenow_assign_user",
+    "invocationMethod": {
+      "payload": {
+        "{{ spreadValue() }}": "{{ .inputs }}",
+        "port_context": {
+          "action_id": "{{ .action.identifier }}",
+          "blueprint_id": "{{ .action.blueprint }}",
+          "entity_id": "{{ .entity.identifier }}",
+          "run_id": "{{ .run.id }}",
+          "trigger_by_email": "{{ .trigger.by.user.email }}"
+        }
+      },
+      "type": "KAFKA"
+    },
+    "requiredApproval": false,
+    "title": "Assign User",
+    "trigger": {
+      "blueprintIdentifier": "servicenowIncident",
+      "operation": "DAY-2",
+      "type": "self-service",
+      "userInputs": {
+        "order": [],
+        "properties": {
+          "assigned_to": {
+            "blueprint": "service_now_user",
+            "dataset": {
+              "combinator": "and",
+              "rules": [
+                {
+                  "blueprint": "servicenowGroup",
+                  "operator": "relatedTo",
+                  "value": {
+                    "jqQuery": ".entity.properties.assignment_group_team_name"
+                  }
+                }
+              ]
+            },
+            "default": {
+              "jqQuery": ".entity.properties.assigned_service_now_user"
+            },
+            "format": "entity",
+            "sort": {
+              "order": "ASC",
+              "property": "$title"
+            },
+            "title": "Assigned To",
+            "type": "string"
+          }
+        },
+        "required": [
+          "assigned_to"
+        ]
+      }
+    }
+  },
+  {
+    "description": "Change the assignment group of an incident",
+    "icon": "Servicenow",
+    "identifier": "servicenow_change_assignment_group",
+    "invocationMethod": {
+      "payload": {
+        "{{ spreadValue() }}": "{{ .inputs }}",
+        "port_context": {
+          "action_id": "{{ .action.identifier }}",
+          "blueprint_id": "{{ .action.blueprint }}",
+          "entity_id": "{{ .entity.identifier }}",
+          "run_id": "{{ .run.id }}",
+          "trigger_by_email": "{{ .trigger.by.user.email }}"
+        }
+      },
+      "type": "KAFKA"
+    },
+    "requiredApproval": false,
+    "title": "Change Assignment Group",
+    "trigger": {
+      "blueprintIdentifier": "servicenowIncident",
+      "operation": "DAY-2",
+      "type": "self-service",
+      "userInputs": {
+        "order": [
+          "assignment_group"
+        ],
+        "properties": {
+          "assignment_group": {
+            "blueprint": "servicenowGroup",
+            "dataset": {
+              "combinator": "and",
+              "rules": [
+                {
+                  "operator": "=",
+                  "property": "isActive",
+                  "value": true
+                }
+              ]
+            },
+            "default": {
+              "jqQuery": ".entity.properties.assignment_group_team_name"
+            },
+            "format": "entity",
+            "icon": "DefaultProperty",
+            "sort": {
+              "order": "ASC",
+              "property": "$title"
+            },
+            "title": "Assignment Group",
+            "type": "string"
+          }
+        },
+        "required": [
+          "assignment_group"
+        ]
+      }
+    }
+  },
+  {
+    "icon": "Servicenow",
+    "identifier": "servicenow_incident_add_comment",
+    "invocationMethod": {
+      "payload": {
+        "{{ spreadValue() }}": "{{ .inputs }}",
+        "port_context": {
+          "action_id": "{{ .action.identifier }}",
+          "blueprint_id": "{{ .action.blueprint }}",
+          "entity_id": "{{ .entity.identifier }}",
+          "run_id": "{{ .run.id }}",
+          "trigger_by_email": "{{ .trigger.by.user.email }}"
+        }
+      },
+      "type": "KAFKA"
+    },
+    "requiredApproval": false,
+    "title": "Add Comment",
+    "trigger": {
+      "blueprintIdentifier": "servicenowIncident",
+      "operation": "DAY-2",
+      "type": "self-service",
+      "userInputs": {
+        "order": [
+          "comment"
+        ],
+        "properties": {
+          "comment": {
+            "title": "Comment",
+            "type": "string"
+          }
+        },
+        "required": [
+          "comment"
+        ]
+      }
+    }
+  },
+  {
+    "icon": "Servicenow",
+    "identifier": "servicenow_incident_add_note",
+    "invocationMethod": {
+      "payload": {
+        "{{ spreadValue() }}": "{{ .inputs }}",
+        "port_context": {
+          "action_id": "{{ .action.identifier }}",
+          "blueprint_id": "{{ .action.blueprint }}",
+          "entity_id": "{{ .entity.identifier }}",
+          "run_id": "{{ .run.id }}",
+          "trigger_by_email": "{{ .trigger.by.user.email }}"
+        }
+      },
+      "type": "KAFKA"
+    },
+    "requiredApproval": false,
+    "title": "Add Work Note",
+    "trigger": {
+      "blueprintIdentifier": "servicenowIncident",
+      "operation": "DAY-2",
+      "type": "self-service",
+      "userInputs": {
+        "order": [
+          "work_note"
+        ],
+        "properties": {
+          "work_note": {
+            "icon": "DefaultProperty",
+            "title": "Note",
+            "type": "string"
+          }
+        },
+        "required": [
+          "work_note"
+        ]
+      }
+    }
+  },
+  {
+    "icon": "Servicenow",
+    "identifier": "servicenow_resolve_incident",
+    "invocationMethod": {
+      "payload": {
+        "{{ spreadValue() }}": "{{ .inputs }}",
+        "port_context": {
+          "action_id": "{{ .action.identifier }}",
+          "blueprint_id": "{{ .action.blueprint }}",
+          "entity_id": "{{ .entity.identifier }}",
+          "run_id": "{{ .run.id }}",
+          "trigger_by_email": "{{ .trigger.by.user.email }}"
+        }
+      },
+      "type": "KAFKA"
+    },
+    "requiredApproval": false,
+    "title": "Resolve Incident",
+    "trigger": {
+      "blueprintIdentifier": "servicenowIncident",
+      "operation": "DAY-2",
+      "type": "self-service",
+      "userInputs": {
+        "order": [
+          "resolution_code"
+        ],
+        "properties": {
+          "resolution_code": {
+            "enum": [
+              "Closed/Resolved by Caller",
+              "Not Solved (Not Reproducible)",
+              "Not Solved (Too Costly)",
+              "Solved (Permanently)",
+              "Solved (Work Around)",
+              "Solved Remotely (Permanently)",
+              "Solved Remotely (Work Around)"
+            ],
+            "enumColors": {
+              "Closed/Resolved by Caller": "lightGray",
+              "Not Solved (Not Reproducible)": "lightGray",
+              "Not Solved (Too Costly)": "lightGray",
+              "Solved (Permanently)": "lightGray",
+              "Solved (Work Around)": "lightGray",
+              "Solved Remotely (Permanently)": "lightGray",
+              "Solved Remotely (Work Around)": "lightGray"
+            },
+            "title": "Resolution Code",
+            "type": "string"
+          },
+          "resolution_notes": {
+            "title": "Resolution Notes",
+            "type": "string"
+          }
+        },
+        "required": [
+          "resolution_code",
+          "resolution_notes"
+        ]
+      }
+    }
+  },
+  {
+    "description": "This request is currently pending some work by Port",
+    "icon": "Port",
+    "identifier": "update_to_pending_vendor",
+    "invocationMethod": {
+      "blueprintIdentifier": "portal_use_case_request",
+      "mapping": {
+        "identifier": "{{.entity.identifier}}",
+        "properties": {
+          "status": "Pending Vendor",
+          "vendor_request": "{{.inputs.vendor_request_url}}"
+        }
+      },
+      "type": "UPSERT_ENTITY"
+    },
+    "requiredApproval": false,
+    "title": "Update to Pending Vendor",
+    "trigger": {
+      "blueprintIdentifier": "portal_use_case_request",
+      "operation": "DAY-2",
+      "type": "self-service",
+      "userInputs": {
+        "order": [
+          "vendor_request_url"
+        ],
+        "properties": {
+          "vendor_request_url": {
+            "default": {
+              "jqQuery": ".entity.properties.vendor_request"
+            },
+            "format": "url",
+            "icon": "Port",
+            "title": "Vendor Request",
+            "type": "string"
+          }
+        },
+        "required": []
+      }
+    }
+  },
+  {
+    "description": "This action is used to upvote a specific piece of feedback, and add yourself as an interested party",
+    "icon": "Updates",
+    "identifier": "upvote_feedback",
+    "invocationMethod": {
+      "blueprintIdentifier": "portal_use_case_request",
+      "mapping": {
+        "identifier": "{{.entity.identifier}}",
+        "properties": {
+          "comments": "{{.entity.properties.comments + ([.inputs.additional_comments] // [])}}"
+        },
+        "relations": {
+          "interested_parties": "{{.entity.relations.interested_parties + [(.trigger.by.user.email)]}}"
+        }
+      },
+      "type": "UPSERT_ENTITY"
+    },
+    "requiredApproval": false,
+    "title": "Upvote feedback",
+    "trigger": {
+      "blueprintIdentifier": "portal_use_case_request",
+      "operation": "DAY-2",
+      "type": "self-service",
+      "userInputs": {
+        "properties": {
+          "additional_comments": {
+            "title": "Additional comments",
+            "type": "string"
+          }
+        },
+        "required": []
+      }
+    }
+  }
+]

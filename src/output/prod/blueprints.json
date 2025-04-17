@@ -1,0 +1,4700 @@
+[
+  {
+    "aggregationProperties": {
+      "size": {
+        "calculationSpec": {
+          "calculationBy": "entities",
+          "func": "count"
+        },
+        "target": "_user",
+        "title": "Size",
+        "type": "number"
+      }
+    },
+    "calculationProperties": {},
+    "description": "This blueprint is synced with Port teams",
+    "icon": "Team",
+    "identifier": "_team",
+    "mirrorProperties": {},
+    "relations": {},
+    "schema": {
+      "properties": {
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "type": {
+          "default": "SSO",
+          "enum": [
+            "ServiceNow",
+            "SSO"
+          ],
+          "enumColors": {
+            "ServiceNow": "lightGray",
+            "SSO": "lightGray"
+          },
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "title": "Team"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {
+      "chat_via_teams": {
+        "calculation": "\"https://teams.microsoft.com/l/chat/0/0?users=\" + .identifier",
+        "format": "url",
+        "icon": "Chat",
+        "title": "Chat via Teams",
+        "type": "string"
+      }
+    },
+    "description": "This blueprint is synced with active or invited Port users",
+    "icon": "User",
+    "identifier": "_user",
+    "mirrorProperties": {},
+    "ownership": {
+      "title": "Teams",
+      "type": "Direct"
+    },
+    "relations": {},
+    "schema": {
+      "properties": {
+        "moderated_blueprints": {
+          "items": {
+            "format": "blueprints",
+            "type": "string"
+          },
+          "title": "Moderated Blueprints",
+          "type": "array"
+        },
+        "port_role": {
+          "default": "Member",
+          "enum": [
+            "Admin",
+            "Member",
+            "Moderator"
+          ],
+          "enumColors": {
+            "Admin": "turquoise",
+            "Member": "lightGray",
+            "Moderator": "purple"
+          },
+          "icon": "DefaultProperty",
+          "title": "Port Role",
+          "type": "string"
+        },
+        "port_type": {
+          "default": "Standard",
+          "enum": [
+            "Service Account",
+            "Standard"
+          ],
+          "enumColors": {
+            "Service Account": "pink",
+            "Standard": "blue"
+          },
+          "icon": "DefaultProperty",
+          "title": "Port Type",
+          "type": "string"
+        },
+        "status": {
+          "default": "Disabled",
+          "enum": [
+            "Active",
+            "Disabled",
+            "Invited"
+          ],
+          "enumColors": {
+            "Active": "green",
+            "Disabled": "red",
+            "Invited": "lightGray"
+          },
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "port_role",
+        "port_type",
+        "status"
+      ]
+    },
+    "title": "User"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "description": "Azure DevOps Team",
+    "icon": "AzureDevops",
+    "identifier": "ado_team",
+    "mirrorProperties": {},
+    "relations": {
+      "project": {
+        "description": "Project",
+        "many": false,
+        "required": false,
+        "target": "project",
+        "title": "Project"
+      }
+    },
+    "schema": {
+      "properties": {
+        "name": {
+          "description": "Team Name",
+          "title": "Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "title": "ADO Team"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "description": "Relate ADO Team to AD Group",
+    "icon": "Merge",
+    "identifier": "ado_team_to_ad_group",
+    "mirrorProperties": {},
+    "ownership": {
+      "type": "Direct"
+    },
+    "relations": {},
+    "schema": {
+      "properties": {
+        "ad_group_name": {
+          "description": "Active Directory Group Name",
+          "title": "AD Group Name",
+          "type": "string"
+        },
+        "ado_team_name": {
+          "description": "Azure Dev Ops Team Name",
+          "icon": "DefaultProperty",
+          "title": "ADO Team Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "ad_group_name",
+        "ado_team_name"
+      ]
+    },
+    "title": "ADOTeamToADGroup"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "icon": "Microservice",
+    "identifier": "announcement",
+    "mirrorProperties": {},
+    "relations": {},
+    "schema": {
+      "properties": {
+        "message": {
+          "default": "\ntitle: \"Announcement Title Here\"\ndate: \"Date Here\"\n---\n\n# Important Update\n\nHello everyone,\n\nWe're excited to share that **[topic or key update]** will be happening on **[specific date]**. Here’s what you need to know:\n\n- **Detail 1:** Brief explanation or impact of the update.\n- **Detail 2:** Any necessary steps or actions users need to take.\n- **Detail 3:** Additional resources or contact info for further questions.\n\nPlease ensure you read and understand the changes. If you have any questions, feel free to reach out or comment below.\n\nThank you,\n**[Your Team or Name]**\n",
+          "format": "markdown",
+          "title": "Message",
+          "type": "string"
+        },
+        "published": {
+          "default": false,
+          "description": "Should this announcement be visible to users?",
+          "title": "Published",
+          "type": "boolean"
+        },
+        "read_users": {
+          "default": [],
+          "icon": "DefaultProperty",
+          "items": {
+            "format": "user",
+            "type": "string"
+          },
+          "title": "Users who read it",
+          "type": "array"
+        }
+      },
+      "required": [
+        "published"
+      ]
+    },
+    "title": "Announcement"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "icon": "AzureDevops",
+    "identifier": "azure_dev_ops_iteration",
+    "mirrorProperties": {},
+    "relations": {},
+    "schema": {
+      "properties": {
+        "alternative_path": {
+          "title": "Alternative Path",
+          "type": "string"
+        },
+        "finish_date": {
+          "format": "date-time",
+          "title": "Finish Date",
+          "type": "string"
+        },
+        "guid": {
+          "title": "GUID",
+          "type": "string"
+        },
+        "has_children": {
+          "title": "Has Children",
+          "type": "boolean"
+        },
+        "id": {
+          "title": "Id",
+          "type": "number"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "start_date": {
+          "format": "date-time",
+          "title": "Start Date",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "title": "Azure DevOps Iteration"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {
+      "url": {
+        "calculation": "\"https://dev.azure.com/fedins/\" +  .properties.project_title + \"/_git/\" + .relations.repository.title + \"/pullrequest/\" + .properties.pull_request_id",
+        "format": "url",
+        "icon": "AzureDevops",
+        "title": "Open in ADO",
+        "type": "string"
+      }
+    },
+    "description": "Azure DevOps Pull Request",
+    "icon": "AzureDevops",
+    "identifier": "azure_dev_ops_pull_request",
+    "mirrorProperties": {
+      "project_title": {
+        "path": "repository.project.$title",
+        "title": "Project Title"
+      }
+    },
+    "ownership": {
+      "path": "repository.ado_repo_to_team",
+      "type": "Inherited"
+    },
+    "relations": {
+      "repository": {
+        "description": "Repository",
+        "many": false,
+        "required": false,
+        "target": "service",
+        "title": "Repository"
+      }
+    },
+    "schema": {
+      "properties": {
+        "created_by": {
+          "format": "user",
+          "icon": "DefaultProperty",
+          "title": "Created By",
+          "type": "string"
+        },
+        "merge_status": {
+          "description": "Merge Status of the Pull Request",
+          "title": "Merge Status",
+          "type": "string"
+        },
+        "pull_request_id": {
+          "description": "The actual pull request identifier in Azure DevOps",
+          "icon": "DefaultProperty",
+          "title": "Pull Request Id",
+          "type": "string"
+        },
+        "reviewers": {
+          "items": {
+            "format": "user",
+            "type": "string"
+          },
+          "title": "Reviewers",
+          "type": "array"
+        },
+        "source_branch": {
+          "description": "Source Branch for Pull Request",
+          "title": "Source Branch",
+          "type": "string"
+        },
+        "status": {
+          "description": "Status of the pull request",
+          "enum": [
+            "abandoned",
+            "active",
+            "completed",
+            "notSet"
+          ],
+          "enumColors": {
+            "abandoned": "yellow",
+            "active": "green",
+            "completed": "red",
+            "notSet": "lightGray"
+          },
+          "icon": "DefaultProperty",
+          "title": "Status",
+          "type": "string"
+        },
+        "target_branch": {
+          "description": "Target branch for Pull Request",
+          "title": "Target Branch",
+          "type": "string"
+        }
+      },
+      "required": [
+        "pull_request_id",
+        "source_branch",
+        "target_branch"
+      ]
+    },
+    "title": "Azure DevOps Pull Request"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "icon": "AzureDevops",
+    "identifier": "azureDevopsPipeline",
+    "mirrorProperties": {},
+    "relations": {
+      "project": {
+        "many": false,
+        "required": true,
+        "target": "project",
+        "title": "Project"
+      }
+    },
+    "schema": {
+      "properties": {
+        "folder": {
+          "title": "Folder",
+          "type": "string"
+        },
+        "revision": {
+          "title": "Revision",
+          "type": "number"
+        },
+        "url": {
+          "format": "url",
+          "title": "URL",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "title": "Pipeline"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "icon": "AzureDevops",
+    "identifier": "azureDevopsTeam",
+    "mirrorProperties": {},
+    "relations": {
+      "project": {
+        "many": false,
+        "required": true,
+        "target": "project",
+        "title": "Project"
+      }
+    },
+    "schema": {
+      "properties": {
+        "description": {
+          "icon": "DefaultProperty",
+          "title": "Description",
+          "type": "string"
+        },
+        "url": {
+          "format": "url",
+          "icon": "DefaultProperty",
+          "title": "URL",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "title": "Azure Devops Team"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "icon": "AzureDevops",
+    "identifier": "board",
+    "mirrorProperties": {},
+    "relations": {
+      "project": {
+        "many": false,
+        "required": true,
+        "target": "project",
+        "title": "Project"
+      }
+    },
+    "schema": {
+      "properties": {
+        "link": {
+          "description": "Link to the board in Azure DevOps",
+          "format": "url",
+          "icon": "AzureDevops",
+          "title": "Link",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "title": "Board"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "icon": "AzureDevops",
+    "identifier": "column",
+    "mirrorProperties": {},
+    "relations": {
+      "board": {
+        "many": false,
+        "required": true,
+        "target": "board",
+        "title": "board"
+      }
+    },
+    "schema": {
+      "properties": {},
+      "required": []
+    },
+    "title": "Column"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "icon": "Database",
+    "identifier": "dbt_database",
+    "mirrorProperties": {
+      "dbt_instance_identifier": {
+        "path": "instance.$identifier",
+        "title": "DBT Instance Identifier"
+      }
+    },
+    "relations": {
+      "instance": {
+        "many": false,
+        "required": false,
+        "target": "dbt_instance",
+        "title": "instance"
+      }
+    },
+    "schema": {
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "destination",
+            "source",
+            "temp"
+          ],
+          "enumColors": {
+            "destination": "lightGray",
+            "source": "lightGray",
+            "temp": "lightGray"
+          },
+          "icon": "DefaultProperty",
+          "title": "Type",
+          "type": "string"
+        },
+        "user": {
+          "icon": "DefaultProperty",
+          "title": "User",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "type",
+        "user"
+      ]
+    },
+    "title": "DBT Database"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "description": "DBT Destination Database Security",
+    "icon": "Database",
+    "identifier": "dbt_destinations",
+    "mirrorProperties": {},
+    "relations": {},
+    "schema": {
+      "properties": {
+        "database": {
+          "title": "Database",
+          "type": "string"
+        },
+        "development_database": {
+          "title": "Development Database",
+          "type": "string"
+        },
+        "instance": {
+          "title": "Instance",
+          "type": "string"
+        },
+        "schema": {
+          "title": "Schema",
+          "type": "string"
+        },
+        "user": {
+          "title": "User",
+          "type": "string"
+        }
+      },
+      "required": [
+        "database",
+        "development_database",
+        "instance",
+        "schema",
+        "user"
+      ]
+    },
+    "title": "DBT Destinations"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "icon": "Database",
+    "identifier": "dbt_instance",
+    "mirrorProperties": {},
+    "relations": {},
+    "schema": {
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "user": {
+          "title": "User",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "user"
+      ]
+    },
+    "title": "DBT Instance"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "description": "A blueprint for storing data/configuration for a dbt project",
+    "icon": "DBT",
+    "identifier": "dbt_project",
+    "mirrorProperties": {},
+    "relations": {
+      "dev_opswise_credential": {
+        "many": false,
+        "required": false,
+        "target": "opswise_credential",
+        "title": "Dev Opswise Credential"
+      },
+      "prod_opswise_credential": {
+        "many": false,
+        "required": false,
+        "target": "opswise_credential",
+        "title": "Prod Opswise Credential"
+      },
+      "related_repository": {
+        "description": "This is the repository for the dbt project",
+        "many": false,
+        "required": true,
+        "target": "service",
+        "title": "Related Repository"
+      }
+    },
+    "schema": {
+      "properties": {
+        "beta_db": {
+          "default": false,
+          "title": "Beta DB",
+          "type": "boolean"
+        },
+        "destination_schema": {
+          "icon": "DefaultProperty",
+          "title": "Destination Schema",
+          "type": "string"
+        },
+        "dev_db": {
+          "default": false,
+          "icon": "DefaultProperty",
+          "title": "Dev DB",
+          "type": "boolean"
+        },
+        "prod_db": {
+          "default": false,
+          "title": "Prod DB",
+          "type": "boolean"
+        },
+        "source_schema": {
+          "icon": "DefaultProperty",
+          "title": "Source Schema",
+          "type": "string"
+        },
+        "temp_schema": {
+          "icon": "DefaultProperty",
+          "title": "Temp Schema",
+          "type": "string"
+        }
+      },
+      "required": [
+        "dev_db"
+      ]
+    },
+    "title": "dbt project"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "icon": "Database",
+    "identifier": "dbt_schema",
+    "mirrorProperties": {},
+    "relations": {
+      "database": {
+        "many": false,
+        "required": true,
+        "target": "dbt_database",
+        "title": "database"
+      }
+    },
+    "schema": {
+      "properties": {
+        "name": {
+          "icon": "DefaultProperty",
+          "title": "Name",
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "destination",
+            "source",
+            "temp"
+          ],
+          "enumColors": {
+            "destination": "lightGray",
+            "source": "lightGray",
+            "temp": "lightGray"
+          },
+          "icon": "DefaultProperty",
+          "title": "Type",
+          "type": "string"
+        },
+        "user": {
+          "icon": "DefaultProperty",
+          "title": "User",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "user"
+      ]
+    },
+    "title": "DBT Schema"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "description": "DBT Temp Database Security",
+    "icon": "Database",
+    "identifier": "dbt_temp",
+    "mirrorProperties": {},
+    "relations": {},
+    "schema": {
+      "properties": {
+        "database": {
+          "title": "Database",
+          "type": "string"
+        },
+        "instance": {
+          "title": "Instance",
+          "type": "string"
+        },
+        "schema": {
+          "title": "Schema",
+          "type": "string"
+        },
+        "user": {
+          "title": "User",
+          "type": "string"
+        }
+      },
+      "required": [
+        "database",
+        "instance",
+        "schema",
+        "user"
+      ]
+    },
+    "title": "DBT Temp Databases"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "description": "This blueprint represents a Dynatrace Cloud Application entity",
+    "icon": "Dynatrace",
+    "identifier": "dynatraceCloudApplication",
+    "mirrorProperties": {},
+    "relations": {
+      "repository": {
+        "description": "Related Repository",
+        "many": false,
+        "required": false,
+        "target": "service",
+        "title": "Repository"
+      }
+    },
+    "schema": {
+      "properties": {
+        "dynatrace_entity_url": {
+          "description": "Link to entity in Dynatrace",
+          "format": "url",
+          "icon": "Dynatrace",
+          "title": "dynatraceEntityUrl",
+          "type": "string"
+        },
+        "firstSeen": {
+          "description": "The timestamp at which the entity was first seen, in UTC milliseconds.",
+          "format": "date-time",
+          "title": "First Seen",
+          "type": "string"
+        },
+        "from_relationships": {
+          "description": "A list of relationships where the entity occupies the FROM position",
+          "title": "From Relationships",
+          "type": "object"
+        },
+        "lastSeen": {
+          "description": "The timestamp at which the entity was last seen, in UTC milliseconds.",
+          "format": "date-time",
+          "title": "Last Seen",
+          "type": "string"
+        },
+        "management_zones": {
+          "description": "A set of management zones to which the entity belongs",
+          "title": "Management Zones",
+          "type": "array"
+        },
+        "properties": {
+          "description": "A list of additional properties of the entity",
+          "title": "Properties",
+          "type": "object"
+        },
+        "repo_name": {
+          "description": "ADO Repository Name",
+          "icon": "AzureDevops",
+          "title": "Repo Name",
+          "type": "string"
+        },
+        "security_role": {
+          "description": "OpenShift Security Role",
+          "icon": "RedhatOpenshift",
+          "title": "Security Role",
+          "type": "string"
+        },
+        "tags": {
+          "description": "A list of tags of the entity.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Tags",
+          "type": "array"
+        },
+        "to_relationships": {
+          "description": "A list of relationships where the entity occupies the TO position",
+          "title": "To Relationships",
+          "type": "object"
+        },
+        "type": {
+          "description": "The type of the entity.",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "title": "Dynatrace Cloud Application"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "description": "This blueprint represents a Dynatrace Entity",
+    "icon": "Dynatrace",
+    "identifier": "dynatraceEntity",
+    "mirrorProperties": {},
+    "relations": {},
+    "schema": {
+      "properties": {
+        "dynatrace_entity_url": {
+          "description": "Link to entity in Dynatrace",
+          "format": "url",
+          "icon": "Dynatrace",
+          "title": "Dynatrace Link",
+          "type": "string"
+        },
+        "firstSeen": {
+          "description": "The timestamp at which the entity was first seen, in UTC milliseconds.",
+          "format": "date-time",
+          "title": "First Seen",
+          "type": "string"
+        },
+        "from_relationships": {
+          "description": "A list of relationships where the entity occupies the FROM position",
+          "title": "From Relationships",
+          "type": "object"
+        },
+        "lastSeen": {
+          "description": "The timestamp at which the entity was last seen, in UTC milliseconds.",
+          "format": "date-time",
+          "title": "Last Seen",
+          "type": "string"
+        },
+        "management_zones": {
+          "description": "A set of management zones to which the entity belongs",
+          "title": "Management Zones",
+          "type": "array"
+        },
+        "properties": {
+          "description": "A list of additional properties of the entity",
+          "title": "Properties",
+          "type": "object"
+        },
+        "tags": {
+          "description": "A list of tags of the entity.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Tags",
+          "type": "array"
+        },
+        "to_relationships": {
+          "description": "A list of relationships where the entity occupies the TO position",
+          "title": "To Relationships",
+          "type": "object"
+        },
+        "type": {
+          "description": "The type of the entity.",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "title": "Dynatrace Entity"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "description": "This blueprint represents a Dynatrace Problem",
+    "icon": "Dynatrace",
+    "identifier": "dynatraceProblem",
+    "mirrorProperties": {},
+    "relations": {
+      "impactedEntities": {
+        "many": true,
+        "required": false,
+        "target": "dynatraceEntity",
+        "title": "Impacted Entities"
+      },
+      "linkedProblemInfo": {
+        "many": false,
+        "required": false,
+        "target": "dynatraceProblem",
+        "title": "Linked Problem Info"
+      },
+      "rootCauseEntity": {
+        "many": false,
+        "required": false,
+        "target": "dynatraceEntity",
+        "title": "Root Cause Entity"
+      }
+    },
+    "schema": {
+      "properties": {
+        "endTime": {
+          "description": "The end time of the problem, in UTC milliseconds.",
+          "format": "date-time",
+          "title": "End Time",
+          "type": "string"
+        },
+        "entityTags": {
+          "description": "A list of all entity tags of the problem.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Entity Tags",
+          "type": "array"
+        },
+        "evidenceDetails": {
+          "description": "A list of all evidence details of the problem.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Details",
+          "type": "array"
+        },
+        "managementZones": {
+          "description": "A list of all management zones that the problem belongs to.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Management Zones",
+          "type": "array"
+        },
+        "problemFilters": {
+          "description": "A list of alerting profiles that match the problem.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Problem Filters",
+          "type": "array"
+        },
+        "severityLevel": {
+          "description": "The severity level of the problem.",
+          "enum": [
+            "AVAILABILITY",
+            "CUSTOM_ALERT",
+            "ERROR",
+            "INFO",
+            "MONITORING_UNAVAILABLE",
+            "PERFORMANCE",
+            "RESOURCE_CONTENTION"
+          ],
+          "enumColors": {
+            "AVAILABILITY": "blue",
+            "CUSTOM_ALERT": "turquoise",
+            "ERROR": "red",
+            "INFO": "green",
+            "MONITORING_UNAVAILABLE": "darkGray",
+            "PERFORMANCE": "orange",
+            "RESOURCE_CONTENTION": "yellow"
+          },
+          "title": "Severity Level",
+          "type": "string"
+        },
+        "startTime": {
+          "description": "The start time of the problem, in UTC milliseconds.",
+          "format": "date-time",
+          "title": "Start Time",
+          "type": "string"
+        },
+        "status": {
+          "description": "The status of the problem.",
+          "enum": [
+            "CLOSED",
+            "OPEN"
+          ],
+          "enumColors": {
+            "CLOSED": "green",
+            "OPEN": "red"
+          },
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "title": "Dynatrace Problem"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "description": "This blueprint represents a Dynatrace SLO",
+    "icon": "Dynatrace",
+    "identifier": "dynatraceSlo",
+    "mirrorProperties": {},
+    "relations": {},
+    "schema": {
+      "properties": {
+        "enabled": {
+          "description": "Whether the SLO is enabled.",
+          "title": "Enabled",
+          "type": "boolean"
+        },
+        "error": {
+          "description": "The error of the SLO calculation. If the value differs from NONE, there is something wrong with the SLO calculation.",
+          "title": "Error",
+          "type": "string"
+        },
+        "errorBudget": {
+          "description": "The error budget of the calculated SLO.",
+          "title": "Error Budget",
+          "type": "number"
+        },
+        "evaluatedPercentage": {
+          "description": "The calculated status value of the SLO.",
+          "title": "Evaluated Percentage",
+          "type": "number"
+        },
+        "evaluationType": {
+          "description": "The type of the SLO evaluation.",
+          "title": "Evaluation Type",
+          "type": "string"
+        },
+        "filter": {
+          "description": "The filter for the SLO evaluation.",
+          "title": "Filter",
+          "type": "string"
+        },
+        "status": {
+          "description": "The status of the SLO.",
+          "enum": [
+            "FAILURE",
+            "SUCCESS",
+            "WARNING"
+          ],
+          "enumColors": {
+            "FAILURE": "red",
+            "SUCCESS": "green",
+            "WARNING": "yellow"
+          },
+          "title": "Status",
+          "type": "string"
+        },
+        "target": {
+          "description": "The target value of the SLO.",
+          "title": "Target",
+          "type": "number"
+        },
+        "warning": {
+          "description": "The warning value of the SLO. At warning state the SLO is still fulfilled but is getting close to failure.",
+          "title": "Warning",
+          "type": "number"
+        }
+      },
+      "required": []
+    },
+    "title": "Dynatrace SLO"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {
+      "open_in_nexus_iq": {
+        "calculation": "\"https://nexus-iq-server.apps.fedins.com/\" + .properties.report_html_url",
+        "format": "url",
+        "icon": "SonartypeNexusIQ",
+        "title": "Open in NexusIQ",
+        "type": "string"
+      },
+      "total_violation_count": {
+        "calculation": ".properties.critical_violation_count + .properties.severe_violation_count + .properties.moderate_violation_count + .properties.legacy_violation_count",
+        "colorized": true,
+        "colors": {
+          "0": "green",
+          ">1": "red"
+        },
+        "icon": "DefaultProperty",
+        "title": "Total Violation Count",
+        "type": "number"
+      }
+    },
+    "description": "This blueprint represents a NexusIQ vulnerability report",
+    "icon": "SonartypeNexusIQ",
+    "identifier": "nexus_iq_report",
+    "mirrorProperties": {},
+    "ownership": {
+      "path": "ado_repository.ado_repo_to_team",
+      "title": "Team",
+      "type": "Inherited"
+    },
+    "relations": {
+      "ado_repository": {
+        "many": false,
+        "required": false,
+        "target": "service",
+        "title": "ADO Repository"
+      }
+    },
+    "schema": {
+      "properties": {
+        "affected_component_count": {
+          "title": "Affected Component Count",
+          "type": "number"
+        },
+        "commit_hash": {
+          "title": "Commit Hash",
+          "type": "string"
+        },
+        "critical_violation_count": {
+          "title": "Critical Violation Count",
+          "type": "number"
+        },
+        "evaluation_date": {
+          "format": "date-time",
+          "title": "Evaluation Date",
+          "type": "string"
+        },
+        "is_orphan_reviewed": {
+          "default": false,
+          "icon": "Checklist",
+          "title": "Is Orphan Reviewed?",
+          "type": "boolean"
+        },
+        "legacy_violation_count": {
+          "title": "Legacy Violation Count",
+          "type": "number"
+        },
+        "moderate_violation_count": {
+          "title": "Moderate Violation Count",
+          "type": "number"
+        },
+        "report_html_url": {
+          "title": "Report HTML URL",
+          "type": "string"
+        },
+        "severe_violation_count": {
+          "title": "Severe Violation Count",
+          "type": "number"
+        },
+        "total_component_count": {
+          "title": "Total Component Count",
+          "type": "number"
+        }
+      },
+      "required": []
+    },
+    "title": "NexusIQ Report"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "description": "Members (i.e. users) of a team",
+    "icon": "OpsGenie",
+    "identifier": "opsgenie_team_member",
+    "mirrorProperties": {
+      "team_id": {
+        "path": "opsgenie_team.$identifier",
+        "title": "Team Id"
+      }
+    },
+    "relations": {
+      "opsgenie_team": {
+        "description": "OpsGenie Team",
+        "many": false,
+        "required": false,
+        "target": "opsGenieTeam",
+        "title": "OpsGenie Team"
+      }
+    },
+    "schema": {
+      "properties": {
+        "role": {
+          "description": "OpsGenie Role",
+          "icon": "DefaultProperty",
+          "title": "Role",
+          "type": "string"
+        },
+        "username": {
+          "description": "User Name (upn)",
+          "title": "UserName",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "title": "OpsGenie Team Member"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {
+      "url": {
+        "calculation": "\"https://fedins.app.opsgenie.com/alert/detail/\" + .identifier + \"/details\"",
+        "description": "Open in Opsgenie",
+        "format": "url",
+        "icon": "OpsGenie",
+        "title": "Open in Opsgenie",
+        "type": "string"
+      }
+    },
+    "description": "This blueprint represents an OpsGenie alert in our software catalog",
+    "icon": "OpsGenie",
+    "identifier": "opsGenieAlert",
+    "mirrorProperties": {
+      "responding_team_members": {
+        "path": "respondingTeam.team_members",
+        "title": "Responding Team Members"
+      },
+      "team_members": {
+        "path": "owner_team.team_members",
+        "title": "Team Members"
+      }
+    },
+    "relations": {
+      "owner_team": {
+        "description": "Owner Team",
+        "many": false,
+        "required": false,
+        "target": "opsGenieTeam",
+        "title": "Owner Team"
+      },
+      "respondingTeam": {
+        "many": true,
+        "required": false,
+        "target": "opsGenieTeam",
+        "title": "Responding Team"
+      }
+    },
+    "schema": {
+      "properties": {
+        "acknowledged": {
+          "title": "Acknowledged",
+          "type": "boolean"
+        },
+        "acknowledged_by": {
+          "format": "user",
+          "title": "Acknowledged By",
+          "type": "string"
+        },
+        "assigned_to": {
+          "format": "user",
+          "title": "Assigned To",
+          "type": "string"
+        },
+        "count": {
+          "title": "Count",
+          "type": "number"
+        },
+        "createdAt": {
+          "format": "date-time",
+          "title": "Create At",
+          "type": "string"
+        },
+        "createdBy": {
+          "format": "user",
+          "title": "Created By",
+          "type": "string"
+        },
+        "description": {
+          "icon": "DefaultProperty",
+          "title": "Description",
+          "type": "string"
+        },
+        "integration": {
+          "description": "The name of the Integration",
+          "title": "Integration",
+          "type": "string"
+        },
+        "lastChangeType": {
+          "description": "The type of the last change made to the alert",
+          "title": "Last Change Type",
+          "type": "string"
+        },
+        "priority": {
+          "title": "Priority",
+          "type": "string"
+        },
+        "respondingUsers": {
+          "icon": "User",
+          "items": {
+            "format": "user",
+            "type": "string"
+          },
+          "title": "Responding Users",
+          "type": "array"
+        },
+        "sourceName": {
+          "description": "Alert source name",
+          "title": "Source Name",
+          "type": "string"
+        },
+        "status": {
+          "description": "The status of the alert",
+          "enum": [
+            "closed",
+            "open"
+          ],
+          "enumColors": {
+            "closed": "green",
+            "open": "red"
+          },
+          "title": "Status",
+          "type": "string"
+        },
+        "tags": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Tags",
+          "type": "array"
+        },
+        "tiny_id": {
+          "icon": "DefaultProperty",
+          "title": "Alert Number",
+          "type": "string"
+        },
+        "updatedAt": {
+          "format": "date-time",
+          "title": "Updated At",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "title": "OpsGenie Alert"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "description": "This blueprint represents an OpsGenie alert note in our software catalog",
+    "icon": "OpsGenie",
+    "identifier": "opsGenieAlertNote",
+    "mirrorProperties": {},
+    "relations": {
+      "relatedAlert": {
+        "many": false,
+        "required": true,
+        "target": "opsGenieAlert",
+        "title": "Related Alert"
+      }
+    },
+    "schema": {
+      "properties": {
+        "createdAt": {
+          "format": "date-time",
+          "title": "Create At",
+          "type": "string"
+        },
+        "note": {
+          "title": "Note",
+          "type": "string"
+        },
+        "offset": {
+          "title": "Offset",
+          "type": "string"
+        },
+        "owner": {
+          "title": "Owner",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "title": "OpsGenie Alert Note"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {
+      "url": {
+        "calculation": "\"https://fedins.app.opsgenie.com/incident/detail/\" + .identifier",
+        "description": "Open in Opsgenie",
+        "format": "url",
+        "icon": "OpsGenie",
+        "title": "Open in Opsgenie",
+        "type": "string"
+      }
+    },
+    "description": "This blueprint represents an OpsGenie incident in our software catalog",
+    "icon": "OpsGenie",
+    "identifier": "opsGenieIncident",
+    "mirrorProperties": {
+      "responding_team_members": {
+        "path": "respondingTeam.team_members",
+        "title": "Responding Team Members"
+      }
+    },
+    "relations": {
+      "respondingTeam": {
+        "many": true,
+        "required": false,
+        "target": "opsGenieTeam",
+        "title": "Responding Team"
+      },
+      "services": {
+        "many": true,
+        "required": false,
+        "target": "opsGenieService",
+        "title": "Impacted Services"
+      }
+    },
+    "schema": {
+      "properties": {
+        "createdAt": {
+          "format": "date-time",
+          "title": "Create At",
+          "type": "string"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "priority": {
+          "title": "Priority",
+          "type": "string"
+        },
+        "status": {
+          "description": "The status of the incident",
+          "enum": [
+            "closed",
+            "open",
+            "resolved"
+          ],
+          "enumColors": {
+            "closed": "blue",
+            "open": "red",
+            "resolved": "green"
+          },
+          "title": "Status",
+          "type": "string"
+        },
+        "tags": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Tags",
+          "type": "array"
+        },
+        "updatedAt": {
+          "format": "date-time",
+          "title": "Updated At",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "title": "OpsGenie Incident"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "description": "This blueprint represents a OpsGenie schedule rotation in our software catalog",
+    "icon": "OpsGenie",
+    "identifier": "opsGenieRotation",
+    "mirrorProperties": {},
+    "relations": {
+      "schedule": {
+        "many": false,
+        "required": true,
+        "target": "opsGenieSchedule",
+        "title": "Schedule"
+      }
+    },
+    "schema": {
+      "properties": {
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "endDate": {
+          "format": "date-time",
+          "title": "End Date",
+          "type": "string"
+        },
+        "rotationType": {
+          "title": "Rotation Type",
+          "type": "string"
+        },
+        "startDate": {
+          "format": "date-time",
+          "title": "Start Date",
+          "type": "string"
+        },
+        "users": {
+          "items": {
+            "format": "user",
+            "type": "string"
+          },
+          "title": "Users",
+          "type": "array"
+        }
+      },
+      "required": []
+    },
+    "title": "OpsGenie Schedule Rotation"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {
+      "contact_current_on_call": {
+        "calculation": ".properties.oncallUsers | if length >= 1 then \"https://teams.microsoft.com/l/chat/0/0?users=\" + join(\",\") else \"\" end",
+        "format": "url",
+        "icon": "Chat",
+        "title": "Chat via Teams",
+        "type": "string"
+      }
+    },
+    "description": "This blueprint represents a OpsGenie schedule in our software catalog",
+    "icon": "OpsGenie",
+    "identifier": "opsGenieSchedule",
+    "mirrorProperties": {
+      "team_members": {
+        "path": "ownerTeam.team_members",
+        "title": "Team Members"
+      }
+    },
+    "relations": {
+      "ownerTeam": {
+        "many": false,
+        "required": false,
+        "target": "opsGenieTeam",
+        "title": "Owner Team"
+      }
+    },
+    "schema": {
+      "properties": {
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "oncallUsers": {
+          "items": {
+            "format": "user",
+            "type": "string"
+          },
+          "title": "Who's on call?",
+          "type": "array"
+        },
+        "timezone": {
+          "title": "Timezone",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "title": "OpsGenie Schedule"
+  },
+  {
+    "aggregationProperties": {
+      "numberOfOpenIncidents": {
+        "calculationSpec": {
+          "calculationBy": "entities",
+          "func": "count"
+        },
+        "query": {
+          "combinator": "and",
+          "rules": [
+            {
+              "operator": "=",
+              "property": "status",
+              "value": "open"
+            }
+          ]
+        },
+        "target": "opsGenieIncident",
+        "title": "Number of open incidents",
+        "type": "number"
+      }
+    },
+    "calculationProperties": {
+      "url": {
+        "calculation": "\"https://fedins.app.opsgenie.com/service/\" + .identifier",
+        "description": "Open in Opsgenie",
+        "format": "url",
+        "icon": "OpsGenie",
+        "title": "Open in Opsgenie",
+        "type": "string"
+      }
+    },
+    "description": "This blueprint represents an OpsGenie service in our software catalog",
+    "icon": "OpsGenie",
+    "identifier": "opsGenieService",
+    "mirrorProperties": {
+      "team_members": {
+        "path": "ownerTeam.team_members",
+        "title": "Team Members"
+      }
+    },
+    "relations": {
+      "ownerTeam": {
+        "many": false,
+        "required": false,
+        "target": "opsGenieTeam",
+        "title": "Owner Team"
+      }
+    },
+    "schema": {
+      "properties": {
+        "description": {
+          "icon": "DefaultProperty",
+          "title": "Description",
+          "type": "string"
+        },
+        "tags": {
+          "icon": "DefaultProperty",
+          "items": {
+            "type": "string"
+          },
+          "title": "Tags",
+          "type": "array"
+        }
+      },
+      "required": []
+    },
+    "title": "OpsGenie Service"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {
+      "contact_current_on_call": {
+        "calculation": ".properties.oncallUsers | if length >= 1 then \"https://teams.microsoft.com/l/chat/0/0?users=\" + join(\",\") else \"\" end",
+        "format": "url",
+        "icon": "Chat",
+        "title": "Chat via Teams",
+        "type": "string"
+      },
+      "url": {
+        "calculation": "\"https://fedins.app.opsgenie.com/teams/dashboard/\" + .identifier",
+        "description": "Open in Opsgenie",
+        "format": "url",
+        "icon": "OpsGenie",
+        "title": "Open in Opsgenie",
+        "type": "string"
+      }
+    },
+    "description": "This blueprint represents an OpsGenie team in our software catalog",
+    "icon": "OpsGenie",
+    "identifier": "opsGenieTeam",
+    "mirrorProperties": {
+      "member_emails": {
+        "path": "members.email",
+        "title": "Member Emails"
+      }
+    },
+    "relations": {
+      "members": {
+        "many": true,
+        "required": false,
+        "target": "opsGenieUser",
+        "title": "Members"
+      }
+    },
+    "schema": {
+      "properties": {
+        "description": {
+          "icon": "DefaultProperty",
+          "title": "Description",
+          "type": "string"
+        },
+        "team_members": {
+          "items": {
+            "format": "user",
+            "type": "string"
+          },
+          "title": "Team Members",
+          "type": "array"
+        }
+      },
+      "required": []
+    },
+    "title": "OpsGenie Team"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "description": "This blueprint represents an OpsGenie user in our software catalog",
+    "icon": "OpsGenie",
+    "identifier": "opsGenieUser",
+    "mirrorProperties": {},
+    "relations": {},
+    "schema": {
+      "properties": {
+        "address": {
+          "title": "Address",
+          "type": "object"
+        },
+        "createdAt": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "email": {
+          "format": "user",
+          "title": "Email",
+          "type": "string"
+        },
+        "isBlocked": {
+          "title": "Is Blocked",
+          "type": "boolean"
+        },
+        "isVerified": {
+          "title": "Is Verified",
+          "type": "boolean"
+        },
+        "role": {
+          "title": "Role",
+          "type": "string"
+        },
+        "timeZone": {
+          "title": "Time Zone",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "title": "OpsGenie User"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "description": "Object representing a collection of Opswise object",
+    "icon": "Stonebranch",
+    "identifier": "opswise_business_service",
+    "mirrorProperties": {},
+    "relations": {},
+    "schema": {
+      "properties": {
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "environment": {
+          "enum": [
+            "Development",
+            "Production"
+          ],
+          "enumColors": {
+            "Development": "lightGray",
+            "Production": "lightGray"
+          },
+          "icon": "DefaultProperty",
+          "title": "Environment",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "title": "Opswise Business Service"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "icon": "Stonebranch",
+    "identifier": "opswise_credential",
+    "mirrorProperties": {},
+    "ownership": {
+      "path": "opswise_permission.opswise_user_group",
+      "type": "Inherited"
+    },
+    "relations": {
+      "opswise_business_service": {
+        "many": true,
+        "required": false,
+        "target": "opswise_business_service",
+        "title": "Opswise Business Service"
+      },
+      "opswise_permission": {
+        "many": true,
+        "required": false,
+        "target": "opswise_permission",
+        "title": "Opswise Permission"
+      }
+    },
+    "schema": {
+      "properties": {
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "environment": {
+          "title": "Environment",
+          "type": "string"
+        },
+        "provider": {
+          "title": "Provider",
+          "type": "string"
+        },
+        "runtime_user": {
+          "title": "Runtime User",
+          "type": "string"
+        },
+        "type": {
+          "title": "Type",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "number"
+        }
+      },
+      "required": []
+    },
+    "title": "Opswise Credential"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "icon": "Stonebranch",
+    "identifier": "opswise_permission",
+    "mirrorProperties": {},
+    "ownership": {
+      "path": "opswise_user_group",
+      "type": "Inherited"
+    },
+    "relations": {
+      "opswise_user_group": {
+        "many": false,
+        "required": false,
+        "target": "opswise_user_group",
+        "title": "Opswise User Group"
+      }
+    },
+    "schema": {
+      "properties": {
+        "all_groups": {
+          "title": "All Groups?",
+          "type": "boolean"
+        },
+        "commands": {
+          "title": "Commands",
+          "type": "string"
+        },
+        "create": {
+          "title": "Create?",
+          "type": "boolean"
+        },
+        "default_group": {
+          "title": "Default Group?",
+          "type": "boolean"
+        },
+        "delete": {
+          "title": "Delete?",
+          "type": "boolean"
+        },
+        "environment": {
+          "enum": [
+            "Development",
+            "Production"
+          ],
+          "enumColors": {
+            "Development": "lightGray",
+            "Production": "lightGray"
+          },
+          "icon": "DefaultProperty",
+          "title": "Environment",
+          "type": "string"
+        },
+        "execute": {
+          "title": "Execute?",
+          "type": "boolean"
+        },
+        "name_wildcard": {
+          "title": "Name Wildcard",
+          "type": "string"
+        },
+        "not_groups": {
+          "title": "Not Groups?",
+          "type": "boolean"
+        },
+        "read": {
+          "title": "Read?",
+          "type": "boolean"
+        },
+        "type": {
+          "title": "Type",
+          "type": "string"
+        },
+        "update": {
+          "title": "Update?",
+          "type": "boolean"
+        }
+      },
+      "required": []
+    },
+    "title": "Opswise Permission"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "icon": "Stonebranch",
+    "identifier": "opswise_task",
+    "mirrorProperties": {},
+    "ownership": {
+      "path": "opswise_permission.opswise_user_group",
+      "type": "Inherited"
+    },
+    "relations": {
+      "opswise_business_service": {
+        "many": true,
+        "required": false,
+        "target": "opswise_business_service",
+        "title": "Opwise Business Service"
+      },
+      "opswise_permission": {
+        "many": true,
+        "required": false,
+        "target": "opswise_permission",
+        "title": "Opswise Permission"
+      }
+    },
+    "schema": {
+      "properties": {
+        "average_instance_time": {
+          "icon": "DefaultProperty",
+          "title": "Average Instance Time",
+          "type": "string"
+        },
+        "environment": {
+          "title": "Environment",
+          "type": "string"
+        },
+        "first_run": {
+          "format": "date-time",
+          "title": "First Run",
+          "type": "string"
+        },
+        "highest_instance_time": {
+          "icon": "DefaultProperty",
+          "title": "Highest Instance Time",
+          "type": "string"
+        },
+        "last_instance_duration": {
+          "icon": "DefaultProperty",
+          "title": "Last Instance Duration",
+          "type": "string"
+        },
+        "last_run": {
+          "format": "date-time",
+          "title": "Last Run",
+          "type": "string"
+        },
+        "lowest_instance_time": {
+          "icon": "DefaultProperty",
+          "title": "Lowest Instance Time",
+          "type": "string"
+        },
+        "number_of_instances": {
+          "title": "Number Of Instances",
+          "type": "number"
+        },
+        "total_instance_time": {
+          "title": "Total Instance Time",
+          "type": "number"
+        },
+        "type": {
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "title": "Opswise Task"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {
+      "calc_link": {
+        "calculation": "(if .properties.environment == \"Development\" then \"https://opswise-dev.fedins.com/opswise/saml?action=open&type=exec&id=\" elif .properties.environment == \"Production\" then \"https://opswise-prd.fedins.com/opswise/saml?action=open&type=exec&id=\" else \"\" end   ) + .identifier",
+        "format": "url",
+        "icon": "Stonebranch",
+        "title": "Open in Opswise",
+        "type": "string"
+      }
+    },
+    "description": "Object representing a collection of Opswise object",
+    "icon": "Stonebranch",
+    "identifier": "opswise_task_instance",
+    "mirrorProperties": {},
+    "ownership": {
+      "path": "opswise_permission.opswise_user_group",
+      "type": "Inherited"
+    },
+    "relations": {
+      "opswise_business_service": {
+        "many": true,
+        "required": false,
+        "target": "opswise_business_service",
+        "title": "Opswise Business Service"
+      },
+      "opswise_permission": {
+        "many": true,
+        "required": false,
+        "target": "opswise_permission",
+        "title": "Opswise Permission"
+      },
+      "opswise_task_instance_output": {
+        "many": true,
+        "required": false,
+        "target": "opswise_task_instance_output",
+        "title": "Opswise Task Instance Output"
+      }
+    },
+    "schema": {
+      "properties": {
+        "agent": {
+          "title": "Agent",
+          "type": "string"
+        },
+        "credentials": {
+          "icon": "DefaultProperty",
+          "title": "Credentials",
+          "type": "string"
+        },
+        "custom_field_1": {
+          "title": "Custom Field 1",
+          "type": "string"
+        },
+        "custom_field_2": {
+          "title": "Custom Field 2",
+          "type": "string"
+        },
+        "early_finish": {
+          "title": "Early Finish",
+          "type": "boolean"
+        },
+        "end_time": {
+          "format": "date-time",
+          "title": "End Time",
+          "type": "string"
+        },
+        "environment": {
+          "enum": [
+            "Development",
+            "Production"
+          ],
+          "enumColors": {
+            "Development": "lightGray",
+            "Production": "lightGray"
+          },
+          "icon": "DefaultProperty",
+          "title": "Environment",
+          "type": "string"
+        },
+        "execution_user": {
+          "title": "Execution User",
+          "type": "string"
+        },
+        "exit_code": {
+          "title": "Exit Code",
+          "type": "string"
+        },
+        "finished_early": {
+          "title": "Finished Early",
+          "type": "boolean"
+        },
+        "finished_late": {
+          "title": "Finished Late",
+          "type": "boolean"
+        },
+        "instance_number": {
+          "title": "Instance Number",
+          "type": "number"
+        },
+        "late_finish": {
+          "icon": "DefaultProperty",
+          "title": "Last Finish",
+          "type": "boolean"
+        },
+        "late_start": {
+          "title": "Late Start",
+          "type": "boolean"
+        },
+        "launch_time": {
+          "format": "date-time",
+          "title": "Launch Time",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "operational_memo": {
+          "title": "Operational Memo",
+          "type": "string"
+        },
+        "output_count": {
+          "icon": "DefaultProperty",
+          "title": "Output Count",
+          "type": "number"
+        },
+        "progress": {
+          "title": "Progress",
+          "type": "number"
+        },
+        "queued_time": {
+          "format": "date-time",
+          "title": "Queued Time",
+          "type": "string"
+        },
+        "source_version": {
+          "title": "Source Version",
+          "type": "number"
+        },
+        "start_time": {
+          "format": "date-time",
+          "title": "Start Time",
+          "type": "string"
+        },
+        "started_late": {
+          "title": "Started Late",
+          "type": "boolean"
+        },
+        "status": {
+          "title": "Status",
+          "type": "string"
+        },
+        "status_description": {
+          "title": "Status Description",
+          "type": "string"
+        },
+        "sys_id": {
+          "icon": "DefaultProperty",
+          "title": "Sys Id",
+          "type": "string"
+        },
+        "task_id": {
+          "title": "Task Id",
+          "type": "string"
+        },
+        "task_name": {
+          "title": "Task Name",
+          "type": "string"
+        },
+        "trigger_id": {
+          "title": "Trigger Id",
+          "type": "string"
+        },
+        "trigger_name": {
+          "title": "Trigger Name",
+          "type": "string"
+        },
+        "trigger_time": {
+          "format": "date-time",
+          "title": "Trigger Time",
+          "type": "string"
+        },
+        "triggered_by": {
+          "title": "Triggered By",
+          "type": "string"
+        },
+        "type": {
+          "title": "Type",
+          "type": "string"
+        },
+        "update_time": {
+          "format": "date-time",
+          "title": "Update Time",
+          "type": "string"
+        },
+        "workflow_definition_id": {
+          "title": "Workflow Definition Id",
+          "type": "string"
+        },
+        "workflow_definition_name": {
+          "title": "Workflow Definition Name",
+          "type": "string"
+        },
+        "workflow_instance_id": {
+          "title": "Workflow Instance Id",
+          "type": "string"
+        },
+        "workflow_instance_name": {
+          "title": "Workflow Instance Name",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "title": "Opswise Task Instance"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "icon": "Stonebranch",
+    "identifier": "opswise_task_instance_output",
+    "mirrorProperties": {},
+    "relations": {},
+    "schema": {
+      "properties": {
+        "attempt_count": {
+          "title": "Attempt Count",
+          "type": "number"
+        },
+        "command_name": {
+          "title": "Command Name",
+          "type": "string"
+        },
+        "environment": {
+          "enum": [
+            "Development",
+            "Production"
+          ],
+          "enumColors": {
+            "Development": "lightGray",
+            "Production": "lightGray"
+          },
+          "icon": "DefaultProperty",
+          "title": "Environment",
+          "type": "string"
+        },
+        "output_data": {
+          "title": "Output Data",
+          "type": "string"
+        },
+        "output_file_name": {
+          "title": "Output File Name",
+          "type": "string"
+        },
+        "output_type": {
+          "title": "Output Type",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "title": "Opswise Task Instance Output"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "icon": "Stonebranch",
+    "identifier": "opswise_user_group",
+    "mirrorProperties": {},
+    "ownership": {
+      "type": "Direct"
+    },
+    "relations": {},
+    "schema": {
+      "properties": {
+        "environment": {
+          "icon": "DefaultProperty",
+          "title": "Environment",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "title": "Opswise User Group"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {
+      "number_of_voters": {
+        "calculation": "(.relations.requesting_user | length)  +  (.relations.interested_parties | length)",
+        "icon": "DefaultProperty",
+        "title": "Number of voters",
+        "type": "number"
+      }
+    },
+    "description": "Describes use case requests submitted to the portal building team",
+    "icon": "Register",
+    "identifier": "portal_use_case_request",
+    "mirrorProperties": {
+      "assigned_to_user": {
+        "path": "assigned_to.$identifier",
+        "title": "Assigned To User"
+      },
+      "interested_party_email": {
+        "path": "interested_parties.$identifier",
+        "title": "Interested Party Email"
+      },
+      "related_work_item": {
+        "path": "work_item.$identifier",
+        "title": "Related work item"
+      }
+    },
+    "relations": {
+      "assigned_to": {
+        "many": false,
+        "required": false,
+        "target": "_user",
+        "title": "Assigned To"
+      },
+      "interested_parties": {
+        "many": true,
+        "required": false,
+        "target": "_user",
+        "title": "Interested Parties"
+      },
+      "work_item": {
+        "many": false,
+        "required": false,
+        "target": "workItem",
+        "title": "Work Item"
+      }
+    },
+    "schema": {
+      "properties": {
+        "comments": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Comments",
+          "type": "array"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "improving_metric": {
+          "default": [
+            "Deployment Frequency"
+          ],
+          "icon": "DefaultProperty",
+          "items": {
+            "type": "string"
+          },
+          "title": "Improving Metric",
+          "type": "array"
+        },
+        "page_url": {
+          "title": "Page URL",
+          "type": "string"
+        },
+        "priority": {
+          "default": "3 - Nice to have",
+          "enum": [
+            "1 - Must have",
+            "2 - Important",
+            "3 - Nice to have"
+          ],
+          "enumColors": {
+            "1 - Must have": "red",
+            "2 - Important": "yellow",
+            "3 - Nice to have": "purple"
+          },
+          "icon": "DefaultProperty",
+          "title": "Priority",
+          "type": "string"
+        },
+        "requestor": {
+          "format": "user",
+          "icon": "User",
+          "title": "Requestor",
+          "type": "string"
+        },
+        "resolution_comments": {
+          "format": "markdown",
+          "title": "Resolution Comments",
+          "type": "string"
+        },
+        "status": {
+          "default": "New",
+          "enum": [
+            "Done",
+            "Exploring",
+            "In Progress",
+            "New",
+            "Pending Vendor"
+          ],
+          "enumColors": {
+            "Done": "green",
+            "Exploring": "purple",
+            "In Progress": "orange",
+            "New": "lightGray",
+            "Pending Vendor": "turquoise"
+          },
+          "icon": "DefaultProperty",
+          "title": "Status",
+          "type": "string"
+        },
+        "vendor_request": {
+          "format": "url",
+          "icon": "Port",
+          "title": "Vendor Request",
+          "type": "string"
+        }
+      },
+      "required": [
+        "priority",
+        "requestor"
+      ]
+    },
+    "title": "Portal Feedback"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "icon": "AzureDevops",
+    "identifier": "project",
+    "mirrorProperties": {},
+    "relations": {},
+    "schema": {
+      "properties": {
+        "defaultTeam": {
+          "description": "Default Team of the project",
+          "icon": "Team",
+          "title": "Default Team",
+          "type": "string"
+        },
+        "link": {
+          "description": "Link to azure devops project",
+          "format": "url",
+          "icon": "AzureDevops",
+          "title": "Link",
+          "type": "string"
+        },
+        "revision": {
+          "description": "The revision number, indicating how many times the project configuration has been updated.",
+          "icon": "AzureDevops",
+          "title": "Revision",
+          "type": "string"
+        },
+        "state": {
+          "description": "The current lifecycle state of the project.",
+          "icon": "AzureDevops",
+          "title": "State",
+          "type": "string"
+        },
+        "visibility": {
+          "description": "Indicates whether the project is private or public",
+          "icon": "AzureDevops",
+          "title": "Visibility",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "title": "Project"
+  },
+  {
+    "aggregationProperties": {
+      "avg_score": {
+        "calculationSpec": {
+          "averageOf": "total",
+          "calculationBy": "property",
+          "func": "average",
+          "measureTimeBy": "$createdAt",
+          "property": "numeric_value"
+        },
+        "icon": "DefaultProperty",
+        "target": "response",
+        "title": "Avg. Score",
+        "type": "number"
+      }
+    },
+    "calculationProperties": {
+      "avg_score_scorecard": {
+        "calculation": "if (.properties.avg_score == null) then null else if (.properties.avg_score < 3) then \"low\" elif (.properties.avg_score <= 4) then \"medium\" else \"high\" end end",
+        "colorized": true,
+        "colors": {
+          "high": "green",
+          "low": "red",
+          "medium": "yellow"
+        },
+        "icon": "DefaultProperty",
+        "title": "Score Standards",
+        "type": "string"
+      }
+    },
+    "icon": "Bulb",
+    "identifier": "question",
+    "mirrorProperties": {},
+    "relations": {
+      "question_template": {
+        "many": false,
+        "required": false,
+        "target": "question_template",
+        "title": "Question Template"
+      },
+      "survey": {
+        "many": false,
+        "required": false,
+        "target": "survey",
+        "title": "Survey"
+      }
+    },
+    "schema": {
+      "properties": {
+        "numeric_question": {
+          "title": "Numeric Question",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "numeric_question"
+      ]
+    },
+    "title": "Question"
+  },
+  {
+    "aggregationProperties": {
+      "avg_score": {
+        "calculationSpec": {
+          "averageOf": "total",
+          "calculationBy": "property",
+          "func": "average",
+          "measureTimeBy": "$createdAt",
+          "property": "numeric_value"
+        },
+        "target": "response",
+        "title": "Avg. Score",
+        "type": "number"
+      }
+    },
+    "calculationProperties": {
+      "avg_score_scorecard": {
+        "calculation": "if (.properties.avg_score == null) then null else if (.properties.avg_score < 3) then \"low\" elif (.properties.avg_score <= 4) then \"medium\" else \"high\" end end",
+        "colorized": true,
+        "colors": {
+          "high": "green",
+          "low": "red",
+          "medium": "yellow"
+        },
+        "icon": "DefaultProperty",
+        "title": "Score Standards",
+        "type": "string"
+      }
+    },
+    "icon": "Template",
+    "identifier": "question_template",
+    "mirrorProperties": {},
+    "relations": {
+      "survey_template": {
+        "many": false,
+        "required": false,
+        "target": "survey_template",
+        "title": "Survey Template"
+      }
+    },
+    "schema": {
+      "properties": {
+        "numeric_question": {
+          "title": "Numeric Question",
+          "type": "boolean"
+        }
+      },
+      "required": []
+    },
+    "title": "Question Template"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "icon": "AzureDevops",
+    "identifier": "release",
+    "mirrorProperties": {},
+    "relations": {
+      "project": {
+        "many": false,
+        "required": true,
+        "target": "project",
+        "title": "Project"
+      }
+    },
+    "schema": {
+      "properties": {
+        "createdBy": {
+          "description": "The person who created the release",
+          "icon": "User",
+          "title": "Created By",
+          "type": "string"
+        },
+        "createdDate": {
+          "description": "The date and time when the release was created",
+          "format": "date-time",
+          "title": "Created Date",
+          "type": "string"
+        },
+        "definitionName": {
+          "description": "The name of the release definition",
+          "title": "Definition Name",
+          "type": "string"
+        },
+        "link": {
+          "description": "Link to the release in Azure DevOps",
+          "format": "url",
+          "icon": "AzureDevops",
+          "title": "Link",
+          "type": "string"
+        },
+        "modifiedBy": {
+          "description": "The person who last modified the release",
+          "icon": "User",
+          "title": "Modified By",
+          "type": "string"
+        },
+        "modifiedDate": {
+          "description": "The date and time when the release was last modified",
+          "format": "date-time",
+          "title": "Modified Date",
+          "type": "string"
+        },
+        "reason": {
+          "description": "The reason for the release creation",
+          "title": "Reason",
+          "type": "string"
+        },
+        "status": {
+          "description": "The current status of the release",
+          "icon": "DefaultProperty",
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "title": "Release"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "description": "Valid Repository Team Names",
+    "icon": "AzureDevops",
+    "identifier": "repo_team_name",
+    "mirrorProperties": {},
+    "ownership": {
+      "type": "Direct"
+    },
+    "relations": {},
+    "schema": {
+      "properties": {},
+      "required": []
+    },
+    "title": "Repo Team Name"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {
+      "numeric_value": {
+        "calculation": ".properties.value | (tonumber // null)",
+        "icon": "DefaultProperty",
+        "title": "Numeric Value",
+        "type": "number"
+      }
+    },
+    "icon": "Register",
+    "identifier": "response",
+    "mirrorProperties": {
+      "avg_score": {
+        "path": "question.avg_score",
+        "title": "Avg Score"
+      },
+      "question_template_identifier": {
+        "path": "question.question_template.$identifier",
+        "title": "Question Template Identifier"
+      },
+      "survey_title": {
+        "path": "question.survey.$title",
+        "title": "Survey Title"
+      },
+      "team": {
+        "path": "user.$team.$identifier",
+        "title": "Team"
+      }
+    },
+    "relations": {
+      "current_team": {
+        "many": true,
+        "required": false,
+        "target": "_team",
+        "title": "Current Team"
+      },
+      "question": {
+        "many": false,
+        "required": false,
+        "target": "question",
+        "title": "Question"
+      },
+      "user": {
+        "many": false,
+        "required": false,
+        "target": "_user",
+        "title": "User"
+      }
+    },
+    "schema": {
+      "properties": {
+        "value": {
+          "icon": "DefaultProperty",
+          "title": "Answer",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "title": "Response"
+  },
+  {
+    "aggregationProperties": {
+      "nexus_iq_critical_violations": {
+        "calculationSpec": {
+          "calculationBy": "property",
+          "func": "sum",
+          "property": "critical_violation_count"
+        },
+        "icon": "SonartypeNexusIQ",
+        "target": "nexus_iq_report",
+        "title": "Critical Violations",
+        "type": "number"
+      },
+      "nexus_iq_moderate_violations": {
+        "calculationSpec": {
+          "calculationBy": "property",
+          "func": "sum",
+          "property": "moderate_violation_count"
+        },
+        "icon": "SonartypeNexusIQ",
+        "target": "nexus_iq_report",
+        "title": "Moderate Violations",
+        "type": "number"
+      },
+      "nexus_iq_severe_violations": {
+        "calculationSpec": {
+          "calculationBy": "property",
+          "func": "sum",
+          "property": "severe_violation_count"
+        },
+        "icon": "SonartypeNexusIQ",
+        "target": "nexus_iq_report",
+        "title": "Severe Violations",
+        "type": "number"
+      },
+      "sonar_qube_bugs": {
+        "calculationSpec": {
+          "calculationBy": "property",
+          "func": "sum",
+          "property": "numberOfBugs"
+        },
+        "icon": "sonarqube",
+        "target": "sonarQubeProject",
+        "title": "Potential Bugs",
+        "type": "number"
+      },
+      "sonar_qube_code_coverage": {
+        "calculationSpec": {
+          "calculationBy": "property",
+          "func": "sum",
+          "property": "coverage"
+        },
+        "icon": "sonarqube",
+        "query": {
+          "combinator": "and",
+          "rules": []
+        },
+        "target": "sonarQubeProject",
+        "title": "Code Coverage",
+        "type": "number"
+      },
+      "sonar_qube_code_smells": {
+        "calculationSpec": {
+          "calculationBy": "property",
+          "func": "sum",
+          "property": "numberOfCodeSmells"
+        },
+        "icon": "sonarqube",
+        "target": "sonarQubeProject",
+        "title": "Code Smells",
+        "type": "number"
+      },
+      "sonar_qube_duplications": {
+        "calculationSpec": {
+          "calculationBy": "property",
+          "func": "sum",
+          "property": "numberOfDuplications"
+        },
+        "icon": "sonarqube",
+        "target": "sonarQubeProject",
+        "title": "Duplications",
+        "type": "number"
+      },
+      "sonar_qube_security_hotspots": {
+        "calculationSpec": {
+          "calculationBy": "property",
+          "func": "sum",
+          "property": "numberOfHotSpots"
+        },
+        "icon": "sonarqube",
+        "target": "sonarQubeProject",
+        "title": "Security Hotspots",
+        "type": "number"
+      },
+      "sonar_qube_vulnerabilities": {
+        "calculationSpec": {
+          "calculationBy": "property",
+          "func": "sum",
+          "property": "numberOfVulnerabilities"
+        },
+        "icon": "sonarqube",
+        "target": "sonarQubeProject",
+        "title": "Vulnerabilities",
+        "type": "number"
+      }
+    },
+    "calculationProperties": {
+      "url": {
+        "calculation": "\"https://dev.azure.com/fedins/\" + .relations.project.title + \"/_git/\" + .title",
+        "format": "url",
+        "icon": "AzureDevops",
+        "title": "Open in ADO",
+        "type": "string"
+      },
+      "vs_code_url": {
+        "calculation": "\"vscode://vscode.git/clone?url=https://fedins@dev.azure.com/fedins/Federated%20Projects/_git/\" + .title",
+        "description": "Clone in VS Code",
+        "format": "url",
+        "icon": "Code",
+        "title": "Clone",
+        "type": "string"
+      }
+    },
+    "icon": "AzureDevops",
+    "identifier": "service",
+    "mirrorProperties": {},
+    "ownership": {
+      "path": "ado_repo_to_team",
+      "type": "Inherited"
+    },
+    "relations": {
+      "ado_repo_to_team": {
+        "description": "Primary ADO Team",
+        "many": false,
+        "required": false,
+        "target": "ado_team_to_ad_group",
+        "title": "ADO Repo to Team"
+      },
+      "project": {
+        "many": false,
+        "required": true,
+        "target": "project",
+        "title": "Project"
+      }
+    },
+    "schema": {
+      "properties": {
+        "default_branch": {
+          "title": "Default Branch",
+          "type": "string"
+        },
+        "favorites": {
+          "items": {
+            "format": "user",
+            "type": "string"
+          },
+          "title": "Favorites",
+          "type": "array"
+        },
+        "minimumApproverCount": {
+          "default": 0,
+          "title": "Minimum Approver Count",
+          "type": "number"
+        },
+        "readme": {
+          "format": "markdown",
+          "icon": "Book",
+          "title": "README",
+          "type": "string"
+        },
+        "workItemLinking": {
+          "default": false,
+          "title": "Work Item Linking",
+          "type": "boolean"
+        }
+      },
+      "required": []
+    },
+    "title": "Repo"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {
+      "open_in_sn": {
+        "calculation": "\"https://federatedinsurance.service-now.com/now/sow/record/sys_user/\" + .identifier",
+        "format": "url",
+        "icon": "Servicenow",
+        "title": "Open in SN",
+        "type": "string"
+      }
+    },
+    "icon": "Servicenow",
+    "identifier": "service_now_user",
+    "mirrorProperties": {
+      "related_service_now_group": {
+        "path": "service_now_groups.$title",
+        "title": "Related ServiceNow Group"
+      },
+      "related_team": {
+        "path": "service_now_groups.team.$identifier",
+        "title": "Related Team"
+      }
+    },
+    "relations": {
+      "service_now_groups": {
+        "many": true,
+        "required": false,
+        "target": "servicenowGroup",
+        "title": "ServiceNow Groups"
+      }
+    },
+    "schema": {
+      "properties": {
+        "employee_number": {
+          "title": "Employee Number",
+          "type": "string"
+        },
+        "upn": {
+          "title": "UPN",
+          "type": "string"
+        }
+      },
+      "required": [
+        "upn"
+      ]
+    },
+    "title": "ServiceNow User"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {
+      "open_in_sn": {
+        "calculation": "\"https://federatedinsurance.service-now.com/now/sow/record/sc_catalog/\" + .identifier",
+        "format": "url",
+        "icon": "Servicenow",
+        "title": "Open in SN",
+        "type": "string"
+      }
+    },
+    "icon": "Servicenow",
+    "identifier": "servicenowCatalog",
+    "mirrorProperties": {},
+    "relations": {},
+    "schema": {
+      "properties": {
+        "createdBy": {
+          "title": "Created By",
+          "type": "string"
+        },
+        "createdOn": {
+          "format": "date-time",
+          "title": "Created On",
+          "type": "string"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "isActive": {
+          "title": "Is Active",
+          "type": "boolean"
+        }
+      },
+      "required": []
+    },
+    "title": "ServiceNow Catalog"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {
+      "open_in_sn": {
+        "calculation": "\"https://federatedinsurance.service-now.com/now/sow/record/change_request/\" + .identifier",
+        "format": "url",
+        "icon": "Servicenow",
+        "title": "Open in SN",
+        "type": "string"
+      }
+    },
+    "icon": "Servicenow",
+    "identifier": "servicenowChangeRequest",
+    "mirrorProperties": {},
+    "relations": {
+      "assigned_user": {
+        "many": false,
+        "required": false,
+        "target": "service_now_user",
+        "title": "Assigned User"
+      },
+      "assignment_group": {
+        "many": false,
+        "required": false,
+        "target": "servicenowGroup",
+        "title": "Assignment Group"
+      }
+    },
+    "schema": {
+      "properties": {
+        "active": {
+          "title": "Active",
+          "type": "boolean"
+        },
+        "actual_end_date": {
+          "format": "date-time",
+          "title": "Actual End Date",
+          "type": "string"
+        },
+        "actual_impact_of_change": {
+          "title": "Actual Impact Of Change",
+          "type": "string"
+        },
+        "actual_start_date": {
+          "format": "date-time",
+          "title": "Actual Start Date",
+          "type": "string"
+        },
+        "assigned_to": {
+          "format": "user",
+          "title": "Assigned To",
+          "type": "string"
+        },
+        "backout_plan": {
+          "format": "markdown",
+          "title": "Backout Plan",
+          "type": "string"
+        },
+        "business_duration": {
+          "title": "Business Duration",
+          "type": "string"
+        },
+        "business_service": {
+          "title": "Business Service",
+          "type": "string"
+        },
+        "calendar_duration": {
+          "title": "Calendar Duration",
+          "type": "string"
+        },
+        "category": {
+          "title": "Category",
+          "type": "string"
+        },
+        "close_code": {
+          "title": "Close Code",
+          "type": "string"
+        },
+        "close_notes": {
+          "format": "markdown",
+          "title": "Close Notes",
+          "type": "string"
+        },
+        "comments": {
+          "format": "markdown",
+          "title": "Comments",
+          "type": "string"
+        },
+        "configuration_item": {
+          "title": "Configuration Item",
+          "type": "string"
+        },
+        "conflict_last_run": {
+          "format": "date-time",
+          "title": "Conflict Last Run",
+          "type": "string"
+        },
+        "conflict_status": {
+          "title": "Conflict Status",
+          "type": "string"
+        },
+        "contact_type": {
+          "title": "Contact Type",
+          "type": "string"
+        },
+        "created_by": {
+          "format": "user",
+          "title": "Created By",
+          "type": "string"
+        },
+        "created_on": {
+          "format": "date-time",
+          "title": "Created On",
+          "type": "string"
+        },
+        "description": {
+          "format": "markdown",
+          "title": "Description",
+          "type": "string"
+        },
+        "impact": {
+          "title": "Impact",
+          "type": "string"
+        },
+        "implementation_plan": {
+          "format": "markdown",
+          "title": "Implementation Plan",
+          "type": "string"
+        },
+        "in_progress": {
+          "title": "In Progress",
+          "type": "boolean"
+        },
+        "justification": {
+          "format": "markdown",
+          "title": "Justification",
+          "type": "string"
+        },
+        "number": {
+          "title": "Number",
+          "type": "string"
+        },
+        "opened_at": {
+          "format": "date-time",
+          "title": "Opened At",
+          "type": "string"
+        },
+        "opened_by": {
+          "format": "user",
+          "title": "Opened By",
+          "type": "string"
+        },
+        "planned_end_date": {
+          "format": "date-time",
+          "title": "Planned End Date",
+          "type": "string"
+        },
+        "planned_start_date": {
+          "format": "date-time",
+          "title": "Planned Start Date",
+          "type": "string"
+        },
+        "priority": {
+          "title": "Priority",
+          "type": "string"
+        },
+        "reassignment_count": {
+          "title": "Reassignment Count",
+          "type": "number"
+        },
+        "requested_by": {
+          "format": "user",
+          "title": "Requested By",
+          "type": "string"
+        },
+        "risk": {
+          "title": "Risk",
+          "type": "string"
+        },
+        "risk_impact_analysis": {
+          "format": "markdown",
+          "title": "Risk and Impact Analysis",
+          "type": "string"
+        },
+        "state": {
+          "title": "State",
+          "type": "string"
+        },
+        "test_plan": {
+          "format": "markdown",
+          "title": "Test Plan",
+          "type": "string"
+        },
+        "type": {
+          "title": "Type",
+          "type": "string"
+        },
+        "urgency": {
+          "title": "Urgency",
+          "type": "string"
+        },
+        "work_notes": {
+          "format": "markdown",
+          "title": "Work Notes",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "title": "ServiceNow Change Request"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {
+      "open_in_sn": {
+        "calculation": "\"https://federatedinsurance.service-now.com/now/sow/record/sys_user_group/\" + .identifier",
+        "format": "url",
+        "icon": "Servicenow",
+        "title": "Open in SN",
+        "type": "string"
+      }
+    },
+    "icon": "Servicenow",
+    "identifier": "servicenowGroup",
+    "mirrorProperties": {
+      "related_team": {
+        "path": "team.$identifier",
+        "title": "Related Team"
+      }
+    },
+    "relations": {
+      "team": {
+        "many": false,
+        "required": false,
+        "target": "_team",
+        "title": "Team"
+      }
+    },
+    "schema": {
+      "properties": {
+        "createdBy": {
+          "format": "user",
+          "title": "Created By",
+          "type": "string"
+        },
+        "createdOn": {
+          "format": "date-time",
+          "title": "Created On",
+          "type": "string"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "email": {
+          "title": "Email",
+          "type": "string"
+        },
+        "isActive": {
+          "title": "Is active",
+          "type": "boolean"
+        },
+        "manager": {
+          "format": "user",
+          "title": "Manager",
+          "type": "string"
+        },
+        "members": {
+          "items": {
+            "format": "user",
+            "type": "string"
+          },
+          "title": "Members",
+          "type": "array"
+        },
+        "opsgenie_id": {
+          "title": "Opsgenie Id",
+          "type": "string"
+        },
+        "type": {
+          "title": "Type",
+          "type": "string"
+        },
+        "updated_by": {
+          "format": "user",
+          "title": "Updated By",
+          "type": "string"
+        },
+        "updated_on": {
+          "format": "date-time",
+          "title": "Updated On",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "title": "ServiceNow Group"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {
+      "link": {
+        "calculation": "\"https://federatedinsurance.service-now.com/now/sow/record/incident/\" + .identifier",
+        "format": "url",
+        "icon": "Servicenow",
+        "title": "Open in SN",
+        "type": "string"
+      },
+      "sla_breached": {
+        "calculation": ".properties.sla_expires as $date | $date | capture(\"(?<datetime>.*)(?<sign>[-+])(?<hours>[0-9]{2}):(?<minutes>[0-9]{2})$\") as $parts | ($parts.datetime | strptime(\"%Y-%m-%dT%H:%M:%S\") | mktime) as $timestamp | (($parts.hours | tonumber) * 3600 + ($parts.minutes | tonumber) * 60) as $offset_seconds | ($offset_seconds * if $parts.sign == \"-\" then -1 else 1 end) as $adjusted_offset | ($timestamp - $adjusted_offset) as $utc_timestamp | $utc_timestamp < now",
+        "icon": "DefaultProperty",
+        "title": "SLA Breached",
+        "type": "boolean"
+      }
+    },
+    "icon": "Servicenow",
+    "identifier": "servicenowIncident",
+    "mirrorProperties": {
+      "assigned_service_now_user": {
+        "path": "assigned_user.$identifier",
+        "title": "Assigned ServiceNow User"
+      },
+      "sla_expires": {
+        "path": "task_sla.planned_end_time",
+        "title": "SLA Expires"
+      }
+    },
+    "ownership": {
+      "title": "Assignment Group",
+      "type": "Direct"
+    },
+    "relations": {
+      "assigned_user": {
+        "many": false,
+        "required": false,
+        "target": "service_now_user",
+        "title": "Assigned User"
+      },
+      "task_sla": {
+        "many": false,
+        "required": false,
+        "target": "servicenowTaskSla",
+        "title": "Task SLA"
+      }
+    },
+    "schema": {
+      "properties": {
+        "assigned_to": {
+          "format": "user",
+          "title": "Assigned To",
+          "type": "string"
+        },
+        "business_service": {
+          "title": "Business Service",
+          "type": "string"
+        },
+        "calendar_duration": {
+          "title": "Calendar Duration",
+          "type": "string"
+        },
+        "caller_id": {
+          "format": "user",
+          "title": "Caller Id",
+          "type": "string"
+        },
+        "category": {
+          "title": "Category",
+          "type": "string"
+        },
+        "close_code": {
+          "title": "Close Code",
+          "type": "string"
+        },
+        "close_notes": {
+          "title": "Close Notes",
+          "type": "string"
+        },
+        "comments": {
+          "format": "markdown",
+          "title": "Comments",
+          "type": "string"
+        },
+        "configuration_item": {
+          "title": "Configuration Item",
+          "type": "string"
+        },
+        "contactType": {
+          "title": "Contact Type",
+          "type": "string"
+        },
+        "createdBy": {
+          "title": "Created By",
+          "type": "string"
+        },
+        "createdOn": {
+          "format": "date-time",
+          "title": "Created On",
+          "type": "string"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "impact": {
+          "title": "Impact",
+          "type": "string"
+        },
+        "incident_state": {
+          "icon": "DefaultProperty",
+          "title": "State",
+          "type": "string"
+        },
+        "isActive": {
+          "title": "Is Active",
+          "type": "boolean"
+        },
+        "lessons_learned": {
+          "title": "Lessons Learned",
+          "type": "string"
+        },
+        "number": {
+          "title": "Number",
+          "type": "string"
+        },
+        "opened_at": {
+          "format": "date-time",
+          "title": "Opened At",
+          "type": "string"
+        },
+        "opened_by": {
+          "format": "user",
+          "title": "Opened By",
+          "type": "string"
+        },
+        "priority": {
+          "title": "Priority",
+          "type": "string"
+        },
+        "reassignment_count": {
+          "title": "Reassignment Count",
+          "type": "number"
+        },
+        "reopenCount": {
+          "title": "Reopen Count",
+          "type": "string"
+        },
+        "resolved_at": {
+          "format": "date-time",
+          "title": "Resolved At",
+          "type": "string"
+        },
+        "resolved_by": {
+          "format": "user",
+          "title": "Resolved By",
+          "type": "string"
+        },
+        "severity": {
+          "title": "Severity",
+          "type": "string"
+        },
+        "short_description": {
+          "title": "Short Description",
+          "type": "string"
+        },
+        "sys_id": {
+          "description": "This is the unique id within ServiceNow that is used to build URL",
+          "icon": "DefaultProperty",
+          "title": "SysId",
+          "type": "string"
+        },
+        "urgency": {
+          "title": "Urgency",
+          "type": "string"
+        },
+        "work_notes": {
+          "format": "markdown",
+          "title": "Work Notes",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "title": "ServiceNow Incident"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {
+      "open_in_sn": {
+        "calculation": "\"https://federatedinsurance.service-now.com/now/sow/record/cmdb_ci_outage/\" + .identifier",
+        "format": "url",
+        "icon": "Servicenow",
+        "title": "Open in SN",
+        "type": "string"
+      }
+    },
+    "icon": "Servicenow",
+    "identifier": "servicenowOutage",
+    "mirrorProperties": {},
+    "relations": {},
+    "schema": {
+      "properties": {
+        "begin": {
+          "format": "date-time",
+          "title": "Begin",
+          "type": "string"
+        },
+        "configuration_item": {
+          "title": "Configuration Item",
+          "type": "string"
+        },
+        "created_by": {
+          "format": "user",
+          "title": "Created By",
+          "type": "string"
+        },
+        "created_on": {
+          "format": "date-time",
+          "title": "Created On",
+          "type": "string"
+        },
+        "details": {
+          "title": "Details",
+          "type": "string"
+        },
+        "display_on_portal": {
+          "title": "Display On Portal",
+          "type": "boolean"
+        },
+        "duration": {
+          "title": "Duration",
+          "type": "string"
+        },
+        "end": {
+          "format": "date-time",
+          "title": "End",
+          "type": "string"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        },
+        "number": {
+          "title": "Number",
+          "type": "string"
+        },
+        "task_number": {
+          "title": "Task Number",
+          "type": "string"
+        },
+        "task_sys_id": {
+          "title": "Task Sys Id",
+          "type": "string"
+        },
+        "type": {
+          "title": "Type",
+          "type": "string"
+        },
+        "work_note": {
+          "title": "Work Note",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "title": "ServiceNow Outage"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {
+      "open_in_sn": {
+        "calculation": "\"https://federatedinsurance.service-now.com/now/sow/record/task_sla/\" + .identifier",
+        "format": "url",
+        "icon": "Servicenow",
+        "title": "Open in SN",
+        "type": "string"
+      }
+    },
+    "icon": "Servicenow",
+    "identifier": "servicenowTaskSla",
+    "mirrorProperties": {},
+    "relations": {},
+    "schema": {
+      "properties": {
+        "active": {
+          "title": "Active",
+          "type": "boolean"
+        },
+        "business_duration": {
+          "title": "Business duration",
+          "type": "string"
+        },
+        "business_pause_duration": {
+          "title": "Business Pause Duration",
+          "type": "string"
+        },
+        "business_time_left": {
+          "title": "Business Time Left",
+          "type": "string"
+        },
+        "created_by": {
+          "format": "user",
+          "title": "Created By",
+          "type": "string"
+        },
+        "created_on": {
+          "format": "date-time",
+          "title": "Created On",
+          "type": "string"
+        },
+        "duration": {
+          "title": "Duration",
+          "type": "string"
+        },
+        "end_time": {
+          "format": "date-time",
+          "title": "End Time",
+          "type": "string"
+        },
+        "has_breached": {
+          "title": "Has Breached",
+          "type": "boolean"
+        },
+        "original_breach_time": {
+          "format": "date-time",
+          "title": "Original Breach Time",
+          "type": "string"
+        },
+        "pause_duration": {
+          "title": "Pause Duration",
+          "type": "string"
+        },
+        "pause_time": {
+          "format": "date-time",
+          "title": "Pause Time",
+          "type": "string"
+        },
+        "percentage": {
+          "title": "Percentage",
+          "type": "string"
+        },
+        "planned_end_time": {
+          "format": "date-time",
+          "title": "Planned End Time",
+          "type": "string"
+        },
+        "schedule": {
+          "title": "Schedule",
+          "type": "string"
+        },
+        "sla": {
+          "title": "SLA",
+          "type": "string"
+        },
+        "stage": {
+          "title": "Stage",
+          "type": "string"
+        },
+        "start_time": {
+          "format": "date-time",
+          "title": "Start Time",
+          "type": "string"
+        },
+        "task_number": {
+          "title": "Task Number",
+          "type": "string"
+        },
+        "time_left": {
+          "title": "Time Left",
+          "type": "string"
+        },
+        "updated_by": {
+          "format": "user",
+          "title": "Updated By",
+          "type": "string"
+        },
+        "updated_on": {
+          "format": "date-time",
+          "title": "Updated On",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "title": "ServiceNow Task SLA"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {
+      "open_in_sonar_qube": {
+        "calculation": "\"http://sonar.fedins.com:9000/project/activity?id=\" + .relations.sonarQubeProject.identifier + \"&branch=\" + .properties.branch + \"&selected_date=\" + .properties.createdAt",
+        "format": "url",
+        "icon": "sonarqube",
+        "title": "Open in SonarQube",
+        "type": "string"
+      }
+    },
+    "icon": "sonarqube",
+    "identifier": "sonarQubeAnalysis",
+    "mirrorProperties": {},
+    "ownership": {
+      "path": "sonarQubeProject.ado_repository.ado_repo_to_team",
+      "title": "Team",
+      "type": "Inherited"
+    },
+    "relations": {
+      "sonarQubeProject": {
+        "many": false,
+        "required": false,
+        "target": "sonarQubeProject",
+        "title": "SonarQube Project"
+      }
+    },
+    "schema": {
+      "properties": {
+        "branch": {
+          "icon": "GitVersion",
+          "title": "Branch",
+          "type": "string"
+        },
+        "coverage": {
+          "title": "Coverage",
+          "type": "number"
+        },
+        "createdAt": {
+          "format": "date-time",
+          "icon": "DefaultProperty",
+          "title": "Analysis Date",
+          "type": "string"
+        },
+        "duplications": {
+          "title": "Duplications",
+          "type": "number"
+        },
+        "newIssues": {
+          "title": "New Issues",
+          "type": "number"
+        }
+      },
+      "required": []
+    },
+    "title": "SonarQube Analysis"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {
+      "open_in_sonar_qube": {
+        "calculation": "\"http://sonar.fedins.com:9000/project/issues?open=\" + .identifier + \"&id=\" + .relations.sonarQubeProject.identifier",
+        "colorized": false,
+        "description": "Open the Issue in SonarQube",
+        "format": "url",
+        "icon": "sonarqube",
+        "title": "Open in SonarQube",
+        "type": "string"
+      }
+    },
+    "icon": "sonarqube",
+    "identifier": "sonarQubeIssue",
+    "mirrorProperties": {},
+    "ownership": {
+      "path": "sonarQubeProject.ado_repository.ado_repo_to_team",
+      "title": "Team",
+      "type": "Inherited"
+    },
+    "relations": {
+      "sonarQubeProject": {
+        "many": false,
+        "required": false,
+        "target": "sonarQubeProject",
+        "title": "SonarQube Project"
+      }
+    },
+    "schema": {
+      "properties": {
+        "assignees": {
+          "icon": "TwoUsers",
+          "title": "Assignees",
+          "type": "string"
+        },
+        "createdAt": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "severity": {
+          "enum": [
+            "BLOCKER",
+            "CRITICAL",
+            "INFO",
+            "MAJOR",
+            "MINOR"
+          ],
+          "enumColors": {
+            "BLOCKER": "red",
+            "CRITICAL": "red",
+            "INFO": "blue",
+            "MAJOR": "orange",
+            "MINOR": "yellow"
+          },
+          "icon": "DefaultProperty",
+          "title": "Severity",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "CLOSED",
+            "CONFIRMED",
+            "OPEN",
+            "REOPENED",
+            "RESOLVED"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "tags": {
+          "title": "Tags",
+          "type": "array"
+        },
+        "type": {
+          "enum": [
+            "BUG",
+            "CODE_SMELL",
+            "VULNERABILITY"
+          ],
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "title": "SonarQube Issue"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {
+      "open_in_sonar_qube": {
+        "calculation": "\"http://sonar.fedins.com:9000/portfolio?id=\" + .identifier",
+        "description": "Open this Portfolio in SonarQube",
+        "format": "url",
+        "icon": "sonarqube",
+        "title": "Open in SonarQube",
+        "type": "string"
+      }
+    },
+    "icon": "sonarqube",
+    "identifier": "sonarQubePortfolio",
+    "mirrorProperties": {},
+    "relations": {
+      "referencedBy": {
+        "many": true,
+        "required": false,
+        "target": "sonarQubePortfolio",
+        "title": "Referenced By"
+      },
+      "subPortfolios": {
+        "many": true,
+        "required": false,
+        "target": "sonarQubePortfolio",
+        "title": "Sub Portfolios"
+      }
+    },
+    "schema": {
+      "properties": {
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "disabled": {
+          "title": "Disabled",
+          "type": "boolean"
+        },
+        "selectionMode": {
+          "enum": [
+            "AUTO",
+            "MANUAL",
+            "NONE"
+          ],
+          "enumColors": {
+            "AUTO": "blue",
+            "MANUAL": "green",
+            "NONE": "lightGray"
+          },
+          "title": "Selection Mode",
+          "type": "string"
+        },
+        "visibility": {
+          "enum": [
+            "PRIVATE",
+            "PUBLIC"
+          ],
+          "enumColors": {
+            "PRIVATE": "lightGray",
+            "PUBLIC": "green"
+          },
+          "title": "Visibility",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "title": "SonarQube Portfolio"
+  },
+  {
+    "aggregationProperties": {
+      "criticalOpenIssues": {
+        "calculationSpec": {
+          "calculationBy": "entities",
+          "func": "count"
+        },
+        "icon": "DefaultProperty",
+        "query": {
+          "combinator": "and",
+          "rules": [
+            {
+              "operator": "=",
+              "property": "severity",
+              "value": "CRITICAL"
+            },
+            {
+              "operator": "in",
+              "property": "status",
+              "value": [
+                "OPEN",
+                "REOPENED"
+              ]
+            }
+          ]
+        },
+        "target": "sonarQubeIssue",
+        "title": "Number Of Open Critical Issues",
+        "type": "number"
+      },
+      "numberOfOpenIssues": {
+        "calculationSpec": {
+          "calculationBy": "entities",
+          "func": "count"
+        },
+        "icon": "DefaultProperty",
+        "query": {
+          "combinator": "and",
+          "rules": [
+            {
+              "operator": "in",
+              "property": "status",
+              "value": [
+                "OPEN",
+                "REOPENED"
+              ]
+            }
+          ]
+        },
+        "target": "sonarQubeIssue",
+        "title": "Number Of Open Issues",
+        "type": "number"
+      }
+    },
+    "calculationProperties": {
+      "open_in_sonar_qube": {
+        "calculation": "\"http://sonar.fedins.com:9000/dashboard?id=\" + .identifier + \"&branch=\" + (.properties.lastAnalysisBranch | @uri)",
+        "format": "url",
+        "icon": "sonarqube",
+        "title": "Open in SonarQube",
+        "type": "string"
+      }
+    },
+    "icon": "sonarqube",
+    "identifier": "sonarQubeProject",
+    "mirrorProperties": {},
+    "ownership": {
+      "path": "ado_repository.ado_repo_to_team",
+      "title": "Team",
+      "type": "Inherited"
+    },
+    "relations": {
+      "ado_repository": {
+        "many": false,
+        "required": false,
+        "target": "service",
+        "title": "ADO Repository"
+      }
+    },
+    "schema": {
+      "properties": {
+        "coverage": {
+          "icon": "DefaultProperty",
+          "title": "Coverage",
+          "type": "number"
+        },
+        "is_orphan_reviewed": {
+          "default": false,
+          "icon": "Checklist",
+          "title": "Is Orphan Reviewed?",
+          "type": "boolean"
+        },
+        "lastAnalysisBranch": {
+          "icon": "Git",
+          "title": "Last Analysis Branch",
+          "type": "string"
+        },
+        "lastAnalysisDate": {
+          "format": "date-time",
+          "icon": "Clock",
+          "title": "Last Analysis Date",
+          "type": "string"
+        },
+        "linesToCover": {
+          "icon": "DefaultProperty",
+          "title": "Lines To Cover",
+          "type": "number"
+        },
+        "numberOfBugs": {
+          "icon": "DefaultProperty",
+          "title": "Number Of Bugs",
+          "type": "number"
+        },
+        "numberOfCodeSmells": {
+          "icon": "DefaultProperty",
+          "title": "Number Of Code Smells",
+          "type": "number"
+        },
+        "numberOfDuplications": {
+          "icon": "DefaultProperty",
+          "title": "Number Of Duplications",
+          "type": "number"
+        },
+        "numberOfHotSpots": {
+          "icon": "Alert",
+          "title": "Number Of Security Hotspots",
+          "type": "number"
+        },
+        "numberOfVulnerabilities": {
+          "icon": "Alert",
+          "title": "Number Of Vulnerabilities",
+          "type": "number"
+        },
+        "qualityGateName": {
+          "title": "Quality Gate Name",
+          "type": "string"
+        },
+        "qualityGateStatus": {
+          "enum": [
+            "ERROR",
+            "OK",
+            "WARN"
+          ],
+          "enumColors": {
+            "ERROR": "red",
+            "OK": "green",
+            "WARN": "yellow"
+          },
+          "title": "Quality Gate Status",
+          "type": "string"
+        },
+        "uncoveredLines": {
+          "icon": "DefaultProperty",
+          "title": "Uncovered Lines",
+          "type": "number"
+        }
+      },
+      "required": []
+    },
+    "title": "SonarQube Project"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "icon": "Bar",
+    "identifier": "survey",
+    "mirrorProperties": {},
+    "relations": {
+      "survey_template": {
+        "many": false,
+        "required": false,
+        "target": "survey_template",
+        "title": "Survey Template"
+      }
+    },
+    "schema": {
+      "properties": {
+        "description": {
+          "format": "markdown",
+          "title": "Description",
+          "type": "string"
+        },
+        "end_date": {
+          "format": "date-time",
+          "title": "End date",
+          "type": "string"
+        },
+        "start_date": {
+          "format": "date-time",
+          "title": "Start date",
+          "type": "string"
+        },
+        "version": {
+          "icon": "DefaultProperty",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "title": "Survey"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "icon": "GroupBy",
+    "identifier": "survey_template",
+    "mirrorProperties": {},
+    "relations": {},
+    "schema": {
+      "properties": {
+        "description": {
+          "title": "Description",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "title": "Survey Template"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "description": "These are all of the React-based UI Components in our toolbox today.",
+    "icon": "Template",
+    "identifier": "ui_components",
+    "mirrorProperties": {},
+    "ownership": {
+      "path": "comes_from.ado_repo_to_team",
+      "type": "Inherited"
+    },
+    "relations": {
+      "comes_from": {
+        "many": false,
+        "required": false,
+        "target": "service",
+        "title": "Repository"
+      }
+    },
+    "schema": {
+      "properties": {
+        "example": {
+          "description": "This is the URL to the hosted site with examples for this component.",
+          "format": "url",
+          "spec": "embedded-url",
+          "title": "Example",
+          "type": "string"
+        },
+        "language": {
+          "default": "React",
+          "enum": [
+            "OutSystems",
+            "React"
+          ],
+          "enumColors": {
+            "OutSystems": "yellow",
+            "React": "green"
+          },
+          "title": "Language",
+          "type": "string"
+        },
+        "source": {
+          "description": "URL to the source code for this component.",
+          "format": "url",
+          "title": "Source",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source"
+      ]
+    },
+    "title": "UI Components"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {
+      "request_url": {
+        "calculation": "\"http://sharepoint.fedins.com/sites/iswork/SitePages/RequestSummary.aspx?RequestID=\" + .relations.request.identifier",
+        "format": "url",
+        "icon": "Link",
+        "title": "Open in IS Request System",
+        "type": "string"
+      }
+    },
+    "description": "IS Work Assignment",
+    "icon": "List",
+    "identifier": "work_assignment",
+    "mirrorProperties": {
+      "actual_hours": {
+        "path": "request.actual_hours",
+        "title": "Actual Hours"
+      },
+      "desired_completion_date": {
+        "path": "request.desired_completion_date",
+        "title": "Desired Completion Date"
+      },
+      "desired_completion_note": {
+        "path": "request.desired_completion_note",
+        "title": "Desired Completion Note"
+      },
+      "owning_business_area": {
+        "path": "request.owning_business_area",
+        "title": "Owning Business Area"
+      },
+      "planned_completion_date": {
+        "path": "request.planned_completion_date",
+        "title": "Planned Completion Date"
+      },
+      "request_contact": {
+        "path": "request.request_contact",
+        "title": "Request Contact"
+      },
+      "request_estimate_high": {
+        "path": "request.request_estimate_high",
+        "title": "Request Estimate High"
+      },
+      "request_estimate_low": {
+        "path": "request.request_estimate_low",
+        "title": "Request Estimate Low"
+      },
+      "request_status": {
+        "path": "request.status",
+        "title": "Request Status"
+      },
+      "work_category": {
+        "path": "request.work_category",
+        "title": "Work Category"
+      }
+    },
+    "relations": {
+      "request": {
+        "many": false,
+        "required": false,
+        "target": "work_request",
+        "title": "Request"
+      }
+    },
+    "schema": {
+      "properties": {
+        "application_area": {
+          "title": "Application Area",
+          "type": "string"
+        },
+        "assigned": {
+          "items": {
+            "format": "user",
+            "type": "string"
+          },
+          "title": "Assigned",
+          "type": "array"
+        },
+        "beta_date": {
+          "format": "date-time",
+          "title": "Beta Date",
+          "type": "string"
+        },
+        "planning_date": {
+          "title": "Planning Date",
+          "type": "string"
+        },
+        "rank": {
+          "title": "Rank",
+          "type": "string"
+        },
+        "stage_date": {
+          "format": "date-time",
+          "title": "Stage Date",
+          "type": "string"
+        },
+        "status": {
+          "title": "Status",
+          "type": "string"
+        },
+        "team_contact": {
+          "title": "Team Contact",
+          "type": "string"
+        },
+        "team_prod_date": {
+          "format": "date-time",
+          "title": "Team Planned Prod Date",
+          "type": "string"
+        },
+        "team_work_status": {
+          "title": "Team Work Status",
+          "type": "string"
+        },
+        "work_direction": {
+          "title": "Work Direction",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "title": "Work Assignment"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {
+      "request_url": {
+        "calculation": "\"http://sharepoint.fedins.com/sites/iswork/SitePages/RequestSummary.aspx?RequestID=\" + .properties.request_id",
+        "format": "url",
+        "icon": "Link",
+        "title": "Open in IS Request System",
+        "type": "string"
+      }
+    },
+    "description": "IS Work Request",
+    "icon": "List",
+    "identifier": "work_request",
+    "mirrorProperties": {},
+    "relations": {},
+    "schema": {
+      "properties": {
+        "actual_hours": {
+          "title": "Actual Hours",
+          "type": "string"
+        },
+        "additional_comments": {
+          "title": "Additional Comments",
+          "type": "string"
+        },
+        "business_technology_manager": {
+          "title": "Business Technology Manager",
+          "type": "string"
+        },
+        "business_value": {
+          "title": "Business Value",
+          "type": "string"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "desired_completion_date": {
+          "format": "date-time",
+          "title": "Desired Completion Date",
+          "type": "string"
+        },
+        "desired_completion_note": {
+          "title": "Desired Completion Note",
+          "type": "string"
+        },
+        "managing_team": {
+          "title": "Managing Team",
+          "type": "string"
+        },
+        "owning_business_area": {
+          "title": "Owning Business Area",
+          "type": "string"
+        },
+        "planned_completion_date": {
+          "format": "date-time",
+          "title": "Planned Completion Date",
+          "type": "string"
+        },
+        "purpose": {
+          "title": "Purpose",
+          "type": "string"
+        },
+        "request_contact": {
+          "format": "user",
+          "title": "Request Contact",
+          "type": "string"
+        },
+        "request_estimate_high": {
+          "title": "Request Estimate High",
+          "type": "number"
+        },
+        "request_estimate_low": {
+          "title": "Request Estimate Low",
+          "type": "number"
+        },
+        "request_id": {
+          "title": "Request Id",
+          "type": "string"
+        },
+        "requester": {
+          "title": "Requester",
+          "type": "string"
+        },
+        "risk_level": {
+          "title": "Risk Level",
+          "type": "string"
+        },
+        "sponsor": {
+          "title": "Sponsor",
+          "type": "string"
+        },
+        "status": {
+          "title": "Status",
+          "type": "string"
+        },
+        "submitter": {
+          "title": "Submitter",
+          "type": "string"
+        },
+        "work_category": {
+          "title": "Work Category",
+          "type": "string"
+        },
+        "workflow_business_area": {
+          "title": "Workflow Business Area",
+          "type": "string"
+        },
+        "workspace": {
+          "format": "url",
+          "icon": "Link",
+          "title": "Workspace",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "title": "Work Request"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {
+      "request_url": {
+        "calculation": "\"http://sharepoint.fedins.com/sites/iswork/SitePages/RequestSummary.aspx?RequestID=\" + .relations.request.identifier",
+        "format": "url",
+        "icon": "Link",
+        "title": "Open in IS Request System",
+        "type": "string"
+      }
+    },
+    "description": "IS Work Request Estimate",
+    "icon": "List",
+    "identifier": "work_request_estimate",
+    "mirrorProperties": {
+      "desired_completion_date": {
+        "path": "request.desired_completion_date",
+        "title": "Desired Completion Date"
+      },
+      "desired_completion_note": {
+        "path": "request.desired_completion_note",
+        "title": "Desired Completion Note"
+      },
+      "owning_business_area": {
+        "path": "request.owning_business_area",
+        "title": "Owning Business Area"
+      },
+      "planned_completion_date": {
+        "path": "request.planned_completion_date",
+        "title": "Planned Completion Date"
+      },
+      "request_status": {
+        "path": "request.status",
+        "title": "Request Status"
+      }
+    },
+    "relations": {
+      "request": {
+        "many": false,
+        "required": false,
+        "target": "work_request",
+        "title": "Request"
+      }
+    },
+    "schema": {
+      "properties": {
+        "application_area": {
+          "title": "Application Area",
+          "type": "string"
+        },
+        "assigned": {
+          "items": {
+            "format": "user",
+            "type": "string"
+          },
+          "title": "Assigned",
+          "type": "array"
+        },
+        "assumptions_risks_constraints": {
+          "title": "Assumptions Risks Constraints",
+          "type": "string"
+        },
+        "detail": {
+          "title": "Detail",
+          "type": "string"
+        },
+        "due_date": {
+          "format": "date-time",
+          "title": "Due Date",
+          "type": "string"
+        },
+        "estimate_direction": {
+          "title": "Estimate Direction",
+          "type": "string"
+        },
+        "impact": {
+          "title": "Impact",
+          "type": "boolean"
+        },
+        "request_estimate_high": {
+          "title": "Request Estimate High",
+          "type": "number"
+        },
+        "request_estimate_low": {
+          "title": "Request Estimate Low",
+          "type": "number"
+        },
+        "status": {
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "title": "Work Request Estimate"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {
+      "in_current_sprint": {
+        "calculation": ".properties as $props |   $props.iteration_start_date | strptime(\"%Y-%m-%dT%H:%M:%SZ\") | mktime as $iterationStartDate |   $props.iteration_finish_date | strptime(\"%Y-%m-%dT%H:%M:%SZ\") | mktime as $iterationFinishDate |   now as $currentTime | ($currentTime >= $iterationStartDate and $currentTime <= $iterationFinishDate) ",
+        "icon": "DefaultProperty",
+        "title": "In Current Sprint?",
+        "type": "boolean"
+      },
+      "link": {
+        "calculation": "\"https://dev.azure.com/fedins/\" + .relations.project.title + \"/_workitems/edit/\" + .identifier",
+        "format": "url",
+        "icon": "AzureDevops",
+        "title": "Open in ADO",
+        "type": "string"
+      },
+      "open_in_is_request_system": {
+        "calculation": "if (.properties.is_request_number | test(\"^[0-9]+$\")) then \"http://sharepoint.fedins.com/sites/iswork/SitePages/RequestSummary.aspx?RequestID=\" + .properties.is_request_number else \"\" end",
+        "format": "url",
+        "icon": "Link",
+        "title": "Open in IS Request System",
+        "type": "string"
+      },
+      "work_item_custom_sort": {
+        "calculation": "if .properties.type == \"Task\" then .relations.parent_work_item.identifier+.identifier else .identifier+\"000000\" end",
+        "icon": "",
+        "title": "Work Item Custom Sort",
+        "type": "string"
+      }
+    },
+    "icon": "AzureDevops",
+    "identifier": "workItem",
+    "mirrorProperties": {
+      "iteration_finish_date": {
+        "path": "work_item_iteration.finish_date",
+        "title": "Iteration Finish Date"
+      },
+      "iteration_start_date": {
+        "path": "work_item_iteration.start_date",
+        "title": "Iteration Start Date"
+      }
+    },
+    "relations": {
+      "child_work_items": {
+        "many": true,
+        "required": false,
+        "target": "workItem",
+        "title": "Child Work Items"
+      },
+      "parent_work_item": {
+        "many": false,
+        "required": false,
+        "target": "workItem",
+        "title": "Parent Work Item"
+      },
+      "project": {
+        "many": false,
+        "required": true,
+        "target": "project",
+        "title": "Project"
+      },
+      "work_item_iteration": {
+        "many": false,
+        "required": false,
+        "target": "azure_dev_ops_iteration",
+        "title": "Work Item Iteration"
+      }
+    },
+    "schema": {
+      "properties": {
+        "assigned_to": {
+          "format": "user",
+          "icon": "User",
+          "title": "Assigned To",
+          "type": "string"
+        },
+        "changedBy": {
+          "description": "The person who last changed the work item",
+          "format": "user",
+          "icon": "User",
+          "title": "Changed By",
+          "type": "string"
+        },
+        "changedDate": {
+          "description": "The date and time when the work item was last changed",
+          "format": "date-time",
+          "title": "Changed Date",
+          "type": "string"
+        },
+        "completed_work": {
+          "title": "Completed Work",
+          "type": "number"
+        },
+        "createdBy": {
+          "description": "The person who created the work item",
+          "format": "user",
+          "icon": "User",
+          "title": "Created By",
+          "type": "string"
+        },
+        "createdDate": {
+          "description": "The date and time when the work item was created",
+          "format": "date-time",
+          "title": "Created Date",
+          "type": "string"
+        },
+        "description": {
+          "description": "A detailed description of the work item",
+          "format": "markdown",
+          "title": "Description",
+          "type": "string"
+        },
+        "effort": {
+          "description": "The estimated effort for the work item",
+          "title": "Effort",
+          "type": "number"
+        },
+        "effort_size": {
+          "title": "Effort Size",
+          "type": "number"
+        },
+        "is_request_number": {
+          "title": "IS Request Number",
+          "type": "string"
+        },
+        "iteration": {
+          "icon": "Calendar",
+          "title": "Iteration",
+          "type": "string"
+        },
+        "original_estimate": {
+          "title": "Original Estimate",
+          "type": "number"
+        },
+        "priority": {
+          "title": "Priority",
+          "type": "number"
+        },
+        "reason": {
+          "description": "The title of the work item",
+          "title": "Reason",
+          "type": "string"
+        },
+        "remaining_work": {
+          "title": "Remaining Work",
+          "type": "number"
+        },
+        "state": {
+          "description": "The current state of the work item (e.g., New, Active, Closed)",
+          "icon": "AzureDevops",
+          "title": "State",
+          "type": "string"
+        },
+        "tags": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Tags",
+          "type": "array"
+        },
+        "type": {
+          "description": "The type of work item (e.g., Bug, Task, User Story)",
+          "enum": [
+            "Bug",
+            "Epic",
+            "Feature",
+            "Issue",
+            "Product Backlog Item",
+            "Requirement",
+            "Shared Parameter",
+            "Task",
+            "Test Case",
+            "Test Plan",
+            "Test Suite",
+            "User Story"
+          ],
+          "enumColors": {
+            "Bug": "purple",
+            "Epic": "orange",
+            "Feature": "red",
+            "Issue": "green",
+            "Product Backlog Item": "turquoise",
+            "Requirement": "lightGray",
+            "Shared Parameter": "lightGray",
+            "Task": "blue",
+            "Test Case": "lightGray",
+            "Test Plan": "lightGray",
+            "Test Suite": "lightGray",
+            "User Story": "darkGray"
+          },
+          "icon": "AzureDevops",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "title": "Work Item"
+  }
+]

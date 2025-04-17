@@ -1,0 +1,345 @@
+[
+  {
+    "blueprint": "service",
+    "identifier": "CodeQuality",
+    "levels": [
+      {
+        "color": "bronze",
+        "title": "Bronze"
+      },
+      {
+        "color": "gold",
+        "title": "Gold"
+      },
+      {
+        "color": "paleBlue",
+        "title": "Basic"
+      },
+      {
+        "color": "silver",
+        "title": "Silver"
+      }
+    ],
+    "rules": [
+      {
+        "description": "Achieving high code coverage for excellent quality.",
+        "identifier": "coverage80plus",
+        "level": "Gold",
+        "query": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "operator": ">=",
+              "property": "sonar_qube_code_coverage",
+              "value": 80
+            },
+            {
+              "operator": "isNotEmpty",
+              "property": "sonar_qube_code_coverage"
+            }
+          ]
+        },
+        "title": "Code coverage ≥ 80%"
+      },
+      {
+        "description": "Ensuring acceptable code coverage for better code quality.",
+        "identifier": "coverage50plus",
+        "level": "Bronze",
+        "query": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "operator": ">=",
+              "property": "sonar_qube_code_coverage",
+              "value": 50
+            },
+            {
+              "operator": "isNotEmpty",
+              "property": "sonar_qube_code_coverage"
+            }
+          ]
+        },
+        "title": "Code coverage ≥ 50%"
+      },
+      {
+        "description": "Ensuring acceptable code coverage for better code quality.",
+        "identifier": "coverage60plus",
+        "level": "Silver",
+        "query": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "operator": ">=",
+              "property": "sonar_qube_code_coverage",
+              "value": 60
+            },
+            {
+              "operator": "isNotEmpty",
+              "property": "sonar_qube_code_coverage"
+            }
+          ]
+        },
+        "title": "Code coverage ≥ 60%"
+      },
+      {
+        "description": "Keeping bugs under control.",
+        "identifier": "bugsZero",
+        "level": "Silver",
+        "query": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "operator": "=",
+              "property": "sonar_qube_bugs",
+              "value": 0
+            },
+            {
+              "operator": "isNotEmpty",
+              "property": "sonar_qube_bugs"
+            }
+          ]
+        },
+        "title": "Zero Potential bugs"
+      },
+      {
+        "description": "Keeping security hotspots under control.",
+        "identifier": "secHotspotsZero",
+        "level": "Bronze",
+        "query": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "operator": "=",
+              "property": "sonar_qube_security_hotspots",
+              "value": 0
+            },
+            {
+              "operator": "isNotEmpty",
+              "property": "sonar_qube_security_hotspots"
+            }
+          ]
+        },
+        "title": "Zero Security hotspots"
+      },
+      {
+        "description": "Keeping vulnerabilities under control.",
+        "identifier": "vulnerabilitiesZero",
+        "level": "Bronze",
+        "query": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "operator": "=",
+              "property": "sonar_qube_vulnerabilities",
+              "value": 0
+            },
+            {
+              "operator": "isNotEmpty",
+              "property": "sonar_qube_vulnerabilities"
+            }
+          ]
+        },
+        "title": "Zero vulnerabilities"
+      },
+      {
+        "description": "Reducing code smells for cleaner code.",
+        "identifier": "codeSmellsZero",
+        "level": "Gold",
+        "query": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "operator": "=",
+              "property": "sonar_qube_code_smells",
+              "value": 0
+            },
+            {
+              "operator": "isNotEmpty",
+              "property": "sonar_qube_code_smells"
+            }
+          ]
+        },
+        "title": "Zero Code smells"
+      }
+    ],
+    "title": "Code Quality"
+  },
+  {
+    "blueprint": "service",
+    "identifier": "DependencyScanning",
+    "levels": [
+      {
+        "color": "gold",
+        "title": "Participation Trophy"
+      },
+      {
+        "color": "paleBlue",
+        "title": "Basic"
+      }
+    ],
+    "rules": [
+      {
+        "identifier": "hasReport",
+        "level": "Participation Trophy",
+        "query": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "operator": "isNotEmpty",
+              "property": "nexus_iq_critical_violations"
+            },
+            {
+              "operator": "isNotEmpty",
+              "property": "nexus_iq_moderate_violations"
+            },
+            {
+              "operator": "isNotEmpty",
+              "property": "nexus_iq_severe_violations"
+            }
+          ]
+        },
+        "title": "Has Report"
+      }
+    ],
+    "title": "Dependency Scanning"
+  },
+  {
+    "blueprint": "service",
+    "identifier": "Documentation",
+    "levels": [
+      {
+        "color": "bronze",
+        "title": "Bronze"
+      },
+      {
+        "color": "gold",
+        "title": "Gold"
+      },
+      {
+        "color": "paleBlue",
+        "title": "Basic"
+      },
+      {
+        "color": "silver",
+        "title": "Silver"
+      }
+    ],
+    "rules": [
+      {
+        "identifier": "hasDocumentedReadme",
+        "level": "Gold",
+        "query": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "operator": "doesNotContains",
+              "property": "readme",
+              "value": "TODO: Give a short introduction of your project."
+            }
+          ]
+        },
+        "title": "Filled out README"
+      },
+      {
+        "identifier": "hasReadme",
+        "level": "Bronze",
+        "query": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "operator": "isNotEmpty",
+              "property": "readme"
+            }
+          ]
+        },
+        "title": "Has README"
+      }
+    ],
+    "title": "Documentation"
+  },
+  {
+    "blueprint": "wsrr_business_services",
+    "identifier": "WSRRStandards",
+    "levels": [
+      {
+        "color": "green",
+        "title": "Nice"
+      },
+      {
+        "color": "red",
+        "title": "Boo"
+      },
+      {
+        "color": "yellow",
+        "title": "Meh"
+      }
+    ],
+    "rules": [
+      {
+        "identifier": "documentation",
+        "level": "Meh",
+        "query": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "operator": "!=",
+              "property": "description",
+              "value": ""
+            }
+          ]
+        },
+        "title": "Documentation"
+      },
+      {
+        "identifier": "hasOwningOrg",
+        "level": "Meh",
+        "query": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "operator": "!=",
+              "property": "owner_email",
+              "value": ""
+            },
+            {
+              "operator": "!=",
+              "property": "owner",
+              "value": ""
+            }
+          ]
+        },
+        "title": "Has Owning Organization"
+      },
+      {
+        "identifier": "hasPortTeam",
+        "level": "Nice",
+        "query": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "operator": "isNotEmpty",
+              "property": "$team"
+            }
+          ]
+        },
+        "title": "Has Port Team"
+      },
+      {
+        "identifier": "standards",
+        "level": "Meh",
+        "query": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "operator": "contains",
+              "property": "name",
+              "value": "BusinessService"
+            }
+          ]
+        },
+        "title": "Standards"
+      }
+    ],
+    "title": "WSRR Standards"
+  }
+]

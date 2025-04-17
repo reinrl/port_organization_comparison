@@ -10,10 +10,10 @@ Clone the repository locally, and install dependencies:
 npm install
 ```
 
-Create one file per environment (Port organization). It should follow this format:
+Create one `.cjs` file per environment (Port organization). It should follow this format:
 
 ```js
-// file: /src/envs/dev.js
+// file: /src/envs/dev.cjs
 const portConfig = {
   clientId: "string",
   clientSecret: "string",
@@ -29,7 +29,7 @@ To retrieve your clientId and clientSecret, open your [Port application}(https:/
 Execute the configuration data retrieval:
 
 ```bash
-npm run start
+npm run dev
 ```
 
 Assuming two configured environments (dev and prod), you should see the following file structure generated:
@@ -51,7 +51,7 @@ Assuming two configured environments (dev and prod), you should see the followin
         └── scorecards.json
 ```
 
-## Troubleshooting errors
+## Troubleshooting configuration retrieval errors
 
 If a given organization's clientId and/or clientSecret are not correct (or some other error occurs while attempting to retrieve an access token), you should see an error like the following:
 

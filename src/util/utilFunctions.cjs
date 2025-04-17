@@ -18,7 +18,7 @@ function deepSortObject(obj) {
 async function listFiles(directory) {
   const files = await fs.promises.readdir(directory, { withFileTypes: true });
   return files
-    .filter((file) => file.isFile() && file.name.endsWith(".js"))
+    .filter((file) => file.isFile() && file.name.endsWith(".cjs"))
     .map((file) => file.name);
 }
 
