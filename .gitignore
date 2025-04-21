@@ -4,10 +4,10 @@
 /node_modules
 
 # production
-/output
+/src/output
 
 # environment files
-/src/envs/**.js
+/src/envs/**.cjs
 
 ### VisualStudioCode ###
 .vscode/**/*
