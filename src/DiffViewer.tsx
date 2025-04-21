@@ -8,6 +8,7 @@ export default function DiffViewer({
   rightContents: string;
 }>) {
   return (
+    <div style={{ height: "85vh", overflow: "auto" }}>
       <ReactDiffViewer
         oldValue={leftContents}
         leftTitle="Source"
@@ -15,5 +16,6 @@ export default function DiffViewer({
         rightTitle="Destination"
         splitView={true}
       />
+    </div>
   );
 }
