@@ -10,9 +10,9 @@ export default function DiffViewer({
   return (
       <ReactDiffViewer
         oldValue={leftContents}
-        leftTitle="Dev"
+        leftTitle="Source"
         newValue={rightContents}
-        rightTitle="Prod"
+        rightTitle="Destination"
         splitView={true}
       />
   );
