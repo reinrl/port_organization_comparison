@@ -27,13 +27,26 @@ function sortArrayOfItems(items, keysToExclude) {
     a.identifier.localeCompare(b.identifier)
   );
   return sortedItems.map((blueprint) => {
-    const filteredItem = Object.fromEntries(
-      Object.entries(deepSortObject(blueprint)).filter(
-        ([key]) => !keysToExclude.includes(key)
-      )
+    const filteredItem = removeKeysRecursively(
+      deepSortObject(blueprint),
+      keysToExclude
     );
     return filteredItem;
   });
+}
+
+function removeKeysRecursively(obj, keysToExclude) {
+  if (Array.isArray(obj)) {
+    return obj.map((item) => removeKeysRecursively(item, keysToExclude));
+  } else if (obj && typeof obj === "object") {
+    return Object.entries(obj).reduce((acc, [key, value]) => {
+      if (!keysToExclude.includes(key)) {
+        acc[key] = removeKeysRecursively(value, keysToExclude);
+      }
+      return acc;
+    }, {});
+  }
+  return obj;
 }
 
 module.exports = {
