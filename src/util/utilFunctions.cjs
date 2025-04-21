@@ -26,9 +26,9 @@ function sortArrayOfItems(items, keysToExclude) {
   const sortedItems = items.sort((a, b) =>
     a.identifier.localeCompare(b.identifier)
   );
-  return sortedItems.map((blueprint) => {
+  return sortedItems.map((sortedItem) => {
     const filteredItem = removeKeysRecursively(
-      deepSortObject(blueprint),
+      deepSortObject(sortedItem),
       keysToExclude
     );
     return filteredItem;
