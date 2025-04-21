@@ -1,29 +1,29 @@
-import prodactions from "../output/prod/actions.json";
-import prodblueprints from "../output/prod/blueprints.json";
-import prodintegrations from "../output/prod/integrations.json";
-import prodpages from "../output/prod/pages.json";
-import prodscorecards from "../output/prod/scorecards.json";
+import destactions from "../output/dest/actions.json";
+import destblueprints from "../output/dest/blueprints.json";
+import destintegrations from "../output/dest/integrations.json";
+import destpages from "../output/dest/pages.json";
+import destscorecards from "../output/dest/scorecards.json";
 
-const prodConfig = {
-	prodactions,
-	prodblueprints,
-	prodintegrations,
-	prodpages,
-	prodscorecards,
+const destConfig = {
+	destactions,
+	destblueprints,
+	destintegrations,
+	destpages,
+	destscorecards,
 };
 
-import devactions from "../output/dev/actions.json";
-import devblueprints from "../output/dev/blueprints.json";
-import devintegrations from "../output/dev/integrations.json";
-import devpages from "../output/dev/pages.json";
-import devscorecards from "../output/dev/scorecards.json";
+import sourceactions from "../output/source/actions.json";
+import sourceblueprints from "../output/source/blueprints.json";
+import sourceintegrations from "../output/source/integrations.json";
+import sourcepages from "../output/source/pages.json";
+import sourcescorecards from "../output/source/scorecards.json";
 
-const devConfig = {
-	devactions,
-	devblueprints,
-	devintegrations,
-	devpages,
-	devscorecards,
+const sourceConfig = {
+	sourceactions,
+	sourceblueprints,
+	sourceintegrations,
+	sourcepages,
+	sourcescorecards,
 };
 
-export { prodConfig,devConfig };
+export { destConfig,sourceConfig };

@@ -5,7 +5,7 @@ const portConfig = {
   clientId: "string",
   clientSecret:
     "string",
-  envName: "dev",
+  envName: "source" | "dest",
   portDomain: "https://api.port.io/v1" | "https://api.us.port.io/v1",
 };
 

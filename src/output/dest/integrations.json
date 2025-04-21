@@ -1,7 +1,7 @@
 [
   {
-    "_id": "integration_SSlPAoOQN4Qly5Yr",
-    "_orgId": "org_9bvYw5M5jLQvJ9G8",
+    "_id": "integration_dnO4nqgNjFtC4a3n",
+    "_orgId": "org_AV8HkRzYzFkEh7Mc",
     "changelogDestination": {},
     "clientId": "",
     "config": {
@@ -149,46 +149,46 @@
     "installationType": "Saas",
     "integrationType": "azure-devops",
     "logAttributes": {
-      "ingestId": "vPRBZWBASzzNSp3u",
-      "ingestUrl": "https://ingest.getport.io/logs/integration/vPRBZWBASzzNSp3u"
+      "ingestId": "QE1A9fTD6qoSrrPN",
+      "ingestUrl": "https://ingest.us.getport.io/logs/integration/QE1A9fTD6qoSrrPN"
     },
     "resyncState": {
-      "intervalInMinuets": 120,
-      "lastResyncEnd": "2025-04-17T20:55:23.282444+00:00",
-      "lastResyncStart": "2025-04-17T20:25:10.680973+00:00",
-      "nextResync": "2025-04-17T21:37:56.405000+00:00",
+      "intervalInMinuets": 60,
+      "lastResyncEnd": "2025-04-21T11:46:36.827479+00:00",
+      "lastResyncStart": "2025-04-21T11:30:06.672169+00:00",
+      "nextResync": "2025-04-21T12:30:55.409000+00:00",
       "status": "completed",
-      "updatedAt": "2025-04-17T20:55:23.422Z"
+      "updatedAt": "2025-04-21T11:46:36.834Z"
     },
     "spec": {
       "appSpec": {
         "liveEventsEnabled": false,
-        "scheduledResyncInterval": "2h",
+        "scheduledResyncInterval": "1h",
         "sendRawDataExamples": true
       },
       "integrationSpec": {
-        "isProjectsLimited": false,
+        "isProjectsLimited": true,
         "organizationUrl": "_AZURE_DEVOPS_ORGANIZATION_URL",
         "personalAccessToken": "_AZURE_DEVOPS_PERSONAL_ACCESS_TOKEN"
       }
     },
     "statusInfo": {
-      "createdAt": "2025-01-29T14:48:36.641Z",
+      "createdAt": "2025-01-22T16:30:55.409Z",
       "integrationStatus": {
-        "lastSyncedAt": "2025-04-04T15:40:28Z",
+        "lastSyncedAt": "2025-02-20T10:19:33Z",
         "status": "Running"
       },
-      "updatedAt": "2025-04-04T15:37:56.405Z"
+      "updatedAt": "2025-01-22T16:30:55.409Z"
     },
     "version": "0.1.146"
   },
   {
-    "_id": "integration_wE0l4RWENY4Fx8Y9",
-    "_orgId": "org_9bvYw5M5jLQvJ9G8",
+    "_id": "integration_PHaGWeHegnA3hwnu",
+    "_orgId": "org_AV8HkRzYzFkEh7Mc",
     "changelogDestination": {},
     "clientId": "",
     "config": {
-      "createMissingRelatedEntities": true,
+      "createMissingRelatedEntities": false,
       "deleteDependentEntities": true,
       "enableMergeEntity": true,
       "resources": [
@@ -197,25 +197,30 @@
           "port": {
             "entity": {
               "mappings": {
-                "blueprint": "\"dynatraceEntity\"",
+                "blueprint": "\"dynatraceCloudApplication\"",
                 "identifier": ".entityId",
                 "properties": {
-                  "firstSeenTs": ".firstSeenTms / 1000 | strftime(\"%Y-%m-%d\")",
-                  "is_production": "false",
-                  "management_zones": ".managementZones | map(.stringRepresentation)",
-                  "tags": ".tags | map(.stringRepresentation)",
+                  "dynatrace_entity_url": ".entityId as $id | \"https://elq45057.live.dynatrace.com/ui/entity/\" + $id",
+                  "firstSeen": ".firstSeenTms / 1000 | todate",
+                  "from_relationships": ".fromRelationships",
+                  "lastSeen": ".lastSeenTms / 1000 | todate",
+                  "management_zones": ".managementZones[].stringRepresentation",
+                  "properties": ".properties",
+                  "repo_name": ".properties.cloudApplicationLabels.\"fed.openshift.ado.repo.name\"",
+                  "security_role": ".properties.cloudApplicationLabels.\"fed.openshift.security.role\"",
+                  "tags": ".tags[].stringRepresentation",
+                  "to_relationships": ".toRelationships",
                   "type": ".type"
                 },
                 "relations": {
-                  "dynatrace_teams": ".tags | map(select(.key == \"dt.owner\") | .value | ascii_downcase)",
-                  "namespace": ".toRelationships.isNamespaceOfCa | if length > 0 then .[0].id else null end"
+                  "repository": ".properties.cloudApplicationLabels.\"fed.openshift.ado.repo.name\" as $repo | if $repo != null then \"federatedprojects/\" + $repo | ascii_downcase else null end"
                 },
                 "title": ".displayName"
               }
             }
           },
           "selector": {
-            "entityFields": "firstSeenTms,tags,properties,managementZones,fromRelationships,toRelationships",
+            "entityFields": "firstSeenTms,lastSeenTms,tags,properties,managementZones,fromRelationships,toRelationships",
             "entityTypes": [
               "CLOUD_APPLICATION"
             ],
@@ -230,82 +235,59 @@
                 "blueprint": "\"dynatraceEntity\"",
                 "identifier": ".entityId",
                 "properties": {
-                  "firstSeenTs": ".firstSeenTms / 1000 | strftime(\"%Y-%m-%d\")",
-                  "is_production": "false",
-                  "management_zones": ".managementZones | map(.stringRepresentation)",
-                  "tags": ".tags | map(.stringRepresentation)",
+                  "dynatrace_entity_url": ".entityId as $id | \"https://elq45057.live.dynatrace.com/ui/entity/\" + $id",
+                  "firstSeen": ".firstSeenTms / 1000 | todate",
+                  "from_relationships": ".fromRelationships",
+                  "lastSeen": ".lastSeenTms / 1000 | todate",
+                  "management_zones": ".managementZones[].stringRepresentation",
+                  "properties": ".properties",
+                  "tags": ".tags[].stringRepresentation",
+                  "to_relationships": ".toRelationships",
                   "type": ".type"
-                },
-                "relations": {
-                  "dynatrace_teams": ".tags | map(select(.key == \"dt.owner\") | .value | ascii_downcase)",
-                  "namespace": "if .type | startswith(\"CLOUD\") then .entityId else null end",
-                  "service": "if .type | startswith(\"SERVICE\") then .entityId else null end"
                 },
                 "title": ".displayName"
               }
             }
           },
           "selector": {
-            "entityFields": "firstSeenTms,tags,properties,managementZones,fromRelationships,toRelationships",
+            "entityFields": "firstSeenTms,lastSeenTms,tags,properties,managementZones,fromRelationships,toRelationships",
             "entityTypes": [
               "APPLICATION",
-              "CLOUD_APPLICATION_NAMESPACE",
-              "HOST",
               "SERVICE"
             ],
             "query": "true"
           }
-        }
-      ]
-    },
-    "identifier": "dyn-dev-entity",
-    "installationAppType": "dynatrace",
-    "installationId": "dyn-dev-entity",
-    "installationType": "Saas",
-    "integrationType": "dynatrace",
-    "logAttributes": {
-      "ingestId": "ZrQjSIPu2Q69veQ3",
-      "ingestUrl": "https://ingest.getport.io/logs/integration/ZrQjSIPu2Q69veQ3"
-    },
-    "resyncState": {
-      "intervalInMinuets": 1440,
-      "lastResyncEnd": "2025-04-17T20:46:30.135456+00:00",
-      "lastResyncStart": "2025-04-17T20:19:07.780042+00:00",
-      "nextResync": "2025-04-18T17:25:57.969000+00:00",
-      "status": "completed",
-      "updatedAt": "2025-04-17T20:46:30.160Z"
-    },
-    "spec": {
-      "appSpec": {
-        "liveEventsEnabled": false,
-        "scheduledResyncInterval": "24h",
-        "sendRawDataExamples": true
-      },
-      "integrationSpec": {
-        "dynatraceApiKey": "_DYNATRACE_DEV_DYNATRACE_API_KEY",
-        "dynatraceHostUrl": "https://elq45057.live.dynatrace.com"
-      }
-    },
-    "statusInfo": {
-      "createdAt": "2025-04-10T20:16:15.814Z",
-      "integrationStatus": {
-        "lastSyncedAt": "2025-04-17T17:26:09Z",
-        "status": "Running"
-      },
-      "updatedAt": "2025-04-17T17:25:57.969Z"
-    },
-    "version": "0.1.119"
-  },
-  {
-    "_id": "integration_0R3GQdopNo9OzB0R",
-    "_orgId": "org_9bvYw5M5jLQvJ9G8",
-    "changelogDestination": {},
-    "clientId": "",
-    "config": {
-      "createMissingRelatedEntities": false,
-      "deleteDependentEntities": true,
-      "enableMergeEntity": true,
-      "resources": [
+        },
+        {
+          "kind": "problem",
+          "port": {
+            "entity": {
+              "mappings": {
+                "blueprint": "\"dynatraceProblem\"",
+                "identifier": ".problemId",
+                "properties": {
+                  "endTime": ".endTime | if . == -1 then null else (./1000 | todate) end",
+                  "entityTags": ".entityTags[].stringRepresentation",
+                  "evidenceDetails": ".evidenceDetails.details[].displayName",
+                  "managementZones": ".managementZones[].name",
+                  "problemFilters": ".problemFilters[].name",
+                  "severityLevel": ".severityLevel",
+                  "startTime": ".startTime / 1000 | todate",
+                  "status": ".status"
+                },
+                "relations": {
+                  "impactedEntities": ".impactedEntities[].entityId.id",
+                  "linkedProblemInfo": ".linkedProblemInfo.problemId",
+                  "rootCauseEntity": ".rootCauseEntity.entityId.id"
+                },
+                "title": ".title"
+              }
+            }
+          },
+          "selector": {
+            "query": "true"
+          }
+        },
         {
           "kind": "slo",
           "port": {
@@ -324,41 +306,37 @@
                   "target": ".target",
                   "warning": ".warning"
                 },
-                "relations": {
-                  "entities": "if .__entities != null then .__entities | map(.entityId) else [] end"
-                },
                 "title": ".name"
               }
             }
           },
           "selector": {
-            "attachRelatedEntities": true,
             "query": "true"
           }
         }
       ]
     },
-    "identifier": "dyn-dev-slo",
+    "identifier": "dynatrace-dev",
     "installationAppType": "dynatrace",
-    "installationId": "dyn-dev-slo",
+    "installationId": "dynatrace-dev",
     "installationType": "Saas",
     "integrationType": "dynatrace",
     "logAttributes": {
-      "ingestId": "8jASinIcE8BGT2Qj",
-      "ingestUrl": "https://ingest.getport.io/logs/integration/8jASinIcE8BGT2Qj"
+      "ingestId": "UndUQdIxYMuk8B1j",
+      "ingestUrl": "https://ingest.us.getport.io/logs/integration/UndUQdIxYMuk8B1j"
     },
     "resyncState": {
-      "intervalInMinuets": 240,
-      "lastResyncEnd": "2025-04-17T20:27:21.359199+00:00",
-      "lastResyncStart": "2025-04-17T20:27:09.311045+00:00",
-      "nextResync": "2025-04-17T22:51:48.422000+00:00",
+      "intervalInMinuets": 60,
+      "lastResyncEnd": "2025-04-21T11:57:57.967234+00:00",
+      "lastResyncStart": "2025-04-21T11:50:06.587547+00:00",
+      "nextResync": "2025-04-21T12:50:53.341000+00:00",
       "status": "completed",
-      "updatedAt": "2025-04-17T20:27:21.375Z"
+      "updatedAt": "2025-04-21T11:57:57.984Z"
     },
     "spec": {
       "appSpec": {
         "liveEventsEnabled": false,
-        "scheduledResyncInterval": "4h",
+        "scheduledResyncInterval": "1h",
         "sendRawDataExamples": true
       },
       "integrationSpec": {
@@ -367,22 +345,22 @@
       }
     },
     "statusInfo": {
-      "createdAt": "2025-04-10T20:12:25.789Z",
+      "createdAt": "2025-01-22T16:26:42.829Z",
       "integrationStatus": {
-        "lastSyncedAt": "2025-04-11T14:52:02Z",
+        "lastSyncedAt": "2025-02-20T10:19:35Z",
         "status": "Running"
       },
-      "updatedAt": "2025-04-11T14:51:48.422Z"
+      "updatedAt": "2025-01-22T16:50:53.341Z"
     },
     "version": "0.1.119"
   },
   {
-    "_id": "integration_0igPm4NQwUItlOHA",
-    "_orgId": "org_9bvYw5M5jLQvJ9G8",
+    "_id": "integration_JPLYnJtN4ZPnmZrE",
+    "_orgId": "org_AV8HkRzYzFkEh7Mc",
     "changelogDestination": {},
     "clientId": "",
     "config": {
-      "createMissingRelatedEntities": true,
+      "createMissingRelatedEntities": false,
       "deleteDependentEntities": true,
       "enableMergeEntity": true,
       "resources": [
@@ -391,27 +369,32 @@
           "port": {
             "entity": {
               "mappings": {
-                "blueprint": "\"dynatraceEntity\"",
+                "blueprint": "\"dynatraceCloudApplication\"",
                 "identifier": ".entityId",
                 "properties": {
-                  "firstSeenTs": ".firstSeenTms / 1000 | strftime(\"%Y-%m-%d\")",
-                  "is_production": "false",
-                  "management_zones": ".managementZones | map(.stringRepresentation)",
-                  "tags": ".tags | map(.stringRepresentation)",
+                  "dynatrace_entity_url": ".entityId as $id | \"https://aig80554.live.dynatrace.com/ui/entity/\" + $id",
+                  "firstSeen": ".firstSeenTms / 1000 | todate",
+                  "from_relationships": ".fromRelationships",
+                  "lastSeen": ".lastSeenTms / 1000 | todate",
+                  "management_zones": ".managementZones[].stringRepresentation",
+                  "properties": ".properties",
+                  "repo_name": ".properties.cloudApplicationLabels.\"fed.openshift.ado.repo.name\"",
+                  "security_role": ".properties.cloudApplicationLabels.\"fed.openshift.security.role\"",
+                  "tags": ".tags[].stringRepresentation",
+                  "to_relationships": ".toRelationships",
                   "type": ".type"
                 },
                 "relations": {
-                  "dynatrace_teams": ".tags | map(select(.key == \"dt.owner\") | .value | ascii_downcase)",
-                  "namespace": ".toRelationships.isNamespaceOfCa | if length > 0 then .[0].id else null end"
+                  "repository": ".properties.cloudApplicationLabels.\"fed.openshift.ado.repo.name\" as $repo | if $repo != null then \"federatedprojects/\" + $repo | ascii_downcase else null end"
                 },
                 "title": ".displayName"
               }
             }
           },
           "selector": {
-            "entityFields": "firstSeenTms,tags,properties,managementZones,fromRelationships,toRelationships",
+            "entityFields": "firstSeenTms,lastSeenTms,tags,properties,managementZones,fromRelationships,toRelationships",
             "entityTypes": [
-              "CLOUD_APPLIATION"
+              "CLOUD_APPLICATION"
             ],
             "query": "true"
           }
@@ -424,83 +407,59 @@
                 "blueprint": "\"dynatraceEntity\"",
                 "identifier": ".entityId",
                 "properties": {
-                  "firstSeenTs": ".firstSeenTms / 1000 | strftime(\"%Y-%m-%d\")",
-                  "is_production": "false",
-                  "management_zones": ".managementZones | map(.stringRepresentation)",
-                  "tags": ".tags | map(.stringRepresentation)",
+                  "dynatrace_entity_url": ".entityId as $id | \"https://aig80554.live.dynatrace.com/ui/entity/\" + $id",
+                  "firstSeen": ".firstSeenTms / 1000 | todate",
+                  "from_relationships": ".fromRelationships",
+                  "lastSeen": ".lastSeenTms / 1000 | todate",
+                  "management_zones": ".managementZones[].stringRepresentation",
+                  "properties": ".properties",
+                  "tags": ".tags[].stringRepresentation",
+                  "to_relationships": ".toRelationships",
                   "type": ".type"
-                },
-                "relations": {
-                  "dynatrace_teams": ".tags | map(select(.key == \"dt.owner\") | .value | ascii_downcase)",
-                  "namespace": "if .type | startswith(\"CLOUD\") then .entityId else null end",
-                  "service": "if .type | startswith(\"SERVICE\") then .entityId else null end"
                 },
                 "title": ".displayName"
               }
             }
           },
           "selector": {
-            "entityFields": "firstSeenTms,tags,properties,managementZones,fromRelationships,toRelationships",
+            "entityFields": "firstSeenTms,lastSeenTms,tags,properties,managementZones,fromRelationships,toRelationships",
             "entityTypes": [
               "APPLICATION",
-              "CLOUD_APPLIATION_NAMESPACE",
-              "HOST",
               "SERVICE"
             ],
             "query": "true"
           }
-        }
-      ]
-    },
-    "identifier": "dyn-prod-entities",
-    "installationAppType": "dynatrace",
-    "installationId": "dyn-prod-entities",
-    "installationType": "Saas",
-    "integrationType": "dynatrace",
-    "logAttributes": {
-      "ingestId": "7N6hJJoIRyvi2n91",
-      "ingestUrl": "https://ingest.getport.io/logs/integration/7N6hJJoIRyvi2n91"
-    },
-    "resyncState": {
-      "intervalInMinuets": 1440,
-      "lastResyncEnd": "2025-04-17T20:01:17.557549+00:00",
-      "lastResyncStart": "2025-04-17T19:52:09.056864+00:00",
-      "nextResync": "2025-04-18T17:25:24.081000+00:00",
-      "status": "failed",
-      "updatedAt": "2025-04-17T20:01:17.625Z"
-    },
-    "spec": {
-      "appSpec": {
-        "liveEventsEnabled": false,
-        "scheduledResyncInterval": "24h",
-        "sendRawDataExamples": true
-      },
-      "integrationSpec": {
-        "dynatraceApiKey": "_DYNATRACE_PROD_DYNATRACE_API_KEY",
-        "dynatraceHostUrl": "https://aig80554.live.dynatrace.com"
-      }
-    },
-    "statusInfo": {
-      "createdAt": "2025-04-10T20:35:51.221Z",
-      "integrationStatus": {
-        "lastSyncedAt": "2025-04-17T17:26:02Z",
-        "message": "Fail to create Integration",
-        "status": "Running"
-      },
-      "updatedAt": "2025-04-17T17:25:24.081Z"
-    },
-    "version": "0.1.119"
-  },
-  {
-    "_id": "integration_CytAqwdiDuSJTwLR",
-    "_orgId": "org_9bvYw5M5jLQvJ9G8",
-    "changelogDestination": {},
-    "clientId": "",
-    "config": {
-      "createMissingRelatedEntities": true,
-      "deleteDependentEntities": true,
-      "enableMergeEntity": true,
-      "resources": [
+        },
+        {
+          "kind": "problem",
+          "port": {
+            "entity": {
+              "mappings": {
+                "blueprint": "\"dynatraceProblem\"",
+                "identifier": ".problemId",
+                "properties": {
+                  "endTime": ".endTime | if . == -1 then null else (./1000 | todate) end",
+                  "entityTags": ".entityTags[].stringRepresentation",
+                  "evidenceDetails": ".evidenceDetails.details[].displayName",
+                  "managementZones": ".managementZones[].name",
+                  "problemFilters": ".problemFilters[].name",
+                  "severityLevel": ".severityLevel",
+                  "startTime": ".startTime / 1000 | todate",
+                  "status": ".status"
+                },
+                "relations": {
+                  "impactedEntities": ".impactedEntities[].entityId.id",
+                  "linkedProblemInfo": ".linkedProblemInfo.problemId",
+                  "rootCauseEntity": ".rootCauseEntity.entityId.id"
+                },
+                "title": ".title"
+              }
+            }
+          },
+          "selector": {
+            "query": "true"
+          }
+        },
         {
           "kind": "slo",
           "port": {
@@ -519,318 +478,57 @@
                   "target": ".target",
                   "warning": ".warning"
                 },
-                "relations": {
-                  "entities": "if .__entities != null then .__entities | map(.entityId) else [] end"
-                },
                 "title": ".name"
               }
             }
           },
           "selector": {
-            "attachRelatedEntities": true,
             "query": "true"
           }
         }
       ]
     },
-    "identifier": "dyn-prod-slo",
+    "identifier": "dynatrace-prod",
     "installationAppType": "dynatrace",
-    "installationId": "dyn-prod-slo",
+    "installationId": "dynatrace-prod",
     "installationType": "Saas",
     "integrationType": "dynatrace",
     "logAttributes": {
-      "ingestId": "m4i6lJWifLSscw02",
-      "ingestUrl": "https://ingest.getport.io/logs/integration/m4i6lJWifLSscw02"
+      "ingestId": "OIMmwwJ5FY2A4Tcl",
+      "ingestUrl": "https://ingest.us.getport.io/logs/integration/OIMmwwJ5FY2A4Tcl"
     },
     "resyncState": {
-      "intervalInMinuets": 240,
-      "lastResyncEnd": "2025-04-17T17:15:58.172775+00:00",
-      "lastResyncStart": "2025-04-17T17:14:08.981466+00:00",
-      "nextResync": "2025-04-17T20:02:19.210000+00:00",
-      "status": "failed",
-      "updatedAt": "2025-04-17T17:15:58.310Z"
+      "intervalInMinuets": 60,
+      "lastResyncEnd": "2025-04-21T11:59:00.552673+00:00",
+      "lastResyncStart": "2025-04-21T11:51:06.813825+00:00",
+      "nextResync": "2025-04-21T12:50:43.632000+00:00",
+      "status": "completed",
+      "updatedAt": "2025-04-21T11:59:00.561Z"
     },
     "spec": {
       "appSpec": {
         "liveEventsEnabled": false,
-        "scheduledResyncInterval": "4h",
+        "scheduledResyncInterval": "1h",
         "sendRawDataExamples": true
       },
       "integrationSpec": {
-        "dynatraceApiKey": "_DYNATRACE_PROD_DYNATRACE_API_KEY",
+        "dynatraceApiKey": "_DYNATRACE_DYNATRACE_API_KEY",
         "dynatraceHostUrl": "https://aig80554.live.dynatrace.com"
       }
     },
     "statusInfo": {
-      "createdAt": "2025-04-10T20:36:22.341Z",
+      "createdAt": "2025-01-22T16:24:51.667Z",
       "integrationStatus": {
-        "lastSyncedAt": "2025-04-14T12:02:35Z",
-        "message": "Fail to patch Integration",
+        "lastSyncedAt": "2025-02-20T10:19:37Z",
         "status": "Running"
       },
-      "updatedAt": "2025-04-14T12:02:19.210Z"
+      "updatedAt": "2025-01-22T16:50:43.632Z"
     },
     "version": "0.1.119"
   },
   {
-    "_id": "integration_AIu0RpYHlwAgTPf7",
-    "_orgId": "org_9bvYw5M5jLQvJ9G8",
-    "changelogDestination": {},
-    "clientId": "",
-    "config": {
-      "createMissingRelatedEntities": false,
-      "deleteDependentEntities": true,
-      "enableMergeEntity": true,
-      "resources": [
-        {
-          "kind": "team",
-          "port": {
-            "entity": {
-              "mappings": {
-                "blueprint": "\"dynatraceTeam\"",
-                "identifier": ".item.supplementaryIdentifier | ascii_downcase",
-                "properties": {
-                  "additionalDetails": ".value.additionalInformation",
-                  "description": ".value.descriptions",
-                  "emailContact": ".value.contactDetails[] | select(.integrationType == \"EMAIL\") | .email",
-                  "is_production": "false",
-                  "links": "[.value.links[] | .url]",
-                  "productivityToolsContact": "[.value.contactDetails[] | select(.integrationType != \"EMAIL\" and .url != null) | .url]",
-                  "responsibilities": ".value.responsibilities"
-                },
-                "title": ".item.supplementaryIdentifier"
-              }
-            },
-            "itemsToParse": ".value.supplementaryIdentifiers"
-          },
-          "selector": {
-            "query": "true"
-          }
-        },
-        {
-          "kind": "team",
-          "port": {
-            "entity": {
-              "mappings": {
-                "blueprint": "\"dynatraceTeam\"",
-                "identifier": ".value.identifier | ascii_downcase",
-                "properties": {
-                  "additionalDetails": ".value.additionalInformation",
-                  "description": ".value.descriptions",
-                  "emailContact": ".value.contactDetails[] | select(.integrationType == \"EMAIL\") | .email",
-                  "is_production": "false",
-                  "links": "[.value.links[] | .url]",
-                  "productivityToolsContact": "[.value.contactDetails[] | select(.integrationType != \"EMAIL\" and .url != null) | .url]",
-                  "responsibilities": ".value.responsibilities"
-                },
-                "title": ".value.name"
-              }
-            }
-          },
-          "selector": {
-            "query": "true"
-          }
-        },
-        {
-          "kind": "team",
-          "port": {
-            "entity": {
-              "mappings": {
-                "blueprint": "\"dynatraceTeam\"",
-                "identifier": ".value.identifier | ascii_downcase",
-                "relations": {
-                  "service_now_group": "if .value.identifier | length == 32 then .value.identifier else null end"
-                },
-                "title": ".value.name"
-              }
-            }
-          },
-          "selector": {
-            "query": "true"
-          }
-        }
-      ]
-    },
-    "identifier": "dyn-teams",
-    "installationAppType": "dynatrace",
-    "installationId": "dyn-teams",
-    "installationType": "Saas",
-    "integrationType": "dynatrace",
-    "logAttributes": {
-      "ingestId": "yZbQNsasSkgi8UDg",
-      "ingestUrl": "https://ingest.getport.io/logs/integration/yZbQNsasSkgi8UDg"
-    },
-    "resyncState": {
-      "intervalInMinuets": 240,
-      "lastResyncEnd": "2025-04-17T17:56:17.425742+00:00",
-      "lastResyncStart": "2025-04-17T17:56:05.215940+00:00",
-      "nextResync": "2025-04-17T21:55:42.119000+00:00",
-      "status": "completed",
-      "updatedAt": "2025-04-17T17:56:17.439Z"
-    },
-    "spec": {
-      "appSpec": {
-        "liveEventsEnabled": false,
-        "scheduledResyncInterval": "4h",
-        "sendRawDataExamples": true
-      },
-      "integrationSpec": {
-        "dynatraceApiKey": "_DYNATRACE_DEV_DYNATRACE_API_KEY",
-        "dynatraceHostUrl": "https://elq45057.live.dynatrace.com"
-      }
-    },
-    "statusInfo": {
-      "createdAt": "2025-04-17T17:52:33.446Z",
-      "integrationStatus": {
-        "lastSyncedAt": "2025-04-17T17:55:56Z",
-        "status": "Running"
-      },
-      "updatedAt": "2025-04-17T17:55:42.119Z"
-    },
-    "version": "0.1.119"
-  },
-  {
-    "_id": "integration_QqdbWOk2UMpQLuo6",
-    "_orgId": "org_9bvYw5M5jLQvJ9G8",
-    "changelogDestination": {},
-    "clientId": "",
-    "config": {
-      "createMissingRelatedEntities": true,
-      "deleteDependentEntities": true,
-      "enableMergeEntity": true,
-      "entityDeletionThreshold": 0,
-      "resources": [
-        {
-          "kind": "copilot-organization-metrics",
-          "port": {
-            "entity": {
-              "mappings": {
-                "blueprint": "\"github_copilot_usage_by_lang\"",
-                "identifier": "(.__organization.login + \"__\" + .item.name + \"@\" + .date)",
-                "properties": {
-                  "language": ".item.name",
-                  "total_acceptances_count": ".item.total_code_acceptances",
-                  "total_engaged_users": ".item.total_engaged_users",
-                  "total_lines_accepted": ".item.total_code_lines_accepted",
-                  "total_lines_suggested": ".item.total_code_lines_suggested",
-                  "total_suggestions_count": ".item.total_code_suggestions"
-                },
-                "relations": {
-                  "git_hub_copilot_usage": "(.__organization.login + \"@\" + .date)"
-                },
-                "title": "(.__organization.login + \" copilot-metrics (\" + .item.name + \") \" + .date)"
-              }
-            },
-            "itemsToParse": ".copilot_ide_code_completions.editors[]?.models[]?.languages"
-          },
-          "selector": {
-            "query": "true"
-          }
-        },
-        {
-          "kind": "copilot-organization-metrics",
-          "port": {
-            "entity": {
-              "mappings": {
-                "blueprint": "\"github_copilot_usage\"",
-                "identifier": "(.__organization.login + \"@\" + .date)",
-                "properties": {
-                  "breakdown": ".",
-                  "git_hub_org": ".__organization.login",
-                  "record_date": ".date  + \"T00:00:00Z\"",
-                  "record_date_to_millis": ".date  + \"T00:00:00Z\" | strptime(\"%Y-%m-%dT%H:%M:%SZ\") | mktime",
-                  "total_acceptances_count": "[.copilot_ide_code_completions.editors[]?.models[]?.languages[]?.total_code_acceptances] | map(select(. != null)) | add",
-                  "total_active_chat_users": "[.copilot_ide_chat.editors[]?.total_engaged_users // 0] | map(select(. != null)) | add",
-                  "total_active_users": ".total_active_users",
-                  "total_chat_acceptances": "[\n  (.copilot_ide_chat.editors[]?.models[]?.total_chat_copy_events // 0),\n  (.copilot_ide_chat.editors[]?.models[]?.total_chat_insertion_events // 0)\n] | map(select(. != null)) | add",
-                  "total_chat_turns": "[.copilot_ide_chat.editors[]?.models[]?.total_chats // 0] | map(select(. != null)) | add",
-                  "total_engaged_users": ".total_engaged_users",
-                  "total_lines_accepted": "[.copilot_ide_code_completions.editors[]?.models[]?.languages[]?.total_code_lines_accepted] | map(select(. != null)) | add",
-                  "total_lines_suggested": "[.copilot_ide_code_completions.editors[]?.models[]?.languages[]?.total_code_lines_suggested] | map(select(. != null)) | add",
-                  "total_suggestions_count": "[.copilot_ide_code_completions.editors[]?.models[]?.languages[]?.total_code_suggestions] | map(select(. != null) ) | add"
-                },
-                "title": "(.__organization.login + \" copilot-metrics \" + .date)"
-              }
-            }
-          },
-          "selector": {
-            "query": "true"
-          }
-        },
-        {
-          "kind": "copilot-team-metrics",
-          "port": {
-            "entity": {
-              "mappings": {
-                "blueprint": "\"github_copilot_usage\"",
-                "identifier": "(.__team.slug + \"@\" + .date)",
-                "properties": {
-                  "breakdown": ".",
-                  "git_hub_org": ".__organization.login",
-                  "git_hub_team": ".__team.slug",
-                  "record_date": ".date  + \"T00:00:00Z\"",
-                  "record_date_to_millis": ".date  + \"T00:00:00Z\" | strptime(\"%Y-%m-%dT%H:%M:%SZ\") | mktime",
-                  "total_acceptances_count": "[.copilot_ide_code_completions.editors[]?.models[]?.languages[]?.total_code_acceptances] | map(select(. != null)) | add",
-                  "total_active_chat_users": "[.copilot_ide_chat.editors[]?.total_engaged_users // 0] | map(select(. != null)) | add",
-                  "total_active_users": ".total_active_users",
-                  "total_chat_acceptances": "[\n  (.copilot_ide_chat.editors[]?.models[]?.total_chat_copy_events // 0),\n  (.copilot_ide_chat.editors[]?.models[]?.total_chat_insertion_events // 0)\n] | map(select(. != null)) | add",
-                  "total_chat_turns": "[.copilot_ide_chat.editors[]?.models[]?.total_chats // 0] | map(select(. != null)) | add",
-                  "total_engaged_users": ".total_engaged_users",
-                  "total_lines_accepted": "[.copilot_ide_code_completions.editors[]?.models[]?.languages[]?.total_code_lines_accepted] | map(select(. != null)) | add",
-                  "total_lines_suggested": "[.copilot_ide_code_completions.editors[]?.models[]?.languages[]?.total_code_lines_suggested] | map(select(. != null)) | add",
-                  "total_suggestions_count": "[.copilot_ide_code_completions.editors[]?.models[]?.languages[]?.total_code_suggestions] | map(select(. != null) ) | add"
-                },
-                "title": "(.__team.slug + \" copilot-metrics \" + .date)"
-              }
-            }
-          },
-          "selector": {
-            "query": "true"
-          }
-        }
-      ]
-    },
-    "identifier": "github-copilot",
-    "installationAppType": "github-copilot",
-    "installationId": "github-copilot",
-    "installationType": "Saas",
-    "integrationType": "github-copilot",
-    "logAttributes": {
-      "ingestId": "JrL7e09394khphui",
-      "ingestUrl": "https://ingest.getport.io/logs/integration/JrL7e09394khphui"
-    },
-    "resyncState": {
-      "intervalInMinuets": 240,
-      "lastResyncEnd": "2025-04-17T20:42:16.163106+00:00",
-      "lastResyncStart": "2025-04-17T20:42:07.967235+00:00",
-      "nextResync": "2025-04-18T00:36:17.661000+00:00",
-      "status": "completed",
-      "updatedAt": "2025-04-17T20:42:16.209Z"
-    },
-    "spec": {
-      "appSpec": {
-        "liveEventsEnabled": false,
-        "scheduledResyncInterval": "4h",
-        "sendRawDataExamples": true
-      },
-      "integrationSpec": {
-        "githubHost": "https://api.github.com",
-        "githubToken": "_GITHUB_COPILOT_GITHUB_TOKEN"
-      }
-    },
-    "statusInfo": {
-      "createdAt": "2025-04-08T20:36:17.661Z",
-      "integrationStatus": {
-        "lastSyncedAt": "2025-04-08T20:43:48Z",
-        "status": "Running"
-      },
-      "updatedAt": "2025-04-08T20:36:17.661Z"
-    },
-    "version": "0.1.3"
-  },
-  {
-    "_id": "integration_oSn5MjIAPj9hk1SQ",
-    "_orgId": "org_9bvYw5M5jLQvJ9G8",
+    "_id": "integration_68YWJCC08rQf8nLU",
+    "_orgId": "org_AV8HkRzYzFkEh7Mc",
     "changelogDestination": {},
     "clientId": "",
     "config": {
@@ -996,21 +694,21 @@
     "installationType": "Saas",
     "integrationType": "opsgenie",
     "logAttributes": {
-      "ingestId": "DdhqrCggR62HqaCp",
-      "ingestUrl": "https://ingest.getport.io/logs/integration/DdhqrCggR62HqaCp"
+      "ingestId": "fz9bi7rVS7mvckHB",
+      "ingestUrl": "https://ingest.us.getport.io/logs/integration/fz9bi7rVS7mvckHB"
     },
     "resyncState": {
-      "intervalInMinuets": 1440,
-      "lastResyncEnd": "2025-04-17T14:13:50.276658+00:00",
-      "lastResyncStart": "2025-04-17T14:13:08.512669+00:00",
-      "nextResync": "2025-04-18T14:13:27.847000+00:00",
+      "intervalInMinuets": 60,
+      "lastResyncEnd": "2025-04-21T11:34:18.159535+00:00",
+      "lastResyncStart": "2025-04-21T11:34:06.442387+00:00",
+      "nextResync": "2025-04-21T12:34:08.478000+00:00",
       "status": "completed",
-      "updatedAt": "2025-04-17T14:13:50.363Z"
+      "updatedAt": "2025-04-21T11:34:18.165Z"
     },
     "spec": {
       "appSpec": {
         "liveEventsEnabled": false,
-        "scheduledResyncInterval": "24h",
+        "scheduledResyncInterval": "1h",
         "sendRawDataExamples": true
       },
       "integrationSpec": {
@@ -1019,19 +717,19 @@
       }
     },
     "statusInfo": {
-      "createdAt": "2024-11-07T21:12:36.186Z",
+      "createdAt": "2024-12-05T14:34:08.478Z",
       "integrationStatus": {
-        "lastSyncedAt": "2025-02-20T11:09:25Z",
+        "lastSyncedAt": "2025-02-20T10:19:43Z",
         "status": "Running"
       },
-      "updatedAt": "2025-02-07T14:13:27.847Z"
+      "updatedAt": "2024-12-05T14:34:08.478Z"
     },
     "title": null,
     "version": "0.2.66"
   },
   {
-    "_id": "integration_LwqsQEp6IeeqC47w",
-    "_orgId": "org_9bvYw5M5jLQvJ9G8",
+    "_id": "integration_aYMflE1QeRE14aO6",
+    "_orgId": "org_AV8HkRzYzFkEh7Mc",
     "changelogDestination": {},
     "clientId": "",
     "config": {
@@ -1058,6 +756,7 @@
                   "effort_size": ".fields.\"Microsoft.VSTS.Scheduling.Size\"",
                   "is_request_number": ".fields.\"Federated.IS.RequestNumber\"",
                   "iteration": ".fields.\"System.IterationPath\"",
+                  "link": "._links.html.href",
                   "original_estimate": ".fields.\"Microsoft.VSTS.Scheduling.OriginalEstimate\"",
                   "priority": ".fields.\"Microsoft.VSTS.Common.Priority\"",
                   "reason": ".fields.\"System.Reason\"",
@@ -1069,7 +768,6 @@
                 "relations": {
                   "parent_work_item": "try (.relations[]? | select(.rel == \"System.LinkTypes.Hierarchy-Reverse\" and .attributes.name == \"Parent\") | .url | split(\"/\")[-1]) // null",
                   "project": ".__project.id | gsub(\" \"; \"\")",
-                  "work_item_area": ".fields.\"System.AreaId\" | tostring",
                   "work_item_iteration": ".fields.\"System.IterationId\" | tostring"
                 },
                 "title": ".fields.\"System.Title\""
@@ -1100,6 +798,7 @@
                   "effort_size": ".fields.\"Microsoft.VSTS.Scheduling.Size\"",
                   "is_request_number": ".fields.\"Federated.IS.RequestNumber\"",
                   "iteration": ".fields.\"System.IterationPath\"",
+                  "link": "._links.html.href",
                   "original_estimate": ".fields.\"Microsoft.VSTS.Scheduling.OriginalEstimate\"",
                   "priority": ".fields.\"Microsoft.VSTS.Common.Priority\"",
                   "reason": ".fields.\"System.Reason\"",
@@ -1111,7 +810,6 @@
                 "relations": {
                   "parent_work_item": "try (.relations[]? | select(.rel == \"System.LinkTypes.Hierarchy-Reverse\" and .attributes.name == \"Parent\") | .url | split(\"/\")[-1]) // null",
                   "project": ".__project.id | gsub(\" \"; \"\")",
-                  "work_item_area": ".fields.\"System.AreaId\" | tostring",
                   "work_item_iteration": ".fields.\"System.IterationId\" | tostring"
                 },
                 "title": ".fields.\"System.Title\""
@@ -1142,6 +840,7 @@
                   "effort_size": ".fields.\"Microsoft.VSTS.Scheduling.Size\"",
                   "is_request_number": ".fields.\"Federated.IS.RequestNumber\"",
                   "iteration": ".fields.\"System.IterationPath\"",
+                  "link": "._links.html.href",
                   "original_estimate": ".fields.\"Microsoft.VSTS.Scheduling.OriginalEstimate\"",
                   "priority": ".fields.\"Microsoft.VSTS.Common.Priority\"",
                   "reason": ".fields.\"System.Reason\"",
@@ -1153,7 +852,6 @@
                 "relations": {
                   "parent_work_item": "try (.relations[]? | select(.rel == \"System.LinkTypes.Hierarchy-Reverse\" and .attributes.name == \"Parent\") | .url | split(\"/\")[-1]) // null",
                   "project": ".__project.id | gsub(\" \"; \"\")",
-                  "work_item_area": ".fields.\"System.AreaId\" | tostring",
                   "work_item_iteration": ".fields.\"System.IterationId\" | tostring"
                 },
                 "title": ".fields.\"System.Title\""
@@ -1184,6 +882,7 @@
                   "effort_size": ".fields.\"Microsoft.VSTS.Scheduling.Size\"",
                   "is_request_number": ".fields.\"Federated.IS.RequestNumber\"",
                   "iteration": ".fields.\"System.IterationPath\"",
+                  "link": "._links.html.href",
                   "original_estimate": ".fields.\"Microsoft.VSTS.Scheduling.OriginalEstimate\"",
                   "priority": ".fields.\"Microsoft.VSTS.Common.Priority\"",
                   "reason": ".fields.\"System.Reason\"",
@@ -1195,7 +894,6 @@
                 "relations": {
                   "parent_work_item": "try (.relations[]? | select(.rel == \"System.LinkTypes.Hierarchy-Reverse\" and .attributes.name == \"Parent\") | .url | split(\"/\")[-1]) // null",
                   "project": ".__project.id | gsub(\" \"; \"\")",
-                  "work_item_area": ".fields.\"System.AreaId\" | tostring",
                   "work_item_iteration": ".fields.\"System.IterationId\" | tostring"
                 },
                 "title": ".fields.\"System.Title\""
@@ -1226,6 +924,7 @@
                   "effort_size": ".fields.\"Microsoft.VSTS.Scheduling.Size\"",
                   "is_request_number": ".fields.\"Federated.IS.RequestNumber\"",
                   "iteration": ".fields.\"System.IterationPath\"",
+                  "link": "._links.html.href",
                   "original_estimate": ".fields.\"Microsoft.VSTS.Scheduling.OriginalEstimate\"",
                   "priority": ".fields.\"Microsoft.VSTS.Common.Priority\"",
                   "reason": ".fields.\"System.Reason\"",
@@ -1237,7 +936,6 @@
                 "relations": {
                   "parent_work_item": "try (.relations[]? | select(.rel == \"System.LinkTypes.Hierarchy-Reverse\" and .attributes.name == \"Parent\") | .url | split(\"/\")[-1]) // null",
                   "project": ".__project.id | gsub(\" \"; \"\")",
-                  "work_item_area": ".fields.\"System.AreaId\" | tostring",
                   "work_item_iteration": ".fields.\"System.IterationId\" | tostring"
                 },
                 "title": ".fields.\"System.Title\""
@@ -1251,22 +949,22 @@
         }
       ]
     },
-    "identifier": "work-items-local-dev",
+    "identifier": "work-items-local",
     "installationAppType": "azure-devops",
-    "installationId": "work-items-local-dev",
+    "installationId": "work-items-local",
     "installationType": "OnPrem",
     "integrationType": "azure-devops",
     "logAttributes": {
-      "ingestId": "Q8DcAISryIdJwQ2n",
-      "ingestUrl": "https://ingest.getport.io/logs/integration/Q8DcAISryIdJwQ2n"
+      "ingestId": "MQRmIn43wF5fVajd",
+      "ingestUrl": "https://ingest.us.getport.io/logs/integration/MQRmIn43wF5fVajd"
     },
     "resyncState": {
       "intervalInMinuets": 1440,
-      "lastResyncEnd": "2025-04-17T19:57:44.296950+00:00",
-      "lastResyncStart": "2025-04-17T19:12:49.809179+00:00",
-      "nextResync": "2025-04-18T19:12:46.669394+00:00",
+      "lastResyncEnd": "2025-04-20T18:57:34.992718+00:00",
+      "lastResyncStart": "2025-04-20T18:43:33.445873+00:00",
+      "nextResync": "2025-04-21T18:43:32.525296+00:00",
       "status": "completed",
-      "updatedAt": "2025-04-17T19:57:44.393Z"
+      "updatedAt": "2025-04-20T18:57:35.022Z"
     },
     "version": "0.1.143"
   }

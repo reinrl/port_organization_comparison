@@ -94,7 +94,7 @@ async function fetchData(envName) {
       dataToReturn[variable] = response.data[variable];
     } catch (error) {
       console.error(
-        `Error fetching data from endpoint "${endpoint}" for "${envName}": ${error.message} (will not write ${variable}.json)`
+        `Error fetching data from endpoint "${endpoint}" for environment "${envName}": ${error.message} (will not write ${variable}.json)`
       );
     }
   }
@@ -161,7 +161,7 @@ async function fetchData(envName) {
             }
           }
 
-          // TODO: Append to file contents with information about the environment
+          // Append to file contents with information about the environment
           for (const type of dataTypes) {
             fileContents += `import ${env}${type.variable} from "../output/${env}/${type.variable}.json";\n`;
           }

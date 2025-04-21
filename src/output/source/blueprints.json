@@ -1250,6 +1250,13 @@
     "identifier": "dynatraceTeam",
     "mirrorProperties": {},
     "relations": {
+      "primary_team": {
+        "description": "Primary Team for Aliases",
+        "many": false,
+        "required": false,
+        "target": "dynatraceTeam",
+        "title": "Primary Team"
+      },
       "service_now_group": {
         "many": false,
         "required": false,
@@ -1306,6 +1313,332 @@
       "required": []
     },
     "title": "Dynatrace Team"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "icon": "Ocean",
+    "identifier": "fed_integration",
+    "mirrorProperties": {},
+    "relations": {},
+    "schema": {
+      "properties": {
+        "added": {
+          "icon": "Port",
+          "title": "Entities Added",
+          "type": "number"
+        },
+        "deleted": {
+          "icon": "Port",
+          "title": "Entities Deleted",
+          "type": "number"
+        },
+        "duration": {
+          "icon": "Clock",
+          "title": "Duration",
+          "type": "number"
+        },
+        "end_time": {
+          "format": "date-time",
+          "title": "Last Sync End Time",
+          "type": "string"
+        },
+        "errors": {
+          "icon": "Port",
+          "title": "Entity Errors",
+          "type": "number"
+        },
+        "merged": {
+          "icon": "Port",
+          "title": "Entities Merged",
+          "type": "number"
+        },
+        "start_time": {
+          "format": "date-time",
+          "icon": "Clock",
+          "title": "Last Sync Start Time",
+          "type": "string"
+        },
+        "sync_status": {
+          "enum": [
+            "FAILED",
+            "IN PROCESS",
+            "SUCCESS"
+          ],
+          "enumColors": {
+            "FAILED": "red",
+            "IN PROCESS": "yellow",
+            "SUCCESS": "green"
+          },
+          "icon": "Reset",
+          "title": "Last Sync Status",
+          "type": "string"
+        },
+        "updated": {
+          "icon": "Port",
+          "title": "Entities Updated",
+          "type": "number"
+        }
+      },
+      "required": []
+    },
+    "title": "Federated Integration"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "description": "Federated Metrics on integration sync kind",
+    "icon": "Ocean",
+    "identifier": "fed_integration_kind",
+    "mirrorProperties": {},
+    "relations": {
+      "fed_integration": {
+        "many": false,
+        "required": false,
+        "target": "fed_integration",
+        "title": "Federated Integration"
+      }
+    },
+    "schema": {
+      "properties": {
+        "added": {
+          "icon": "Port",
+          "title": "Entities Added",
+          "type": "number"
+        },
+        "deleted": {
+          "icon": "Port",
+          "title": "Entities Deleted",
+          "type": "number"
+        },
+        "duration": {
+          "icon": "Clock",
+          "title": "Duration",
+          "type": "number"
+        },
+        "end_time": {
+          "format": "date-time",
+          "title": "Last Sync End Time",
+          "type": "string"
+        },
+        "errors": {
+          "icon": "Port",
+          "title": "Entity Errors",
+          "type": "number"
+        },
+        "kind": {
+          "icon": "Sync",
+          "title": "Kind",
+          "type": "string"
+        },
+        "merged": {
+          "icon": "Port",
+          "title": "Entities Merged",
+          "type": "number"
+        },
+        "start_time": {
+          "format": "date-time",
+          "icon": "Clock",
+          "title": "Last Sync Start Time",
+          "type": "string"
+        },
+        "sync_status": {
+          "enum": [
+            "FAILED",
+            "IN PROCESS",
+            "SUCCESS"
+          ],
+          "enumColors": {
+            "FAILED": "red",
+            "IN PROCESS": "yellow",
+            "SUCCESS": "green"
+          },
+          "icon": "Reset",
+          "title": "Last Sync Status",
+          "type": "string"
+        },
+        "updated": {
+          "icon": "Port",
+          "title": "Entities Updated",
+          "type": "number"
+        }
+      },
+      "required": []
+    },
+    "title": "Fed  Integration Kind Metrics"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "description": "Metric on each Federated kind run",
+    "icon": "Ocean",
+    "identifier": "fed_integration_kind_run",
+    "mirrorProperties": {},
+    "relations": {
+      "fed_integration_kind": {
+        "many": false,
+        "required": false,
+        "target": "fed_integration_kind",
+        "title": "Fed Integration Kind Metrics"
+      },
+      "fed_integration_run": {
+        "many": false,
+        "required": false,
+        "target": "fed_integration_run",
+        "title": "Fed Integration Run"
+      }
+    },
+    "schema": {
+      "properties": {
+        "added": {
+          "icon": "Port",
+          "title": "Entities Added",
+          "type": "number"
+        },
+        "deleted": {
+          "icon": "Port",
+          "title": "Entities Deleted",
+          "type": "number"
+        },
+        "duration": {
+          "icon": "Clock",
+          "title": "Duration",
+          "type": "number"
+        },
+        "end_time": {
+          "format": "date-time",
+          "icon": "Clock",
+          "title": "End Time",
+          "type": "string"
+        },
+        "errors": {
+          "icon": "Port",
+          "title": "Entitiy Errors",
+          "type": "number"
+        },
+        "kind": {
+          "icon": "Sync",
+          "title": "Kind",
+          "type": "string"
+        },
+        "merged": {
+          "icon": "Port",
+          "title": "Entities Merged",
+          "type": "number"
+        },
+        "start_time": {
+          "format": "date-time",
+          "icon": "Clock",
+          "title": "Start Time",
+          "type": "string"
+        },
+        "sync_status": {
+          "enum": [
+            "FAILED",
+            "IN PROCESS",
+            "SUCCESS"
+          ],
+          "enumColors": {
+            "FAILED": "red",
+            "IN PROCESS": "yellow",
+            "SUCCESS": "green"
+          },
+          "icon": "Reset",
+          "title": "Sync Status",
+          "type": "string"
+        },
+        "updated": {
+          "icon": "Port",
+          "title": "Entities Updated",
+          "type": "number"
+        }
+      },
+      "required": []
+    },
+    "title": "Fed Integration Kind Run"
+  },
+  {
+    "aggregationProperties": {},
+    "calculationProperties": {},
+    "description": "Metrics on each Federated run",
+    "icon": "Ocean",
+    "identifier": "fed_integration_run",
+    "mirrorProperties": {},
+    "relations": {
+      "fed_integration": {
+        "many": false,
+        "required": false,
+        "target": "fed_integration",
+        "title": "Federated Integration"
+      }
+    },
+    "schema": {
+      "properties": {
+        "added": {
+          "icon": "Port",
+          "title": "Entities Added",
+          "type": "number"
+        },
+        "deleted": {
+          "icon": "Port",
+          "title": "Entities Deleted",
+          "type": "number"
+        },
+        "duration": {
+          "icon": "Clock",
+          "title": "Duration",
+          "type": "number"
+        },
+        "end_time": {
+          "format": "date-time",
+          "icon": "Clock",
+          "title": "End Time",
+          "type": "string"
+        },
+        "errors": {
+          "icon": "Port",
+          "title": "Entitiy Errors",
+          "type": "number"
+        },
+        "kinds": {
+          "title": "Kinds",
+          "type": "number"
+        },
+        "merged": {
+          "icon": "Port",
+          "title": "Entities Merged",
+          "type": "number"
+        },
+        "start_time": {
+          "format": "date-time",
+          "icon": "Clock",
+          "title": "Start Time",
+          "type": "string"
+        },
+        "sync_status": {
+          "enum": [
+            "FAILED",
+            "IN PROCESS",
+            "SUCCESS"
+          ],
+          "enumColors": {
+            "FAILED": "red",
+            "IN PROCESS": "yellow",
+            "SUCCESS": "green"
+          },
+          "icon": "Reset",
+          "title": "Sync Status",
+          "type": "string"
+        },
+        "updated": {
+          "icon": "Port",
+          "title": "Entities Updated",
+          "type": "number"
+        }
+      },
+      "required": []
+    },
+    "title": "Fed Integration Run"
   },
   {
     "aggregationProperties": {},
@@ -4906,7 +5239,14 @@
   },
   {
     "aggregationProperties": {},
-    "calculationProperties": {},
+    "calculationProperties": {
+      "in_use": {
+        "calculation": "(.relations.target_topic.identifier != null) or  (.relations.target_queue.identifier != null)",
+        "description": "A false indicated the target destination has no listeners, contains no messages, and doesn't currently exist as a destination",
+        "title": "In Use",
+        "type": "boolean"
+      }
+    },
     "icon": "Kafka",
     "identifier": "tibco_ems_bridge",
     "mirrorProperties": {},
@@ -4981,7 +5321,7 @@
         "many": false,
         "required": false,
         "target": "tibco_ems_environment",
-        "title": "Tibco EMS Environment"
+        "title": "Environment"
       }
     },
     "schema": {
@@ -5007,6 +5347,7 @@
           "type": "string"
         },
         "consumer_count": {
+          "description": "Sessions listening for messages",
           "title": "Consumer Count",
           "type": "number"
         },
@@ -5023,6 +5364,7 @@
           "type": "number"
         },
         "producer_count": {
+          "description": "Sessions sending for messages",
           "title": "Producer Count",
           "type": "number"
         },
@@ -5284,7 +5626,7 @@
           "type": "string"
         },
         "consumer_count": {
-          "title": "Consumer Count",
+          "title": "Consumers",
           "type": "number"
         },
         "exclusive": {

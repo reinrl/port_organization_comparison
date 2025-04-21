@@ -7485,6 +7485,940 @@
     ]
   },
   {
+    "after": "fed_integration_run_history",
+    "blueprint": "fed_integration_kind",
+    "icon": "Ocean",
+    "identifier": "fed_integration_kind_metrics",
+    "protected": false,
+    "section": "software_catalog",
+    "showInSidebar": true,
+    "sidebar": "catalog",
+    "title": "Fed  Integration Kind Metrics",
+    "type": "blueprint-entities",
+    "widgets": [
+      {
+        "blueprintConfig": {
+          "fed_integration_kind": {
+            "filterSettings": {
+              "filterBy": {
+                "combinator": "and",
+                "rules": []
+              }
+            },
+            "groupSettings": {
+              "groupBy": []
+            },
+            "propertiesSettings": {
+              "hidden": [
+                "$createdAt",
+                "$identifier",
+                "$updatedAt"
+              ],
+              "order": [
+                "$icon",
+                "$identifier",
+                "$title",
+                "added",
+                "deleted",
+                "duration",
+                "end_time",
+                "errors",
+                "fed_integration",
+                "FROZEN_RIGHT_COLUMN",
+                "kind",
+                "merged",
+                "start_time",
+                "sync_status",
+                "updated"
+              ]
+            },
+            "sortSettings": {
+              "sortBy": [
+                {
+                  "order": "desc",
+                  "property": "start_time"
+                }
+              ]
+            }
+          },
+          "fed_integration_kind_metrics": {
+            "groupSettings": {
+              "groupBy": []
+            },
+            "propertiesSettings": {
+              "order": [],
+              "shown": [
+                "$createdAt",
+                "$identifier",
+                "$updatedAt",
+                "duration",
+                "entities_added",
+                "entities_ingested",
+                "entities_merged",
+                "entities_updated",
+                "kind",
+                "last_completion_status",
+                "last_sync_at",
+                "port_objects",
+                "source_objects"
+              ]
+            },
+            "sortSettings": {}
+          }
+        },
+        "dataset": {
+          "combinator": "and",
+          "rules": [
+            {
+              "operator": "=",
+              "property": "$blueprint",
+              "value": "{{blueprint}}"
+            }
+          ]
+        },
+        "id": "L95VeLQQJMMkIVOV",
+        "type": "table-entities-explorer"
+      }
+    ]
+  },
+  {
+    "blueprint": "fed_integration_kind_run",
+    "icon": "Ocean",
+    "identifier": "fed_integration_kind_runEntity",
+    "protected": true,
+    "requiredQueryParams": [
+      "blueprint",
+      "identifier"
+    ],
+    "section": "software_catalog",
+    "showInSidebar": false,
+    "title": "Fed Integration Kind Run",
+    "type": "entity",
+    "widgets": [
+      {
+        "activeGroupUrlParam": "activeTab",
+        "displayMode": "tabs",
+        "groups": [
+          {
+            "title": "Audit Log",
+            "widgets": [
+              {
+                "id": "yQDZ4zSiWvGQaJi6",
+                "query": {
+                  "blueprint": "{{blueprint}}",
+                  "entity": "{{url.identifier}}"
+                },
+                "type": "table-audit-log"
+              }
+            ]
+          },
+          {
+            "title": "Overview",
+            "widgets": [
+              {
+                "id": "gGHE9OeFqAtEd8im",
+                "layout": [
+                  {
+                    "columns": [
+                      {
+                        "id": "0Nw9pk9nS5dujJmi",
+                        "size": 12
+                      }
+                    ],
+                    "height": 400
+                  }
+                ],
+                "type": "dashboard-widget",
+                "widgets": [
+                  {
+                    "blueprint": "{{blueprint}}",
+                    "entity": "{{url.identifier}}",
+                    "id": "0Nw9pk9nS5dujJmi",
+                    "title": "Details",
+                    "type": "entity-info"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Related Entities",
+            "widgets": [
+              {
+                "displayMode": "switch",
+                "groups": [
+                  {
+                    "icon": "Relation",
+                    "title": "Graph",
+                    "widgets": [
+                      {
+                        "dataset": {
+                          "combinator": "or",
+                          "rules": [
+                            {
+                              "blueprint": "{{blueprint}}",
+                              "operator": "relatedTo",
+                              "value": "{{url.identifier}}"
+                            },
+                            {
+                              "combinator": "and",
+                              "rules": [
+                                {
+                                  "operator": "=",
+                                  "property": "$blueprint",
+                                  "value": "{{blueprint}}"
+                                },
+                                {
+                                  "operator": "=",
+                                  "property": "$identifier",
+                                  "value": "{{url.identifier}}"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        "hiddenBlueprints": [],
+                        "id": "wV5aATega0aR4AWH",
+                        "type": "graph-entities-explorer"
+                      }
+                    ]
+                  },
+                  {
+                    "icon": "Table",
+                    "title": "Table",
+                    "widgets": [
+                      {
+                        "id": "OoQWaoZC94t7GPyV",
+                        "type": "table-entities-explorer-by-direction"
+                      }
+                    ]
+                  }
+                ],
+                "id": "bLkaQYddg304SEsQ",
+                "title": "Related Entities",
+                "type": "grouper"
+              }
+            ]
+          },
+          {
+            "title": "Runs",
+            "widgets": [
+              {
+                "id": "CPZkHobzcrYbMALV",
+                "query": {
+                  "blueprint": "{{blueprint}}",
+                  "entity": "{{url.identifier}}"
+                },
+                "title": "Run Log",
+                "type": "runs-table"
+              }
+            ]
+          }
+        ],
+        "groupsOrder": [
+          "Audit Log",
+          "Dashboard",
+          "Overview",
+          "Related Entities",
+          "Runs",
+          "Scorecards"
+        ],
+        "id": "YVZf0QsybGGLxc0N",
+        "type": "grouper"
+      }
+    ]
+  },
+  {
+    "after": "fed_integration_kind_metrics",
+    "blueprint": "fed_integration_kind_run",
+    "icon": "Ocean",
+    "identifier": "fed_integration_kind_runs",
+    "protected": false,
+    "requiredQueryParams": [],
+    "section": "software_catalog",
+    "showInSidebar": true,
+    "sidebar": "catalog",
+    "title": "Fed Integration Kind History",
+    "type": "blueprint-entities",
+    "widgets": [
+      {
+        "blueprintConfig": {
+          "fed_integration_kind_run": {
+            "filterSettings": {
+              "filterBy": {
+                "combinator": "and",
+                "rules": []
+              }
+            },
+            "groupSettings": {
+              "groupBy": []
+            },
+            "propertiesSettings": {
+              "order": [
+                "$icon",
+                "$title",
+                "added",
+                "deleted",
+                "duration",
+                "end_time",
+                "errors",
+                "fed_integration_kind",
+                "fed_integration_run",
+                "FROZEN_RIGHT_COLUMN",
+                "kind",
+                "merged",
+                "start_time",
+                "sync_status",
+                "updated"
+              ],
+              "shown": [
+                "$team",
+                "$title",
+                "added",
+                "deleted",
+                "duration",
+                "end_time",
+                "errors",
+                "fed_integration_kind",
+                "fed_integration_run",
+                "kind",
+                "merged",
+                "scorecardsStats",
+                "start_time",
+                "sync_status",
+                "updated"
+              ]
+            },
+            "sortSettings": {
+              "sortBy": [
+                {
+                  "order": "desc",
+                  "property": "start_time"
+                }
+              ]
+            }
+          }
+        },
+        "dataset": {
+          "combinator": "and",
+          "rules": [
+            {
+              "operator": "=",
+              "property": "$blueprint",
+              "value": "fed_integration_kind_run"
+            }
+          ]
+        },
+        "id": "RY6YDYwbs1amQZ7w",
+        "type": "table-entities-explorer"
+      }
+    ]
+  },
+  {
+    "blueprint": "fed_integration_kind",
+    "icon": "Ocean",
+    "identifier": "fed_integration_kindEntity",
+    "protected": true,
+    "requiredQueryParams": [
+      "blueprint",
+      "identifier"
+    ],
+    "section": "software_catalog",
+    "showInSidebar": false,
+    "title": "Fed  Integration Kind Metrics",
+    "type": "entity",
+    "widgets": [
+      {
+        "activeGroupUrlParam": "activeTab",
+        "displayMode": "tabs",
+        "groups": [
+          {
+            "title": "Audit Log",
+            "widgets": [
+              {
+                "id": "pvZ2UQkh8y65dBRn",
+                "query": {
+                  "blueprint": "{{blueprint}}",
+                  "entity": "{{url.identifier}}"
+                },
+                "type": "table-audit-log"
+              }
+            ]
+          },
+          {
+            "title": "Overview",
+            "widgets": [
+              {
+                "id": "1kGFZePrf6koAcrw",
+                "layout": [
+                  {
+                    "columns": [
+                      {
+                        "id": "svgfsrM2ZrpCLjD5",
+                        "size": 12
+                      }
+                    ],
+                    "height": 400
+                  }
+                ],
+                "type": "dashboard-widget",
+                "widgets": [
+                  {
+                    "blueprint": "{{blueprint}}",
+                    "entity": "{{url.identifier}}",
+                    "id": "svgfsrM2ZrpCLjD5",
+                    "title": "Details",
+                    "type": "entity-info"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Related Entities",
+            "widgets": [
+              {
+                "displayMode": "switch",
+                "groups": [
+                  {
+                    "icon": "Relation",
+                    "title": "Graph",
+                    "widgets": [
+                      {
+                        "dataset": {
+                          "combinator": "or",
+                          "rules": [
+                            {
+                              "blueprint": "{{blueprint}}",
+                              "operator": "relatedTo",
+                              "value": "{{url.identifier}}"
+                            },
+                            {
+                              "combinator": "and",
+                              "rules": [
+                                {
+                                  "operator": "=",
+                                  "property": "$blueprint",
+                                  "value": "{{blueprint}}"
+                                },
+                                {
+                                  "operator": "=",
+                                  "property": "$identifier",
+                                  "value": "{{url.identifier}}"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        "hiddenBlueprints": [],
+                        "id": "kht5xSFqhYMEbGOF",
+                        "type": "graph-entities-explorer"
+                      }
+                    ]
+                  },
+                  {
+                    "icon": "Table",
+                    "title": "Table",
+                    "widgets": [
+                      {
+                        "id": "TEgQFyLLZbQwFYvF",
+                        "type": "table-entities-explorer-by-direction"
+                      }
+                    ]
+                  }
+                ],
+                "id": "YiugRQSu1yye8YP0",
+                "title": "Related Entities",
+                "type": "grouper"
+              }
+            ]
+          },
+          {
+            "title": "Runs",
+            "widgets": [
+              {
+                "id": "OT7cB6VTJaTFNpBA",
+                "query": {
+                  "blueprint": "{{blueprint}}",
+                  "entity": "{{url.identifier}}"
+                },
+                "title": "Run Log",
+                "type": "runs-table"
+              }
+            ]
+          }
+        ],
+        "groupsOrder": [
+          "Audit Log",
+          "Dashboard",
+          "Overview",
+          "Related Entities",
+          "Runs",
+          "Scorecards"
+        ],
+        "id": "NTjuUBqP5jlk0v1E",
+        "type": "grouper"
+      }
+    ]
+  },
+  {
+    "after": "federated_integration",
+    "blueprint": "fed_integration_run",
+    "icon": "Ocean",
+    "identifier": "fed_integration_run_history",
+    "protected": false,
+    "requiredQueryParams": [],
+    "section": "software_catalog",
+    "showInSidebar": true,
+    "sidebar": "catalog",
+    "title": "Fed Integration History",
+    "type": "blueprint-entities",
+    "widgets": [
+      {
+        "blueprintConfig": {
+          "fed_integration_run": {
+            "filterSettings": {
+              "filterBy": {
+                "combinator": "and",
+                "rules": []
+              }
+            },
+            "groupSettings": {
+              "groupBy": []
+            },
+            "propertiesSettings": {
+              "order": [
+                "$icon",
+                "$identifier",
+                "$title",
+                "added",
+                "deleted",
+                "duration",
+                "end_time",
+                "errors",
+                "fed_integration",
+                "FROZEN_RIGHT_COLUMN",
+                "kinds",
+                "merged",
+                "start_time",
+                "sync_status",
+                "updated"
+              ],
+              "shown": [
+                "$team",
+                "$title",
+                "added",
+                "deleted",
+                "duration",
+                "end_time",
+                "errors",
+                "fed_integration",
+                "kinds",
+                "merged",
+                "scorecardsStats",
+                "start_time",
+                "sync_status",
+                "updated"
+              ]
+            },
+            "sortSettings": {
+              "sortBy": [
+                {
+                  "order": "desc",
+                  "property": "start_time"
+                }
+              ]
+            }
+          }
+        },
+        "dataset": {
+          "combinator": "and",
+          "rules": [
+            {
+              "operator": "=",
+              "property": "$blueprint",
+              "value": "fed_integration_run"
+            }
+          ]
+        },
+        "id": "vz3BnEvWzERBoNnW",
+        "type": "table-entities-explorer"
+      }
+    ]
+  },
+  {
+    "blueprint": "fed_integration_run",
+    "icon": "Ocean",
+    "identifier": "fed_integration_runEntity",
+    "protected": true,
+    "requiredQueryParams": [
+      "blueprint",
+      "identifier"
+    ],
+    "section": "software_catalog",
+    "showInSidebar": false,
+    "title": "Fed Integration Run",
+    "type": "entity",
+    "widgets": [
+      {
+        "activeGroupUrlParam": "activeTab",
+        "displayMode": "tabs",
+        "groups": [
+          {
+            "title": "Audit Log",
+            "widgets": [
+              {
+                "id": "QRF4zZg0un2GCeqM",
+                "query": {
+                  "blueprint": "{{blueprint}}",
+                  "entity": "{{url.identifier}}"
+                },
+                "type": "table-audit-log"
+              }
+            ]
+          },
+          {
+            "title": "Overview",
+            "widgets": [
+              {
+                "id": "c6vNZjhSG2sv7yrh",
+                "layout": [
+                  {
+                    "columns": [
+                      {
+                        "id": "sqtMvfSuMnBTE2yR",
+                        "size": 12
+                      }
+                    ],
+                    "height": 400
+                  }
+                ],
+                "type": "dashboard-widget",
+                "widgets": [
+                  {
+                    "blueprint": "{{blueprint}}",
+                    "entity": "{{url.identifier}}",
+                    "id": "sqtMvfSuMnBTE2yR",
+                    "title": "Details",
+                    "type": "entity-info"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Related Entities",
+            "widgets": [
+              {
+                "displayMode": "switch",
+                "groups": [
+                  {
+                    "icon": "Relation",
+                    "title": "Graph",
+                    "widgets": [
+                      {
+                        "dataset": {
+                          "combinator": "or",
+                          "rules": [
+                            {
+                              "blueprint": "{{blueprint}}",
+                              "operator": "relatedTo",
+                              "value": "{{url.identifier}}"
+                            },
+                            {
+                              "combinator": "and",
+                              "rules": [
+                                {
+                                  "operator": "=",
+                                  "property": "$blueprint",
+                                  "value": "{{blueprint}}"
+                                },
+                                {
+                                  "operator": "=",
+                                  "property": "$identifier",
+                                  "value": "{{url.identifier}}"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        "hiddenBlueprints": [],
+                        "id": "0anzWh0VjrNZ8QQx",
+                        "type": "graph-entities-explorer"
+                      }
+                    ]
+                  },
+                  {
+                    "icon": "Table",
+                    "title": "Table",
+                    "widgets": [
+                      {
+                        "id": "GLB50ENaZ3vRUHB5",
+                        "type": "table-entities-explorer-by-direction"
+                      }
+                    ]
+                  }
+                ],
+                "id": "qMuV3a11LTqZ0N0G",
+                "title": "Related Entities",
+                "type": "grouper"
+              }
+            ]
+          },
+          {
+            "title": "Runs",
+            "widgets": [
+              {
+                "id": "0QoH0eQaOiGmJooV",
+                "query": {
+                  "blueprint": "{{blueprint}}",
+                  "entity": "{{url.identifier}}"
+                },
+                "title": "Run Log",
+                "type": "runs-table"
+              }
+            ]
+          }
+        ],
+        "groupsOrder": [
+          "Audit Log",
+          "Dashboard",
+          "Overview",
+          "Related Entities",
+          "Runs",
+          "Scorecards"
+        ],
+        "id": "7CbfaqFql9LGhw8i",
+        "type": "grouper"
+      }
+    ]
+  },
+  {
+    "blueprint": "fed_integration",
+    "icon": "Ocean",
+    "identifier": "fed_integrationEntity",
+    "protected": true,
+    "requiredQueryParams": [
+      "blueprint",
+      "identifier"
+    ],
+    "section": "software_catalog",
+    "showInSidebar": false,
+    "title": "Federated Integration",
+    "type": "entity",
+    "widgets": [
+      {
+        "activeGroupUrlParam": "activeTab",
+        "displayMode": "tabs",
+        "groups": [
+          {
+            "title": "Audit Log",
+            "widgets": [
+              {
+                "id": "HMFSPQ8auE4L9IFF",
+                "query": {
+                  "blueprint": "{{blueprint}}",
+                  "entity": "{{url.identifier}}"
+                },
+                "type": "table-audit-log"
+              }
+            ]
+          },
+          {
+            "title": "Overview",
+            "widgets": [
+              {
+                "createdAt": "2025-04-21T00:38:54.600Z",
+                "createdBy": "auth0|6660bdf77201b1c9b53365ab",
+                "id": "H1vSk57xH1d1beDC",
+                "layout": [
+                  {
+                    "columns": [
+                      {
+                        "id": "7VOubFvTZ5kN5Ovg",
+                        "size": 12
+                      }
+                    ],
+                    "height": 455
+                  }
+                ],
+                "type": "dashboard-widget",
+                "updatedAt": "2025-04-21T00:39:06.792Z",
+                "updatedBy": "auth0|6660bdf77201b1c9b53365ab",
+                "widgets": [
+                  {
+                    "blueprint": "{{blueprint}}",
+                    "entity": "{{url.identifier}}",
+                    "id": "7VOubFvTZ5kN5Ovg",
+                    "title": "Details",
+                    "type": "entity-info"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Related Entities",
+            "widgets": [
+              {
+                "displayMode": "switch",
+                "groups": [
+                  {
+                    "icon": "Relation",
+                    "title": "Graph",
+                    "widgets": [
+                      {
+                        "dataset": {
+                          "combinator": "or",
+                          "rules": [
+                            {
+                              "blueprint": "{{blueprint}}",
+                              "operator": "relatedTo",
+                              "value": "{{url.identifier}}"
+                            },
+                            {
+                              "combinator": "and",
+                              "rules": [
+                                {
+                                  "operator": "=",
+                                  "property": "$blueprint",
+                                  "value": "{{blueprint}}"
+                                },
+                                {
+                                  "operator": "=",
+                                  "property": "$identifier",
+                                  "value": "{{url.identifier}}"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        "hiddenBlueprints": [],
+                        "id": "qlyTw62pmb8IVDwS",
+                        "type": "graph-entities-explorer"
+                      }
+                    ]
+                  },
+                  {
+                    "icon": "Table",
+                    "title": "Table",
+                    "widgets": [
+                      {
+                        "id": "EgZYSu3Z3Eevf6UV",
+                        "type": "table-entities-explorer-by-direction"
+                      }
+                    ]
+                  }
+                ],
+                "id": "xxkqotVY3hHLREwh",
+                "title": "Related Entities",
+                "type": "grouper"
+              }
+            ]
+          },
+          {
+            "title": "Runs",
+            "widgets": [
+              {
+                "id": "M5b3ZYd1rzT7WhoC",
+                "query": {
+                  "blueprint": "{{blueprint}}",
+                  "entity": "{{url.identifier}}"
+                },
+                "title": "Run Log",
+                "type": "runs-table"
+              }
+            ]
+          }
+        ],
+        "groupsOrder": [
+          "Audit Log",
+          "Dashboard",
+          "Overview",
+          "Related Entities",
+          "Runs",
+          "Scorecards"
+        ],
+        "id": "Nk81s7Qi3iS0BnUL",
+        "type": "grouper"
+      }
+    ]
+  },
+  {
+    "blueprint": "fed_integration",
+    "icon": "Ocean",
+    "identifier": "federated_integration",
+    "protected": false,
+    "requiredQueryParams": [],
+    "section": "software_catalog",
+    "showInSidebar": true,
+    "sidebar": "catalog",
+    "title": "Federated Integration Metrics",
+    "type": "blueprint-entities",
+    "widgets": [
+      {
+        "blueprintConfig": {
+          "fed_integration": {
+            "filterSettings": {
+              "filterBy": {
+                "combinator": "and",
+                "rules": []
+              }
+            },
+            "groupSettings": {
+              "groupBy": []
+            },
+            "propertiesSettings": {
+              "order": [
+                "$icon",
+                "$title",
+                "added",
+                "deleted",
+                "duration",
+                "end_time",
+                "errors",
+                "FROZEN_RIGHT_COLUMN",
+                "merged",
+                "start_time",
+                "sync_status",
+                "updated"
+              ],
+              "shown": [
+                "$team",
+                "$title",
+                "added",
+                "deleted",
+                "duration",
+                "end_time",
+                "errors",
+                "merged",
+                "scorecardsStats",
+                "start_time",
+                "sync_status",
+                "updated"
+              ]
+            },
+            "sortSettings": {
+              "sortBy": []
+            }
+          }
+        },
+        "dataset": {
+          "combinator": "and",
+          "rules": [
+            {
+              "operator": "=",
+              "property": "$blueprint",
+              "value": "fed_integration"
+            }
+          ]
+        },
+        "id": "70790a25-d8c7-4a75-bb8d-3de3847a1466",
+        "type": "table-entities-explorer"
+      }
+    ]
+  },
+  {
     "description": "The Federated Tech Radar is a list of technologies complemented by an assessment result. Have feedback about this page? Leave it [here](/self-serve?action=leave_a_feedback_the_portal&actionInputs=(page*_url~*/federated*_tech*_radar)~).",
     "icon": "Rocket",
     "identifier": "federated_tech_radar",
@@ -19813,6 +20747,7 @@
     ]
   },
   {
+    "after": "fed_integration_kind_runs",
     "blueprint": "service",
     "icon": "AzureDevops",
     "identifier": "repos",
@@ -26298,6 +27233,7 @@
     "identifier": "tibco_ems_bridges",
     "parent": "blueprints",
     "protected": false,
+    "requiredQueryParams": [],
     "section": "software_catalog",
     "showInSidebar": true,
     "sidebar": "catalog",
@@ -26310,7 +27246,13 @@
             "filterSettings": {
               "filterBy": {
                 "combinator": "and",
-                "rules": []
+                "rules": [
+                  {
+                    "operator": "=",
+                    "property": "in_use",
+                    "value": false
+                  }
+                ]
               }
             },
             "groupSettings": {
@@ -26318,37 +27260,36 @@
             },
             "propertiesSettings": {
               "order": [
-                "$createdAt",
                 "$icon",
+                "$identifier",
                 "FROZEN_RIGHT_COLUMN",
+                "not_in_use",
                 "selector",
-                "source_queues",
-                "source_topics",
                 "source_type",
                 "source",
-                "target_queues",
-                "target_topics",
                 "target_type",
-                "target"
+                "target",
+                "tibco_ems_environment"
               ],
               "shown": [
-                "$createdAt",
+                "$identifier",
                 "selector",
-                "source_queues",
-                "source_topics",
                 "source_type",
                 "source",
-                "target_queues",
-                "target_topics",
                 "target_type",
-                "target"
+                "target",
+                "tibco_ems_environment"
               ]
             },
             "sortSettings": {
               "sortBy": [
                 {
-                  "order": "desc",
-                  "property": "target_queues"
+                  "order": "asc",
+                  "property": "source"
+                },
+                {
+                  "order": "asc",
+                  "property": "target"
                 }
               ]
             }
@@ -26360,7 +27301,7 @@
             {
               "operator": "=",
               "property": "$blueprint",
-              "value": "{{blueprint}}"
+              "value": "tibco_ems_bridge"
             }
           ]
         },
@@ -26519,7 +27460,7 @@
   {
     "after": "tibco_ems_stores",
     "blueprint": "tibco_ems_connection",
-    "icon": "Kafka",
+    "icon": "Table",
     "identifier": "tibco_ems_connections",
     "parent": "blueprints",
     "protected": false,
@@ -26532,13 +27473,63 @@
     "widgets": [
       {
         "blueprintConfig": {
-          "tibco_ems_consumer": {
+          "tibco_ems_connection": {
+            "filterSettings": {
+              "filterBy": {
+                "combinator": "and",
+                "rules": []
+              }
+            },
+            "groupSettings": {
+              "groupBy": []
+            },
             "propertiesSettings": {
-              "order": [],
-              "shown": [
-                "$createdAt",
+              "order": [
+                "$icon",
                 "$identifier",
-                "$updatedAt"
+                "$title",
+                "address",
+                "admin",
+                "client_id",
+                "client_type",
+                "client_version",
+                "fault_tolerant",
+                "FROZEN_RIGHT_COLUMN",
+                "host",
+                "start_time",
+                "started",
+                "tibco_ems_environment",
+                "type",
+                "url",
+                "user_name",
+                "xa"
+              ],
+              "shown": [
+                "$identifier",
+                "$team",
+                "$title",
+                "address",
+                "admin",
+                "client_type",
+                "client_version",
+                "fault_tolerant",
+                "host",
+                "scorecardsStats",
+                "start_time",
+                "started",
+                "tibco_ems_environment",
+                "type",
+                "url",
+                "user_name",
+                "xa"
+              ]
+            },
+            "sortSettings": {
+              "sortBy": [
+                {
+                  "order": "desc",
+                  "property": "start_time"
+                }
               ]
             }
           }
@@ -26549,11 +27540,11 @@
             {
               "operator": "=",
               "property": "$blueprint",
-              "value": "tibco_ems_consumer"
+              "value": "tibco_ems_connection"
             }
           ]
         },
-        "id": "8qAVaTbt2o1WS6pC",
+        "id": "e456a6ab-2983-47b7-b98e-52bbb6f33eed",
         "type": "table-entities-explorer"
       }
     ]
@@ -26757,7 +27748,6 @@
                 "tibco_ems_connection",
                 "tibco_ems_environment",
                 "tibco_ems_queue",
-                "tibco_ems_topic",
                 "user_name"
               ]
             },
@@ -26880,7 +27870,33 @@
                   {
                     "columns": [
                       {
-                        "id": "PdU6EcPTQlqPmsPr",
+                        "id": "1IYQwb6l9q6n0gqu",
+                        "size": 6
+                      },
+                      {
+                        "id": "CDuQVsgC9OJVHMna",
+                        "size": 6
+                      }
+                    ],
+                    "height": 400
+                  },
+                  {
+                    "columns": [
+                      {
+                        "id": "bf7VhoUUUC5wQEQw",
+                        "size": 6
+                      },
+                      {
+                        "id": "noM4aqFUA8gCQqfD",
+                        "size": 6
+                      }
+                    ],
+                    "height": 400
+                  },
+                  {
+                    "columns": [
+                      {
+                        "id": "TumlaD9pnTQd9PZz",
                         "size": 12
                       }
                     ],
@@ -26888,15 +27904,397 @@
                   }
                 ],
                 "type": "dashboard-widget",
-                "updatedAt": "2025-04-10T18:46:53.274Z",
+                "updatedAt": "2025-04-19T00:31:14.858Z",
                 "updatedBy": "auth0|6660bdf77201b1c9b53365ab",
                 "widgets": [
                   {
-                    "blueprint": "{{blueprint}}",
-                    "entity": "{{url.identifier}}",
-                    "id": "PdU6EcPTQlqPmsPr",
-                    "title": "Details",
-                    "type": "entity-info"
+                    "blueprintConfig": {
+                      "tibco_ems_bridge": {
+                        "filterSettings": {
+                          "filterBy": {
+                            "combinator": "and",
+                            "rules": [
+                              {
+                                "operator": "=",
+                                "property": "in_use",
+                                "value": false
+                              }
+                            ]
+                          }
+                        },
+                        "groupSettings": {
+                          "groupBy": []
+                        },
+                        "propertiesSettings": {
+                          "hidden": [
+                            "$createdAt",
+                            "$identifier",
+                            "$team",
+                            "$title",
+                            "$updatedAt",
+                            "in_use",
+                            "scorecardsStats",
+                            "source_queue",
+                            "source_topic",
+                            "target_queue",
+                            "target_topic",
+                            "tibco_ems_environment"
+                          ],
+                          "order": [
+                            "$icon",
+                            "FROZEN_RIGHT_COLUMN",
+                            "in_use",
+                            "selector",
+                            "source_type",
+                            "source",
+                            "target_type",
+                            "target"
+                          ]
+                        },
+                        "sortSettings": {
+                          "sortBy": []
+                        }
+                      }
+                    },
+                    "createdAt": "2025-04-17T23:33:59.702Z",
+                    "createdBy": "auth0|6660bdf77201b1c9b53365ab",
+                    "dataset": {
+                      "combinator": "and",
+                      "rules": [
+                        {
+                          "blueprint": "{{blueprint}}",
+                          "operator": "relatedTo",
+                          "value": "{{url.identifier}}"
+                        },
+                        {
+                          "operator": "=",
+                          "property": "$blueprint",
+                          "value": "tibco_ems_bridge"
+                        }
+                      ]
+                    },
+                    "description": "This indicates that the target destination has no listeners, contains no messages, and doesn't currently exist as a destination. The bridge may be eligible for removal",
+                    "displayMode": "widget",
+                    "excludedFields": [],
+                    "icon": "Table",
+                    "id": "CDuQVsgC9OJVHMna",
+                    "title": "Bridges Not In Used",
+                    "type": "table-entities-explorer",
+                    "updatedAt": "2025-04-17T23:48:00.183Z",
+                    "updatedBy": "auth0|6660bdf77201b1c9b53365ab"
+                  },
+                  {
+                    "blueprintConfig": {
+                      "tibco_ems_connection": {
+                        "filterSettings": {
+                          "filterBy": {
+                            "combinator": "and",
+                            "rules": [
+                              {
+                                "operator": "doesNotContains",
+                                "property": "host",
+                                "value": [
+                                  "tibco"
+                                ]
+                              }
+                            ]
+                          }
+                        },
+                        "groupSettings": {
+                          "groupBy": []
+                        },
+                        "propertiesSettings": {
+                          "order": [
+                            "$icon",
+                            "$title",
+                            "address",
+                            "admin",
+                            "client_type",
+                            "client_version",
+                            "consumer_count",
+                            "fault_tolerant",
+                            "FROZEN_RIGHT_COLUMN",
+                            "host",
+                            "producer_count",
+                            "session_count",
+                            "start_time",
+                            "started",
+                            "type",
+                            "user_name"
+                          ],
+                          "shown": [
+                            "$title",
+                            "address",
+                            "admin",
+                            "client_type",
+                            "client_version",
+                            "fault_tolerant",
+                            "session_count",
+                            "start_time",
+                            "started",
+                            "type",
+                            "user_name"
+                          ]
+                        },
+                        "sortSettings": {
+                          "sortBy": []
+                        }
+                      }
+                    },
+                    "createdAt": "2025-04-19T00:31:02.126Z",
+                    "createdBy": "auth0|6660bdf77201b1c9b53365ab",
+                    "dataset": {
+                      "combinator": "and",
+                      "rules": [
+                        {
+                          "blueprint": "{{blueprint}}",
+                          "operator": "relatedTo",
+                          "value": "{{url.identifier}}"
+                        },
+                        {
+                          "operator": "=",
+                          "property": "$blueprint",
+                          "value": "tibco_ems_connection"
+                        }
+                      ]
+                    },
+                    "description": "",
+                    "displayMode": "widget",
+                    "excludedFields": [],
+                    "icon": "Table",
+                    "id": "TumlaD9pnTQd9PZz",
+                    "title": "Connections (Not BPM)",
+                    "type": "table-entities-explorer",
+                    "updatedAt": "2025-04-19T00:35:26.802Z",
+                    "updatedBy": "auth0|6660bdf77201b1c9b53365ab"
+                  },
+                  {
+                    "blueprintConfig": {
+                      "tibco_ems_queue": {
+                        "filterSettings": {
+                          "filterBy": {
+                            "combinator": "and",
+                            "rules": []
+                          }
+                        },
+                        "groupSettings": {
+                          "groupBy": []
+                        },
+                        "propertiesSettings": {
+                          "order": [],
+                          "shown": [
+                            "$title",
+                            "pending_message_size",
+                            "pending_messages"
+                          ]
+                        },
+                        "sortSettings": {
+                          "sortBy": [
+                            {
+                              "order": "desc",
+                              "property": "pending_messages"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "createdAt": "2025-04-17T23:25:24.850Z",
+                    "createdBy": "auth0|6660bdf77201b1c9b53365ab",
+                    "dataset": {
+                      "combinator": "and",
+                      "rules": [
+                        {
+                          "blueprint": "{{blueprint}}",
+                          "operator": "relatedTo",
+                          "value": "{{url.identifier}}"
+                        },
+                        {
+                          "operator": "=",
+                          "property": "$blueprint",
+                          "value": "tibco_ems_queue"
+                        },
+                        {
+                          "operator": ">",
+                          "property": "pending_messages",
+                          "value": 0
+                        }
+                      ]
+                    },
+                    "description": "",
+                    "displayMode": "widget",
+                    "excludedFields": [],
+                    "icon": "Table",
+                    "id": "1IYQwb6l9q6n0gqu",
+                    "title": "Queues of Interest",
+                    "type": "table-entities-explorer",
+                    "updatedAt": "2025-04-17T23:28:01.262Z",
+                    "updatedBy": "auth0|6660bdf77201b1c9b53365ab"
+                  },
+                  {
+                    "blueprintConfig": {
+                      "tibco_ems_server": {
+                        "filterSettings": {
+                          "filterBy": {
+                            "combinator": "and",
+                            "rules": []
+                          }
+                        },
+                        "groupSettings": {
+                          "groupBy": []
+                        },
+                        "propertiesSettings": {
+                          "order": [
+                            "$icon",
+                            "$identifier",
+                            "$title",
+                            "connection_count",
+                            "consumer_count",
+                            "disk_read_rate",
+                            "disk_write_rate",
+                            "FROZEN_RIGHT_COLUMN",
+                            "inbound_data_rate",
+                            "inbound_message_rate",
+                            "inbound_message_size",
+                            "outbound_data_rate",
+                            "outbound_message_rate",
+                            "outbound_message_size",
+                            "pending_message_count",
+                            "pending_message_size",
+                            "producer_count",
+                            "server_host_name",
+                            "session_count",
+                            "start_time",
+                            "state",
+                            "tibco_ems_environment",
+                            "up_time",
+                            "version"
+                          ],
+                          "shown": [
+                            "$team",
+                            "$title",
+                            "disk_read_rate",
+                            "disk_write_rate",
+                            "inbound_data_rate",
+                            "outbound_data_rate",
+                            "pending_message_count",
+                            "pending_message_size",
+                            "scorecardsStats",
+                            "server_host_name",
+                            "state",
+                            "tibco_ems_environment",
+                            "up_time",
+                            "version"
+                          ]
+                        },
+                        "sortSettings": {
+                          "sortBy": [
+                            {
+                              "order": "desc",
+                              "property": "message_memory"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "createdAt": "2025-04-17T23:20:36.000Z",
+                    "createdBy": "auth0|6660bdf77201b1c9b53365ab",
+                    "dataset": {
+                      "combinator": "and",
+                      "rules": [
+                        {
+                          "blueprint": "{{blueprint}}",
+                          "operator": "relatedTo",
+                          "value": "{{url.identifier}}"
+                        },
+                        {
+                          "operator": "=",
+                          "property": "$blueprint",
+                          "value": "tibco_ems_server"
+                        }
+                      ]
+                    },
+                    "description": "",
+                    "displayMode": "widget",
+                    "excludedFields": [],
+                    "icon": "Table",
+                    "id": "noM4aqFUA8gCQqfD",
+                    "title": "Servers",
+                    "type": "table-entities-explorer",
+                    "updatedAt": "2025-04-17T23:24:46.137Z",
+                    "updatedBy": "auth0|6660bdf77201b1c9b53365ab"
+                  },
+                  {
+                    "blueprintConfig": {
+                      "tibco_ems_store": {
+                        "filterSettings": {
+                          "filterBy": {
+                            "combinator": "and",
+                            "rules": []
+                          }
+                        },
+                        "groupSettings": {
+                          "groupBy": []
+                        },
+                        "propertiesSettings": {
+                          "order": [
+                            "$icon",
+                            "$title",
+                            "average_write_time",
+                            "fragmentation",
+                            "free_space",
+                            "FROZEN_RIGHT_COLUMN",
+                            "message_count",
+                            "message_size",
+                            "size",
+                            "write_usage"
+                          ],
+                          "shown": [
+                            "$title",
+                            "average_write_time",
+                            "fragmentation",
+                            "free_space",
+                            "message_count",
+                            "message_size",
+                            "size",
+                            "write_usage"
+                          ]
+                        },
+                        "sortSettings": {
+                          "sortBy": [
+                            {
+                              "order": "asc",
+                              "property": "$title"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "createdAt": "2025-04-17T23:28:35.366Z",
+                    "createdBy": "auth0|6660bdf77201b1c9b53365ab",
+                    "dataset": {
+                      "combinator": "and",
+                      "rules": [
+                        {
+                          "blueprint": "{{blueprint}}",
+                          "operator": "relatedTo",
+                          "value": "{{url.identifier}}"
+                        },
+                        {
+                          "operator": "=",
+                          "property": "$blueprint",
+                          "value": "tibco_ems_store"
+                        }
+                      ]
+                    },
+                    "description": "",
+                    "displayMode": "widget",
+                    "excludedFields": [],
+                    "icon": "Table",
+                    "id": "bf7VhoUUUC5wQEQw",
+                    "title": "Stores",
+                    "type": "table-entities-explorer",
+                    "updatedAt": "2025-04-17T23:31:37.276Z",
+                    "updatedBy": "auth0|6660bdf77201b1c9b53365ab"
                   }
                 ]
               }
@@ -27199,22 +28597,43 @@
       {
         "blueprintConfig": {
           "tibco_ems_producer": {
+            "filterSettings": {
+              "filterBy": {
+                "combinator": "and",
+                "rules": []
+              }
+            },
+            "groupSettings": {
+              "groupBy": []
+            },
             "propertiesSettings": {
-              "order": [],
-              "shown": [
-                "$createdAt",
-                "$identifier",
-                "$updatedAt",
-                "connection_id",
+              "order": [
+                "$title",
                 "create_time",
-                "date_rate",
-                "destination_name",
                 "destination_type",
-                "message_rate",
-                "session_id",
-                "total_data",
-                "total_messages",
+                "tibco_ems_connection",
+                "tibco_ems_environment",
+                "tibco_ems_queue",
+                "tibco_ems_topic",
                 "user_name"
+              ],
+              "shown": [
+                "$team",
+                "$title",
+                "create_time",
+                "destination_type",
+                "scorecardsStats",
+                "tibco_ems_connection",
+                "tibco_ems_environment",
+                "user_name"
+              ]
+            },
+            "sortSettings": {
+              "sortBy": [
+                {
+                  "order": "desc",
+                  "property": "tibco_ems_queue"
+                }
               ]
             }
           }
@@ -27405,7 +28824,13 @@
             "filterSettings": {
               "filterBy": {
                 "combinator": "and",
-                "rules": []
+                "rules": [
+                  {
+                    "operator": "=",
+                    "property": "consumer_count",
+                    "value": 0
+                  }
+                ]
               }
             },
             "groupSettings": {
@@ -27417,6 +28842,7 @@
                 "$identifier",
                 "$team",
                 "$updatedAt",
+                "average_message_size",
                 "delivered_messages",
                 "environment",
                 "in_transit_messages",
@@ -27454,7 +28880,7 @@
               "sortBy": [
                 {
                   "order": "desc",
-                  "property": "average_message_size"
+                  "property": "pending_messages"
                 }
               ]
             }
@@ -27652,43 +29078,50 @@
               "groupBy": []
             },
             "propertiesSettings": {
-              "order": [],
-              "shown": [
-                "$createdAt",
-                "$team",
+              "order": [
+                "$icon",
                 "$title",
-                "$updatedAt",
-                "backup_server_name",
                 "connection_count",
                 "disk_read_rate",
                 "disk_write_rate",
-                "inbound_message_count",
-                "inbound_message_rate",
-                "inbound_message_size",
-                "message_memory",
-                "outbound_message_count",
-                "outbound_message_rate",
-                "outbound_message_size",
+                "FROZEN_RIGHT_COLUMN",
                 "pending_message_count",
                 "pending_message_size",
-                "process_id",
                 "producer_count",
                 "queue_count",
-                "scorecardsStats",
                 "server_host_name",
-                "server_name",
                 "session_count",
                 "start_time",
                 "state",
                 "tibco_ems_environment",
                 "topic_count",
                 "up_time",
-                "url",
                 "version"
+              ],
+              "shown": [
+                "$team",
+                "$title",
+                "connection_count",
+                "pending_message_count",
+                "pending_message_size",
+                "producer_count",
+                "queue_count",
+                "scorecardsStats",
+                "server_host_name",
+                "start_time",
+                "state",
+                "tibco_ems_environment",
+                "topic_count",
+                "up_time"
               ]
             },
             "sortSettings": {
-              "sortBy": []
+              "sortBy": [
+                {
+                  "order": "asc",
+                  "property": "server_host_name"
+                }
+              ]
             }
           }
         },
@@ -27904,7 +29337,6 @@
                 "$title",
                 "average_write_time",
                 "crc_enabled",
-                "file_name",
                 "fragmentation",
                 "free_space",
                 "message_count",
@@ -27915,12 +29347,15 @@
                 "tibco_ems_environment",
                 "truncation_enabled",
                 "used_space",
-                "write_rate",
                 "write_usage"
               ]
             },
             "sortSettings": {
               "sortBy": [
+                {
+                  "order": "asc",
+                  "property": "$title"
+                },
                 {
                   "order": "asc",
                   "property": "tibco_ems_environment"
@@ -28110,68 +29545,55 @@
             "filterSettings": {
               "filterBy": {
                 "combinator": "and",
-                "rules": [
-                  {
-                    "operator": "in",
-                    "property": "tibco_ems_environment",
-                    "value": [
-                      "Production"
-                    ]
-                  }
-                ]
+                "rules": []
               }
             },
             "groupSettings": {
               "groupBy": []
             },
             "propertiesSettings": {
+              "hidden": [
+                "$createdAt",
+                "$identifier",
+                "$team",
+                "$updatedAt",
+                "average_message_size",
+                "environment",
+                "inbound_data_rate",
+                "inbound_message_rate",
+                "inbound_total_data",
+                "inbound_total_messages",
+                "outbound_data_rate",
+                "outbound_message_rate",
+                "outbound_total_data",
+                "outbound_total_messages",
+                "prefetch",
+                "scorecardsStats",
+                "subscriber_count",
+                "subscription_count"
+              ],
               "order": [
                 "$icon",
                 "$title",
-                "active_durable_count",
                 "consumer_count",
-                "durable_subscription_count",
                 "failsafe",
                 "FROZEN_RIGHT_COLUMN",
-                "inbound_message_rate",
-                "inbound_total_messages",
                 "jndi_names",
-                "outbound_message_rate",
-                "outbound_total_messages",
-                "overflow_policy",
                 "pending_message_size",
                 "pending_messages",
-                "prefetch",
                 "redelivery_delay",
                 "secure",
-                "subscriber_count",
-                "subscription_count",
-                "tibco_ems_environment"
-              ],
-              "shown": [
-                "$title",
-                "active_durable_count",
-                "consumer_count",
-                "durable_subscription_count",
-                "failsafe",
-                "inbound_message_rate",
-                "inbound_total_messages",
-                "jndi_names",
-                "outbound_message_rate",
-                "outbound_total_messages",
-                "overflow_policy",
-                "pending_message_size",
-                "pending_messages",
-                "prefetch",
-                "redelivery_delay",
-                "secure",
-                "subscriber_count",
-                "subscription_count",
+                "store",
                 "tibco_ems_environment"
               ]
             },
             "sortSettings": {
-              "sortBy": []
+              "sortBy": [
+                {
+                  "order": "desc",
+                  "property": "consumer_count"
+                }
+              ]
             }
           }
         },
