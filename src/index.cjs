@@ -2,6 +2,7 @@ const axios = require("axios");
 const fs = require("fs");
 const path = require("path");
 const { listFiles, sortArrayOfItems } = require("./util/utilFunctions.cjs");
+const { permission } = require("process");
 
 // These are the keys that we want to ignore when comparing items across environments
 const KEYS_TO_EXCLUDE = [
@@ -14,11 +15,11 @@ const KEYS_TO_EXCLUDE = [
 
 // Add additional endpoints here as needed
 const dataTypes = [
-  { endpoint: "/actions", variable: "actions" },
-  { endpoint: "/blueprints", variable: "blueprints" },
-  { endpoint: "/integration", variable: "integrations" },
-  { endpoint: "/pages", variable: "pages" },
-  { endpoint: "/scorecards", variable: "scorecards" },
+  { endpoint: "/actions", hasPermissions: true, variable: "actions" },
+  { endpoint: "/blueprints", hasPermissions: true, variable: "blueprints" },
+  { endpoint: "/integration", hasPermissions: false, variable: "integrations" },
+  { endpoint: "/pages", hasPermissions: true, variable: "pages" },
+  { endpoint: "/scorecards", hasPermissions: false, variable: "scorecards" },
 ];
 
 // This is the directory where the environment configs are stored
@@ -74,9 +75,9 @@ async function fetchData(envName) {
 
   let dataToReturn = {};
 
-  for (const { endpoint, variable } of dataTypes) {
+  for (const { endpoint, hasPermissions, variable } of dataTypes) {
     try {
-      const response = await axios.request({
+      const typeResponse = await axios.request({
         method: "get",
         maxBodyLength: Infinity,
         url: `${baseReqConfig.portDomain}${endpoint}`,
@@ -87,11 +88,65 @@ async function fetchData(envName) {
         },
       });
 
-      if (!response.data?.[variable]) {
+      if (!typeResponse.data?.[variable]) {
         throw new Error("Incorrect response array variable name specified");
       }
 
-      dataToReturn[variable] = response.data[variable];
+      // Some items have permissions that we need to fetch
+      if (hasPermissions) {
+        let items = [];
+
+        if (Array.isArray(typeResponse.data[variable])) {
+          for (const item of typeResponse.data[variable]) {
+            try {
+              const itemResponse = await axios.request({
+                method: "get",
+                maxBodyLength: Infinity,
+                url: `${baseReqConfig.portDomain}${endpoint}/${item.identifier}/permissions`,
+                headers: {
+                  "Content-Type": "application/json",
+                  Accept: "application/json",
+                  Authorization: `Bearer ${baseReqConfig.accessToken}`,
+                },
+              });
+
+              // update the item with its associated permissions and return it
+              items.push({...item, permissions: itemResponse.data.permissions});
+            } catch (error) {
+              /*
+                There are a few different reasons why we might legitimately hit this (so these are ok to log and ignore):
+                  403:
+                    {
+                      "ok": false,
+                      "error": "missing_permissions",
+                      "message": "Page \"dbt_destinationsEntity\" is not a Software Catalog page.",
+                      "details": {
+                        "page": "dbt_destinationsEntity",
+                        "action": "update"
+                      }
+                    }
+                  422:
+                    {
+                      "ok": false,
+                      "error": "non_self_service_action_permissions_error",
+                      "message": "Cannot manage permissions for non self service action"
+                    }
+              */
+              console.error(
+                `Error fetching additional data for item ID "${item.identifier}" from endpoint "${baseReqConfig.portDomain}${endpoint}/${item.identifier}/permissions" in environment "${envName}": ${error.message}`
+              );
+              // we weren't able to retrieve the permissions, so at least return what we had
+              items.push(item);
+            }
+          }
+        }
+
+        // set the updated array (with permissions retrieved for each item)
+        dataToReturn[variable] = items;
+      } else {
+        // No permissions to fetch, so just return the data as is
+        dataToReturn[variable] = typeResponse.data[variable];
+      }
     } catch (error) {
       console.error(
         `Error fetching data from endpoint "${endpoint}" for environment "${envName}": ${error.message} (will not write ${variable}.json)`
