@@ -2,7 +2,29 @@ const axios = require("axios");
 const fs = require("fs");
 const path = require("path");
 const { listFiles, sortArrayOfItems } = require("./util/utilFunctions.cjs");
-const { permission } = require("process");
+
+// Create a writable stream for the log file
+const logFilePath = path.join(__dirname, "output", "logging.txt");
+let logStream;
+
+// Custom logger function
+function logToFileAndConsole(message, isError = false) {
+  if (!logStream) {
+    logStream = fs.createWriteStream(logFilePath, { flags: "a" });
+  }
+  const timestamp = new Date().toISOString();
+  const formattedMessage = `[${timestamp}] ${message}`;
+
+  // Log to console
+  if (isError) {
+    console.error(formattedMessage);
+  } else {
+    console.log(formattedMessage);
+  }
+
+  // Log to file
+  logStream.write(formattedMessage + "\n");
+}
 
 // These are the keys that we want to ignore when comparing items across environments
 const KEYS_TO_EXCLUDE = [
@@ -111,7 +133,10 @@ async function fetchData(envName) {
               });
 
               // update the item with its associated permissions and return it
-              items.push({...item, permissions: itemResponse.data.permissions});
+              items.push({
+                ...item,
+                permissions: itemResponse.data.permissions,
+              });
             } catch (error) {
               /*
                 There are a few different reasons why we might legitimately hit this (so these are ok to log and ignore):
@@ -132,8 +157,9 @@ async function fetchData(envName) {
                       "message": "Cannot manage permissions for non self service action"
                     }
               */
-              console.error(
-                `Error fetching additional data for item ID "${item.identifier}" from endpoint "${baseReqConfig.portDomain}${endpoint}/${item.identifier}/permissions" in environment "${envName}": ${error.message}`
+              logToFileAndConsole(
+                `Error fetching additional data for item ID "${item.identifier}" from endpoint "${baseReqConfig.portDomain}${endpoint}/${item.identifier}/permissions" in environment "${envName}": ${error.message}`,
+                true
               );
               // we weren't able to retrieve the permissions, so at least return what we had
               items.push(item);
@@ -148,8 +174,9 @@ async function fetchData(envName) {
         dataToReturn[variable] = typeResponse.data[variable];
       }
     } catch (error) {
-      console.error(
-        `Error fetching data from endpoint "${endpoint}" for environment "${envName}": ${error.message} (will not write ${variable}.json)`
+      logToFileAndConsole(
+        `Error fetching data from endpoint "${endpoint}" for environment "${envName}": ${error.message} (will not write ${variable}.json)`,
+        true
       );
     }
   }
@@ -170,6 +197,18 @@ async function fetchData(envName) {
       await fs.promises.rm(outputDir, { recursive: true, force: true });
     }
     await fs.promises.mkdir(outputDir, { recursive: true });
+
+    // Close the log stream before deleting the directory
+    await fs.promises
+      .rm(outputDir, { recursive: true, force: true })
+      .then(() => fs.promises.mkdir(outputDir, { recursive: true }))
+      .then(() => {
+        logToFileAndConsole("Output directory cleared and recreated.");
+      })
+      .catch((error) => {
+        console.error(`Error clearing output directory: ${error.message}`);
+      });
+
     // remove /util/configs.ts file if it exists
     const configTsFilePath = path.join(__dirname, "util", "configs.ts");
     if (
@@ -195,6 +234,7 @@ async function fetchData(envName) {
         try {
           const envDir = path.join(outputDir, env);
           await fs.promises.mkdir(envDir, { recursive: true });
+          logToFileAndConsole(`Directory created: ${envDir}`);
 
           const data = await fetchData(env);
 
@@ -209,9 +249,11 @@ async function fetchData(envName) {
                 JSON.stringify(deeplySortedData, null, 2),
                 "utf-8"
               );
+              logToFileAndConsole(`File written: ${filePath}`);
             } catch (error) {
-              console.error(
-                `Error writing file for "${key}" in environment "${env}": ${error.message}`
+              logToFileAndConsole(
+                `Error writing file for "${key}" in environment "${env}": ${error.message}`,
+                true
               );
             }
           }
@@ -228,9 +270,9 @@ async function fetchData(envName) {
 
           exportables.push(`${env}Config`);
         } catch (error) {
-          console.error(
-            `Error processing environment "${env}":`,
-            error.message
+          logToFileAndConsole(
+            `Error processing environment "${env}": ${error.message}`,
+            true
           );
         }
       })
@@ -240,7 +282,9 @@ async function fetchData(envName) {
     fileContents += `export { ${exportables.join(",")} };\n`;
     const configFilePath = path.join(__dirname, "util", "configs.ts");
     await fs.promises.writeFile(configFilePath, fileContents, "utf-8");
+
+    logToFileAndConsole("Config file written successfully.");
   } catch (error) {
-    console.log(error);
+    logToFileAndConsole(`Unhandled error: ${error.message}`, true);
   }
 })();

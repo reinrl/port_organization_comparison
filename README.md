@@ -51,7 +51,13 @@ Assuming two configured environments (dev and prod), you should see the followin
         └── scorecards.json
 ```
 
-## Troubleshooting configuration retrieval errors
+## Troubleshooting 
+
+### General tips
+
+Efforts have been made to both log helpful information to the console and write a log file (`/src/output/logging.txt`) containing the console output as well.
+
+### Troubleshooting configuration retrieval errors
 
 If a given organization's clientId and/or clientSecret are not correct (or some other error occurs while attempting to retrieve an access token), you should see an error like the following:
 
