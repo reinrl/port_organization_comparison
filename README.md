@@ -17,7 +17,7 @@ Create one `.cjs` file per environment (Port organization) for both the source a
 const portConfig = {
   clientId: "string",
   clientSecret: "string",
-  envName: "source" | dest,
+  envName: "source" | "dest",
   portDomain: "https://api.port.io/v1" | "https://api.us.port.io/v1",
 };
 
@@ -50,6 +50,14 @@ Assuming two configured environments (dev and prod), you should see the followin
         ├── pages.json
         └── scorecards.json
 ```
+
+## Gathering additional types of information
+
+By default, this project has been set up to retrieve actions, blueprints, integrations, pages, and scorecards. 
+
+For each of these types of data, the unique portion of the endpoint URL is configured (`endpoint`), whether or not an additional endpoint for item-specific permissions exists (`hasPermissions` - if true, the process will attempt to iterate through the items and call an endpoint like `${endpoint}/${item.identifier}/permissions` to layer in the configured permissions object for a given item), and which variable name to use for the items retrieved from the endpoint (`variable` - necessary because of things like the endpoint for integrations being `/integration` - singular, while the response object includes an array of `integrations` - plural).
+
+In order to retrieve a different type of item (assuming an existing Port endpoint - see the [API reference](https://docs.port.io/api-reference/port-api) or the corresponding [Swagger API documentation](https://api.getport.io/swagger/#Pages)), just add another object to the array in [dataTypes.cjs](https://github.com/reinrl/port_organization_comparison/blob/main/src/util/dataTypes.ts).
 
 ## Troubleshooting 
 

@@ -2,6 +2,8 @@ const axios = require("axios");
 const fs = require("fs");
 const path = require("path");
 const { listFiles, sortArrayOfItems } = require("./util/utilFunctions.cjs");
+// Add additional endpoints here as needed
+const TYPES_OF_DATA = require("./util/dataTypes.cjs");
 
 // Create a writable stream for the log file
 const logFilePath = path.join(__dirname, "output", "logging.txt");
@@ -33,15 +35,6 @@ const KEYS_TO_EXCLUDE = [
   "id",
   "updatedAt",
   "updatedBy",
-];
-
-// Add additional endpoints here as needed
-const dataTypes = [
-  { endpoint: "/actions", hasPermissions: true, variable: "actions" },
-  { endpoint: "/blueprints", hasPermissions: true, variable: "blueprints" },
-  { endpoint: "/integration", hasPermissions: false, variable: "integrations" },
-  { endpoint: "/pages", hasPermissions: true, variable: "pages" },
-  { endpoint: "/scorecards", hasPermissions: false, variable: "scorecards" },
 ];
 
 // This is the directory where the environment configs are stored
@@ -97,7 +90,7 @@ async function fetchData(envName) {
 
   let dataToReturn = {};
 
-  for (const { endpoint, hasPermissions, variable } of dataTypes) {
+  for (const { endpoint, hasPermissions, variable } of TYPES_OF_DATA) {
     try {
       const typeResponse = await axios.request({
         method: "get",
@@ -259,11 +252,11 @@ async function fetchData(envName) {
           }
 
           // Append to file contents with information about the environment
-          for (const type of dataTypes) {
+          for (const type of TYPES_OF_DATA) {
             fileContents += `import ${env}${type.variable} from "../output/${env}/${type.variable}.json";\n`;
           }
           fileContents += `\nconst ${env}Config = {\n`;
-          for (const type of dataTypes) {
+          for (const type of TYPES_OF_DATA) {
             fileContents += `\t${env}${type.variable},\n`;
           }
           fileContents += `};\n\n`;
