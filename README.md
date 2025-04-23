@@ -51,6 +51,16 @@ Assuming two configured environments (dev and prod), you should see the followin
         └── scorecards.json
 ```
 
+Once the file generation is complete, a small web app is started:
+
+![Home page of the comparison web app](home.jpg)
+
+The web app allows you to view and compare the configuration data between your source and destination organizations. Select different data types from the navigation to see detailed comparisons:
+
+![Example diff](actions_diff_top.jpg)
+
+![Example diff](actions_diff.jpg)
+
 ## Gathering additional types of information
 
 By default, this project has been set up to retrieve actions, blueprints, integrations, pages, and scorecards. 
