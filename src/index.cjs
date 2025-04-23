@@ -216,7 +216,7 @@ async function fetchData(envName) {
 
                   const permissionData = await makeApiRequest(permissionConfig);
 
-                  // Return the item with its associated permissions
+                  // Enrich the returned item with its associated permissions
                   return {
                     ...item,
                     permissions: permissionData.permissions,
