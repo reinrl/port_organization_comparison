@@ -121,3 +121,11 @@ $ npm run start
 
 Error writing file for "notgood" in environment "source": Cannot read properties of undefined (reading 'sort')
 ```
+
+There are some expected errors that might be written out during permission data retrieval attempts:
+
+```bash
+Error fetching additional data for item ID "serviceEntity" from endpoint "https://api.us.port.io/v1/pages/serviceEntity/permissions" in environment "dest": Request failed with status code 403
+```
+
+There are actually several different reasons why the permission retrieval subprocess might legitimately hit an error. These can include a page not actually being a Software Catalog page (so it doesn't have a permissions object - instead returning an `HTTP 403` with a message like `Page \"dbt_destinationsEntity\" is not a Software Catalog page.`), or an action returned in the actions array not actually being a self-service action (which returns an `HTTP 422` with a message like `Cannot manage permissions for non self service action`). 
