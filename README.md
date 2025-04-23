@@ -69,6 +69,33 @@ For each of these types of data, the unique portion of the endpoint URL is confi
 
 In order to retrieve a different type of item (assuming an existing Port endpoint - see the [API reference](https://docs.port.io/api-reference/port-api) or the corresponding [Swagger API documentation](https://api.getport.io/swagger/#Pages)), just add another object to the array in [dataTypes.cjs](https://github.com/reinrl/port_organization_comparison/blob/main/src/util/dataTypes.ts).
 
+## Excluding specific keys during comparison
+
+When comparing configuration data between environments, you may want to exclude certain keys from the comparison. The project includes a `keysToExclude.cjs` file (stored in `/src/config`) that defines keys that should be ignored during comparison operations.
+
+This file maintains a list of keys that are filtered out when comparing objects between environments. It's useful for:
+
+- Removing sensitive information from the comparison
+- Ignoring implementation details that differ but don't affect functionality
+- Excluding properties that are expected to be different between environments
+- Filtering out redundant data that isn't relevant to the comparison
+
+You can customize the exclusion list by modifying the `keysToExclude.cjs` file:
+
+```js
+// Example of how to modify keysToExclude.cjs
+const keysToExclude = [
+  "id",
+  "createdAt",
+  "updatedAt",
+  // Add your custom keys to exclude
+];
+
+module.exports = { keysToExclude };
+```
+
+The comparison tool automatically uses these settings when displaying differences between environments.
+
 ## Troubleshooting 
 
 ### General tips

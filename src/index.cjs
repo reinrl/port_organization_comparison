@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const { listFiles, sortArrayOfItems } = require("./util/utilFunctions.cjs");
 // Add additional endpoints here as needed
-const TYPES_OF_DATA = require("./util/dataTypes.cjs");
+const TYPES_OF_DATA = require("./config/dataTypes.cjs");
 
 // Create a writable stream for the log file
 const outputDir = path.join(__dirname, "output");
@@ -40,13 +40,7 @@ function logToFileAndConsole(message, isError = false) {
 }
 
 // These are the keys that we want to ignore when comparing items across environments
-const KEYS_TO_EXCLUDE = [
-  "createdAt",
-  "createdBy",
-  "id",
-  "updatedAt",
-  "updatedBy",
-];
+const KEYS_TO_EXCLUDE = require("./config/keysToExclude.cjs");
 
 // This is the directory where the environment configs are stored
 const envsDir = path.join(__dirname, "envs");
