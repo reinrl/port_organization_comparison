@@ -8,7 +8,7 @@
 
 # environment files
 /src/envs/**.cjs
-/src/util/config.ts
+/src/util/configs.ts
 
 ### VisualStudioCode ###
 .vscode/**/*
