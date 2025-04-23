@@ -112,7 +112,8 @@ async function fetchData(envName) {
         let items = [];
 
         if (Array.isArray(typeResponse.data[variable])) {
-          for (const item of typeResponse.data[variable]) {
+          // Create an array of promises for each item's permission request
+          const itemPromises = typeResponse.data[variable].map(async (item) => {
             try {
               const itemResponse = await axios.request({
                 method: "get",
@@ -125,39 +126,23 @@ async function fetchData(envName) {
                 },
               });
 
-              // update the item with its associated permissions and return it
-              items.push({
+              // Return the item with its associated permissions
+              return {
                 ...item,
                 permissions: itemResponse.data.permissions,
-              });
+              };
             } catch (error) {
-              /*
-                There are a few different reasons why we might legitimately hit this (so these are ok to log and ignore):
-                  403:
-                    {
-                      "ok": false,
-                      "error": "missing_permissions",
-                      "message": "Page \"dbt_destinationsEntity\" is not a Software Catalog page.",
-                      "details": {
-                        "page": "dbt_destinationsEntity",
-                        "action": "update"
-                      }
-                    }
-                  422:
-                    {
-                      "ok": false,
-                      "error": "non_self_service_action_permissions_error",
-                      "message": "Cannot manage permissions for non self service action"
-                    }
-              */
               logToFileAndConsole(
                 `Error fetching additional data for item ID "${item.identifier}" from endpoint "${baseReqConfig.portDomain}${endpoint}/${item.identifier}/permissions" in environment "${envName}": ${error.message}`,
                 true
               );
-              // we weren't able to retrieve the permissions, so at least return what we had
-              items.push(item);
+              // Return item without permissions if request failed
+              return item;
             }
-          }
+          });
+
+          // Wait for all promises to resolve in parallel
+          items = await Promise.all(itemPromises);
         }
 
         // set the updated array (with permissions retrieved for each item)
