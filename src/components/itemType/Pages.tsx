@@ -60,7 +60,7 @@ export default function Pages() {
                 value={typeFilter}
                 onChange={handleTypeFilterChange}
               >
-                <option value="">All Types</option>
+                <option value="">all types</option>
                 {uniqueTypes.map((type) => (
                   <option key={type} value={type}>
                     {type}
