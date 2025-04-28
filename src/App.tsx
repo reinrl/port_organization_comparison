@@ -7,10 +7,10 @@ import Content from "./components/Content";
 
 export default function App() {
   const urlParams = new URLSearchParams(window.location.search);
-  const item = urlParams.get("item");
+  const itemType = urlParams.get("itemType");
 
   let activeKey;
-  switch (item) {
+  switch (itemType) {
     case "actions":
       activeKey = "actions";
       break;
@@ -38,29 +38,29 @@ export default function App() {
             <NavBarItem eventKey="home" href="/" label="Home" />
             <NavBarItem
               eventKey="actions"
-              href="/?item=actions"
+              href="/?itemType=actions"
               label="Actions"
             />
             <NavBarItem
               eventKey="blueprints"
-              href="/?item=blueprints"
+              href="/?itemType=blueprints"
               label="Blueprints"
             />
             <NavBarItem
               eventKey="integrations"
-              href="/?item=integrations"
+              href="/?itemType=integrations"
               label="Integrations"
             />
-            <NavBarItem eventKey="pages" href="/?item=pages" label="Pages" />
+            <NavBarItem eventKey="pages" href="/?itemType=pages" label="Pages" />
             <NavBarItem
               eventKey="scorecards"
-              href="/?item=scorecards"
+              href="/?itemType=scorecards"
               label="Scorecards"
             />
           </Nav>
         </Container>
       </Navbar>
-      <Content item={item} />
+      <Content item={itemType} />
     </>
   );
 }

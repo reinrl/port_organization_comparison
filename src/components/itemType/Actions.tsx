@@ -9,13 +9,12 @@ import { sourceConfig, destConfig } from "../../util/configs.ts";
 import ItemViewer from "../ItemViewer.tsx";
 
 export default function Actions() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const item = urlParams.get("item");
+  const itemType = "actions";
   const [typeFilter, setTypeFilter] = useState("");
 
   const leftContents =
-    sourceConfig?.[`source${item}` as keyof typeof sourceConfig];
-  const rightContents = destConfig?.[`dest${item}` as keyof typeof destConfig];
+    sourceConfig?.[`source${itemType}` as keyof typeof sourceConfig];
+  const rightContents = destConfig?.[`dest${itemType}` as keyof typeof destConfig];
 
   // Extract unique types from both arrays
   const uniqueTypes = Array.from(
