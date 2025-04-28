@@ -5,10 +5,10 @@ import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 
-import { sourceConfig, destConfig } from "../util/configs.ts";
-import ItemViewer from "./ItemViewer";
+import { sourceConfig, destConfig } from "../../util/configs.ts";
+import ItemViewer from "../ItemViewer.tsx";
 
-export default function Items() {
+export default function Pages() {
   const urlParams = new URLSearchParams(window.location.search);
   const item = urlParams.get("item");
   const [typeFilter, setTypeFilter] = useState("");

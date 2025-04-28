@@ -2,9 +2,8 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 
-import Items from "./components/Items";
 import NavBarItem from "./components/NavBarItem";
-import Home from "./components/itemType/Home";
+import Content from "./components/Content";
 
 export default function App() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -52,11 +51,7 @@ export default function App() {
               href="/?item=integrations"
               label="Integrations"
             />
-            <NavBarItem
-              eventKey="pages"
-              href="/?item=pages"
-              label="Pages"
-            />
+            <NavBarItem eventKey="pages" href="/?item=pages" label="Pages" />
             <NavBarItem
               eventKey="scorecards"
               href="/?item=scorecards"
@@ -65,7 +60,7 @@ export default function App() {
           </Nav>
         </Container>
       </Navbar>
-      {item !== null ? <Items /> : <Home />}
+      <Content item={item} />
     </>
   );
 }
