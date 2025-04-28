@@ -20,7 +20,7 @@ export default function ItemViewer({
         ? filteredRightContents.map((item) => item?.identifier)
         : []),
     ])
-  );
+  ).sort((a, b) => String(a).localeCompare(String(b)));
 
   return (
     <Accordion>
