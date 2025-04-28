@@ -1,5 +1,5 @@
 import Accordion from "react-bootstrap/Accordion";
-import DiffViewer from "./DiffViewer";
+import ReactDiffViewer from "react-diff-viewer-continued";
 
 interface ItemViewerProps {
   filteredLeftContents: any[];
@@ -56,9 +56,12 @@ export default function ItemViewer({
             </Accordion.Header>
             {!contentsAreIdentical && (
               <Accordion.Body>
-                <DiffViewer
-                  leftContents={leftItemAsString}
-                  rightContents={rightItemAsString}
+                <ReactDiffViewer
+                  oldValue={leftItemAsString}
+                  leftTitle="Source"
+                  newValue={rightItemAsString}
+                  rightTitle="Destination"
+                  splitView={true}
                 />
               </Accordion.Body>
             )}
