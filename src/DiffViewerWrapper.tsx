@@ -51,15 +51,7 @@ export default function DiffViewerWrapper() {
   };
 
   return (
-    <Container fluid>
-      <Row>
-        <Col>
-          <h1>
-            <a href="/">Home</a> | {item}
-          </h1>
-        </Col>
-      </Row>
-      <Row>
+    <Container fluid>      <Row>
         <Col>
           {!!uniqueTypes.length && (
             <form>
