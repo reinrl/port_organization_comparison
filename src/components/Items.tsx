@@ -6,7 +6,7 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 
 import { sourceConfig, destConfig } from "../util/configs.ts";
-import ItemViewer from "./ItemViewer.tsx";
+import ItemViewer from "./ItemViewer";
 
 export default function Items() {
   const urlParams = new URLSearchParams(window.location.search);
