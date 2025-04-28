@@ -70,7 +70,7 @@ export default function App() {
         <DiffViewerWrapper />
       ) : (
         <Container>
-          <h1>Select an option from the menu above to get started.</h1>
+          <h1>Select an option from the menu above to view the current diff.</h1>
         </Container>
       )}
     </>
