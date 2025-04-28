@@ -1,23 +1,112 @@
 import { sourceConfig, destConfig } from "./util/configs.ts";
 import DiffViewer from "./DiffViewer.tsx";
+import { useState } from "react";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 export default function DiffViewerWrapper() {
   const urlParams = new URLSearchParams(window.location.search);
   const item = urlParams.get("item");
+  const [typeFilter, setTypeFilter] = useState("");
 
-  const sourceConfigItem = sourceConfig?.[`source${item}`];
-  const destConfigItem = destConfig?.[`dest${item}`];
+  const leftContents =
+    sourceConfig?.[`source${item}` as keyof typeof sourceConfig];
+  const rightContents = destConfig?.[`dest${item}` as keyof typeof destConfig];
+
+  // Extract unique types from both arrays
+  const uniqueTypes = Array.from(
+    new Set([
+      ...(Array.isArray(leftContents)
+        ? leftContents.map((item) => item?.type)
+        : []),
+      ...(Array.isArray(rightContents)
+        ? rightContents.map((item) => item?.type)
+        : []),
+    ])
+  )
+    .filter(Boolean)
+    .sort((a, b) => String(a).localeCompare(String(b)));
+
+  // Filter contents based on selected type
+  const filteredLeftContents = Array.isArray(leftContents)
+    ? typeFilter
+      ? leftContents.filter((item) => item?.type === typeFilter)
+      : leftContents
+    : leftContents;
+
+  const filteredRightContents = Array.isArray(rightContents)
+    ? typeFilter
+      ? rightContents.filter((item) => item?.type === typeFilter)
+      : rightContents
+    : rightContents;
+
+  const leftContentsAsString = JSON.stringify(filteredLeftContents, null, 2);
+  const rightContentsAsString = JSON.stringify(filteredRightContents, null, 2);
+
+  const handleTypeFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setTypeFilter(e.target.value);
+  };
 
   return (
-    <>
-      <h1>
-        <a href="/">Home</a> | {item}
-      </h1>
-      <hr />
-      <DiffViewer
-        leftContents={JSON.stringify(sourceConfigItem, null, 2)}
-        rightContents={JSON.stringify(destConfigItem, null, 2)}
-      />
-    </>
+    <Container fluid>
+      <Row>
+        <Col>
+          <h1>
+            <a href="/">Home</a> | {item}
+          </h1>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          {!!uniqueTypes.length && (
+            <form>
+              <label htmlFor="typeFilter">Filter by type: </label>
+              <Form.Select
+                id="typeFilter"
+                name="typeFilter"
+                value={typeFilter}
+                onChange={handleTypeFilterChange}
+              >
+                <option value="">All Types</option>
+                {uniqueTypes.map((type) => (
+                  <option key={type} value={type}>
+                    {type}
+                  </option>
+                ))}
+              </Form.Select>
+              {typeFilter && (
+                <div style={{ marginTop: "10px" }}>
+                  <small>
+                    Currently filtering by type: <strong>{typeFilter}</strong>{" "}
+                    <Button
+                      variant="secondary"
+                      onClick={() => setTypeFilter("")}
+                    >
+                      Clear filter
+                    </Button>
+                  </small>
+                </div>
+              )}
+            </form>
+          )}
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <hr />
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <DiffViewer
+            leftContents={leftContentsAsString}
+            rightContents={rightContentsAsString}
+          />
+        </Col>
+      </Row>
+    </Container>
   );
 }
