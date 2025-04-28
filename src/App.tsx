@@ -1,7 +1,8 @@
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import DiffViewerWrapper from "./DiffViewerWrapper";
+
+import Items from "./Items";
 import NavBarItem from "./NavBarItem";
 
 export default function App() {
@@ -67,10 +68,12 @@ export default function App() {
         </Container>
       </Navbar>
       {view === "diff" ? (
-        <DiffViewerWrapper />
+        <Items />
       ) : (
         <Container>
-          <h1>Select an option from the menu above to view the current diff.</h1>
+          <h1>
+            Select an option from the menu above to view the current diff.
+          </h1>
         </Container>
       )}
     </>

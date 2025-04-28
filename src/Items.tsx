@@ -8,7 +8,7 @@ import Row from "react-bootstrap/Row";
 import { sourceConfig, destConfig } from "./util/configs.ts";
 import ItemViewer from "./ItemViewer";
 
-export default function DiffViewerWrapper() {
+export default function Items() {
   const urlParams = new URLSearchParams(window.location.search);
   const item = urlParams.get("item");
   const [typeFilter, setTypeFilter] = useState("");
