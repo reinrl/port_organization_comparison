@@ -1,12 +1,12 @@
-import { sourceConfig, destConfig } from "./util/configs.ts";
-import DiffViewer from "./DiffViewer.tsx";
 import { useState } from "react";
-import Accordion from "react-bootstrap/Accordion";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
+
+import { sourceConfig, destConfig } from "./util/configs.ts";
+import ItemViewer from "./ItemViewer";
 
 export default function DiffViewerWrapper() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -43,18 +43,6 @@ export default function DiffViewerWrapper() {
       ? rightContents.filter((item) => item?.type === typeFilter)
       : rightContents
     : rightContents;
-
-  // create list of unique types from both left and right contents
-  const uniqueItems = Array.from(
-    new Set([
-      ...(Array.isArray(filteredLeftContents)
-        ? filteredLeftContents.map((item) => item?.identifier)
-        : []),
-      ...(Array.isArray(filteredRightContents)
-        ? filteredRightContents.map((item) => item?.identifier)
-        : []),
-    ])
-  );
 
   const handleTypeFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setTypeFilter(e.target.value);
@@ -100,37 +88,10 @@ export default function DiffViewerWrapper() {
       <Row>
         <Col>
           <hr />
-          <Accordion>
-            {uniqueItems.map((item, index) => {
-              const leftItem = filteredLeftContents?.find(
-                (i) => i?.identifier === item
-              );
-              const rightItem = filteredRightContents?.find(
-                (i) => i?.identifier === item
-              );
-              return (
-                <Accordion.Item eventKey={item} key={item}>
-                  <Accordion.Header>
-                    <div className="d-flex justify-content-between">
-                      <div className="me-2">{item}</div>
-                      {leftItem === undefined && (
-                        <div className="text-danger">(not in source)</div>
-                      )}
-                      {rightItem === undefined && (
-                        <div className="text-danger">(not in destination)</div>
-                      )}
-                    </div>
-                  </Accordion.Header>
-                  <Accordion.Body>
-                    <DiffViewer
-                      leftContents={JSON.stringify(leftItem, null, 2)}
-                      rightContents={JSON.stringify(rightItem, null, 2)}
-                    />
-                  </Accordion.Body>
-                </Accordion.Item>
-              );
-            })}
-          </Accordion>
+          <ItemViewer
+            filteredLeftContents={filteredLeftContents}
+            filteredRightContents={filteredRightContents}
+          />
         </Col>
       </Row>
     </Container>
