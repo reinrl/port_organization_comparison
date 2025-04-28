@@ -1,0 +1,99 @@
+import { useState } from "react";
+import Button from "react-bootstrap/Button";
+import Col from "react-bootstrap/Col";
+import Container from "react-bootstrap/Container";
+import Form from "react-bootstrap/Form";
+import Row from "react-bootstrap/Row";
+
+import { sourceConfig, destConfig } from "../../util/configs.ts";
+import ItemViewer from "../ItemViewer.tsx";
+
+export default function Actions() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const item = urlParams.get("item");
+  const [typeFilter, setTypeFilter] = useState("");
+
+  const leftContents =
+    sourceConfig?.[`source${item}` as keyof typeof sourceConfig];
+  const rightContents = destConfig?.[`dest${item}` as keyof typeof destConfig];
+
+  // Extract unique types from both arrays
+  const uniqueTypes = Array.from(
+    new Set([
+      ...(Array.isArray(leftContents)
+        ? leftContents.map((item) => item?.trigger?.type)
+        : []),
+      ...(Array.isArray(rightContents)
+        ? rightContents.map((item) => item?.trigger?.type)
+        : []),
+    ])
+  )
+    .filter(Boolean)
+    .sort((a, b) => String(a).localeCompare(String(b)));
+
+  // Filter contents based on selected type
+  const filteredLeftContents = Array.isArray(leftContents)
+    ? typeFilter
+      ? leftContents.filter((item) => item?.trigger?.type === typeFilter)
+      : leftContents
+    : leftContents;
+
+  const filteredRightContents = Array.isArray(rightContents)
+    ? typeFilter
+      ? rightContents.filter((item) => item?.trigger?.type === typeFilter)
+      : rightContents
+    : rightContents;
+
+  const handleTypeFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setTypeFilter(e.target.value);
+  };
+
+  return (
+    <Container fluid>
+      <Row>
+        <Col>
+          {!!uniqueTypes.length && (
+            <form>
+              <label htmlFor="typeFilter">Filter by type: </label>
+              <Form.Select
+                id="typeFilter"
+                name="typeFilter"
+                value={typeFilter}
+                onChange={handleTypeFilterChange}
+              >
+                <option value="">All Types</option>
+                {uniqueTypes.map((type) => (
+                  <option key={type} value={type}>
+                    {type}
+                  </option>
+                ))}
+              </Form.Select>
+              {typeFilter && (
+                <div style={{ marginTop: "10px" }}>
+                  <small>
+                    Currently filtering by type: <strong>{typeFilter}</strong>{" "}
+                    <Button
+                      variant="secondary"
+                      onClick={() => setTypeFilter("")}
+                    >
+                      Clear filter
+                    </Button>
+                  </small>
+                </div>
+              )}
+            </form>
+          )}
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <hr />
+          <ItemViewer
+            filteredLeftContents={filteredLeftContents}
+            filteredRightContents={filteredRightContents}
+          />
+        </Col>
+      </Row>
+    </Container>
+  );
+}
