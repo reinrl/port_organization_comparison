@@ -9,15 +9,13 @@ interface ContentProps {
 
 export default function Content({ item }: Readonly<ContentProps>) {
   switch (item) {
-    case "blueprints":
-    case "integrations":
-    case "scorecards":
-      return <Items />;
-      case "actions":
-        return <Actions />;
-      case "pages":
-        return <Pages />;
-    default:
+    case null:
       return <Home />;
+    case "actions":
+      return <Actions />;
+    case "pages":
+      return <Pages />;
+    default:
+      return <Items />;
   }
 }

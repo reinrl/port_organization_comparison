@@ -7,7 +7,7 @@ import ItemViewer from "../ItemViewer.tsx";
 
 export default function Items() {
   const urlParams = new URLSearchParams(window.location.search);
-  const item = urlParams.get("item");
+  const item = urlParams.get("itemType");
 
   const leftContents =
     sourceConfig?.[`source${item}` as keyof typeof sourceConfig];
