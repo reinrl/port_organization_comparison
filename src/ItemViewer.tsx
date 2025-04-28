@@ -54,16 +54,14 @@ export default function ItemViewer({
                 )}
               </div>
             </Accordion.Header>
-            <Accordion.Body>
-              {contentsAreIdentical ? (
-                <p>no difference</p>
-              ) : (
+            {!contentsAreIdentical && (
+              <Accordion.Body>
                 <DiffViewer
                   leftContents={leftItemAsString}
                   rightContents={rightItemAsString}
                 />
-              )}
-            </Accordion.Body>
+              </Accordion.Body>
+            )}
           </Accordion.Item>
         );
       })}
