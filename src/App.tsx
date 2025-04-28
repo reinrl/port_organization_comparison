@@ -10,7 +10,7 @@ export default function App() {
   const view = urlParams.get("view");
   const item = urlParams.get("item");
 
-  let activeKey = "home";
+  let activeKey;
   if (view === "diff") {
     switch (item) {
       case "actions":
