@@ -2,8 +2,8 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 
-import Items from "./Items";
-import NavBarItem from "./NavBarItem";
+import Items from "./components/Items";
+import NavBarItem from "./components/NavBarItem";
 
 export default function App() {
   const urlParams = new URLSearchParams(window.location.search);
