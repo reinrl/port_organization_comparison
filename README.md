@@ -57,8 +57,6 @@ Once the file generation is complete, a small web app is started:
 
 The web app allows you to view and compare the configuration data between your source and destination organizations. Select different data types from the navigation to see detailed comparisons:
 
-![Example diff](actions_diff_top.jpg)
-
 ![Example diff](actions_diff.jpg)
 
 ## Gathering additional types of information
