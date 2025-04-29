@@ -31,17 +31,16 @@ export default function Integrations() {
     .sort((a, b) => String(a).localeCompare(String(b)));
 
   // Filter contents based on selected type
-  const filteredLeftContents = Array.isArray(leftContents)
-    ? typeFilter
-      ? leftContents.filter((item) => item?.installationType === typeFilter)
-      : leftContents
-    : leftContents;
+  let filteredLeftContents = leftContents;
+  if (Array.isArray(leftContents) && typeFilter) {
+    filteredLeftContents = leftContents.filter(item => item?.installationType === typeFilter);
+  }
 
-  const filteredRightContents = Array.isArray(rightContents)
-    ? typeFilter
-      ? rightContents.filter((item) => item?.installationType === typeFilter)
-      : rightContents
-    : rightContents;
+  let filteredRightContents = rightContents;
+  if (Array.isArray(rightContents) && typeFilter) {
+    filteredRightContents = rightContents.filter(item => item?.installationType === typeFilter
+    );
+  }
 
   const handleTypeFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setTypeFilter(e.target.value);

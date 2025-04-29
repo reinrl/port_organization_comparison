@@ -30,18 +30,17 @@ export default function Actions() {
     .filter(Boolean)
     .sort((a, b) => String(a).localeCompare(String(b)));
 
-  // Filter contents based on selected type
-  const filteredLeftContents = Array.isArray(leftContents)
-    ? typeFilter
-      ? leftContents.filter((item) => item?.trigger?.type === typeFilter)
-      : leftContents
-    : leftContents;
-
-  const filteredRightContents = Array.isArray(rightContents)
-    ? typeFilter
-      ? rightContents.filter((item) => item?.trigger?.type === typeFilter)
-      : rightContents
-    : rightContents;
+    // Filter contents based on selected type
+    let filteredLeftContents = leftContents;
+    if (Array.isArray(leftContents) && typeFilter) {
+      filteredLeftContents = leftContents.filter(item => item?.trigger?.type === typeFilter);
+    }
+  
+    let filteredRightContents = rightContents;
+    if (Array.isArray(rightContents) && typeFilter) {
+      filteredRightContents = rightContents.filter(item => item?.trigger?.type === typeFilter
+      );
+    }
 
   const handleTypeFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setTypeFilter(e.target.value);
