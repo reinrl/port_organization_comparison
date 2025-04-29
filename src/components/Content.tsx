@@ -1,5 +1,6 @@
 import Actions from "./itemType/Actions";
 import Home from "./itemType/Home";
+import Integrations from "./itemType/Integrations";
 import Items from "./itemType/Items";
 import Pages from "./itemType/Pages";
 
@@ -13,6 +14,8 @@ export default function Content({ item }: Readonly<ContentProps>) {
       return <Home />;
     case "actions":
       return <Actions />;
+    case "integrations":
+      return <Integrations />;
     case "pages":
       return <Pages />;
     default:
