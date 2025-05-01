@@ -175,7 +175,7 @@ async function fetchData(envName) {
 
   // Use Promise.all to fetch data for all endpoints in parallel
   await Promise.all(
-    TYPES_OF_DATA.map(async ({ endpoint, hasPermissions, variable }) => {
+    TYPES_OF_DATA.map(async ({ endpoint, displayName, hasPermissions, variable }) => {
       try {
         const apiConfig = {
           method: "get",
@@ -237,10 +237,10 @@ async function fetchData(envName) {
           }
 
           // Set the updated array (with permissions retrieved for each item)
-          dataToReturn[variable] = items;
+          dataToReturn[displayName] = items;
         } else {
           // No permissions to fetch, so just return the data as is
-          dataToReturn[variable] = typeResponseData[variable];
+          dataToReturn[displayName] = typeResponseData[variable];
         }
       } catch (error) {
         logToFileAndConsole(
@@ -352,11 +352,11 @@ async function prepareOutputDirectory() {
 
           // Build configs file content
           for (const type of TYPES_OF_DATA) {
-            fileContents += `import ${env}${type.variable} from "../output/${env}/${type.variable}.json";\n`;
+            fileContents += `import ${env}${type.displayName} from "../output/${env}/${type.displayName}.json";\n`;
           }
           fileContents += `\nconst ${env}Config = {\n`;
           for (const type of TYPES_OF_DATA) {
-            fileContents += `\t${env}${type.variable},\n`;
+            fileContents += `\t${env}${type.displayName},\n`;
           }
           fileContents += `};\n\n`;
 

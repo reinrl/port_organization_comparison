@@ -38,17 +38,19 @@ Assuming two configured environments (dev and prod), you should see the followin
 /port_organization_comparison
 └── /output
     ├── /source
-    │   ├── actions.json
-    │   ├── blueprints.json
-    │   ├── integrations.json
-    │   ├── pages.json
-    │   └── scorecards.json
+    │   ├── Actions.json
+    │   ├── Blueprints.json
+    │   ├── Integrations.json
+    │   ├── Pages.json
+    │   ├── Scorecards.json
+    │   └── Webhooks.json
     └── /dest
-        ├── actions.json
-        ├── blueprints.json
-        ├── integrations.json
-        ├── pages.json
-        └── scorecards.json
+    │   ├── Actions.json
+    │   ├── Blueprints.json
+    │   ├── Integrations.json
+    │   ├── Pages.json
+    │   ├── Scorecards.json
+    │   └── Webhooks.json
 ```
 
 Once the file generation is complete, a small web app is started:
@@ -61,7 +63,7 @@ The web app allows you to view and compare the configuration data between your s
 
 ## Gathering additional types of information
 
-By default, this project has been set up to retrieve actions, blueprints, integrations, pages, and scorecards. 
+By default, this project has been set up to retrieve actions, blueprints, integrations, pages, scorecards, and webhooks (a subset of integrations). 
 
 For each of these types of data, the unique portion of the endpoint URL is configured (`endpoint`), whether or not an additional endpoint for item-specific permissions exists (`hasPermissions` - if true, the process will attempt to iterate through the items and call an endpoint like `${endpoint}/${item.identifier}/permissions` to enrich the item with its configured permissions object), and which variable name to use for the items retrieved from the endpoint (`variable` - necessary because of things like the endpoint for integrations being `/integration` - singular, while the response object includes an array of `integrations` - plural).
 
@@ -83,9 +85,13 @@ You can customize the exclusion list by modifying the `keysToExclude.cjs` file:
 ```js
 // Example of how to modify keysToExclude.cjs
 const keysToExclude = [
-  "id",
+  "_id",
   "createdAt",
+  "createdBy",
+  "id",
+  "orgId", // expected to be different when comparing two different organizations/environments
   "updatedAt",
+  "updatedBy",
   // Add your custom keys to exclude
 ];
 

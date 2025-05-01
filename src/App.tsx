@@ -11,21 +11,24 @@ export default function App() {
 
   let activeKey;
   switch (itemType) {
-    case "actions":
-      activeKey = "actions";
+    case "Actions":
+      activeKey = "Actions";
       break;
-    case "blueprints":
-      activeKey = "blueprints";
+    case "Blueprints":
+      activeKey = "Blueprints";
       break;
-    case "integrations":
-      activeKey = "integrations";
+    case "Integrations":
+      activeKey = "Integrations";
       break;
-    case "pages":
-      activeKey = "pages";
+    case "Pages":
+      activeKey = "Pages";
       break;
-    case "scorecards":
-      activeKey = "scorecards";
+    case "Scorecards":
+      activeKey = "Scorecards";
       break;
+      case "Webhooks":
+        activeKey = "Webhooks";
+        break;
     default:
       activeKey = "home";
   }
@@ -37,25 +40,30 @@ export default function App() {
           <Nav className="me-auto" activeKey={activeKey}>
             <NavBarItem eventKey="home" href="/" label="Home" />
             <NavBarItem
-              eventKey="actions"
-              href="/?itemType=actions"
+              eventKey="Actions"
+              href="/?itemType=Actions"
               label="Actions"
             />
             <NavBarItem
-              eventKey="blueprints"
-              href="/?itemType=blueprints"
+              eventKey="Blueprints"
+              href="/?itemType=Blueprints"
               label="Blueprints"
             />
             <NavBarItem
-              eventKey="integrations"
-              href="/?itemType=integrations"
+              eventKey="Integrations"
+              href="/?itemType=Integrations"
               label="Integrations"
             />
-            <NavBarItem eventKey="pages" href="/?itemType=pages" label="Pages" />
+            <NavBarItem eventKey="Pages" href="/?itemType=Pages" label="Pages" />
             <NavBarItem
-              eventKey="scorecards"
-              href="/?itemType=scorecards"
+              eventKey="Scorecards"
+              href="/?itemType=Scorecards"
               label="Scorecards"
+            />
+            <NavBarItem
+              eventKey="Webhooks"
+              href="/?itemType=Webhooks"
+              label="Webhooks"
             />
           </Nav>
         </Container>

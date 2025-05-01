@@ -24,9 +24,11 @@
  */
 // These are the keys that we want to ignore when comparing items across environments
 const KEYS_TO_EXCLUDE = [
+  "_id",
   "createdAt",
   "createdBy",
   "id",
+  "orgId", // expected to be different when comparing two different organizations/environments
   "updatedAt",
   "updatedBy",
 ];
