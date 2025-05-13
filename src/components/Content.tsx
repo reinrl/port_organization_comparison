@@ -12,11 +12,11 @@ export default function Content({ item }: Readonly<ContentProps>) {
   switch (item) {
     case null:
       return <Home />;
-    case "actions":
+    case "Actions":
       return <Actions />;
-    case "integrations":
+    case "Integrations":
       return <Integrations />;
-    case "pages":
+    case "Pages":
       return <Pages />;
     default:
       return <Items />;

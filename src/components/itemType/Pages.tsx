@@ -9,7 +9,7 @@ import { sourceConfig, destConfig } from "../../util/configs.ts";
 import ItemViewer from "../ItemViewer.tsx";
 
 export default function Pages() {
-  const itemType = "pages";
+  const itemType = "Pages";
   const [typeFilter, setTypeFilter] = useState("");
 
   const leftContents =

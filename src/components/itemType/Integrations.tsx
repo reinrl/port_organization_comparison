@@ -9,7 +9,7 @@ import { sourceConfig, destConfig } from "../../util/configs.ts";
 import ItemViewer from "../ItemViewer.tsx";
 
 export default function Integrations() {
-  const itemType = "integrations";
+  const itemType = "Integrations";
   const [typeFilter, setTypeFilter] = useState("");
 
   const leftContents =
