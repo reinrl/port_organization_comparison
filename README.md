@@ -10,7 +10,7 @@ Clone the repository locally, and install dependencies:
 npm install
 ```
 
-Create one `.cjs` file per environment (Port organization) for both the source and destination. It should follow this format:
+Create one `.cjs` file per environment (Port organization) for both the source and destination in `/src/envs/`. It should follow this format:
 
 ```js
 // file: /src/envs/dev.cjs
@@ -25,6 +25,8 @@ module.exports = portConfig;
 ```
 
 To retrieve your clientId and clientSecret, open your [Port application}(https://app.port.io). Click on the "..." button in the top right corner, and select "Credentials". These values can be found on the "Organization" tab.
+
+**Note:** This project is only intended to compare two environments at a time, as the output for file differences only contains a left (source) and right (destination) pane.
 
 Execute the configuration data retrieval:
 
