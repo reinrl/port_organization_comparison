@@ -29,6 +29,7 @@ const KEYS_TO_EXCLUDE = [
   "createdBy",
   "id",
   "orgId", // expected to be different when comparing two different organizations/environments
+  "publish",
   "updatedAt",
   "updatedBy",
 ];
