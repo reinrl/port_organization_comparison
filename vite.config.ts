@@ -1,3 +1,5 @@
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
