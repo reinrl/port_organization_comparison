@@ -1,4 +1,4 @@
-require('win-ca'); // Automatically injects Windows root CAs into Node.js
+require("win-ca"); // Automatically injects Windows root CAs into Node.js
 const axios = require("axios");
 const fs = require("fs");
 const path = require("path");
@@ -41,7 +41,9 @@ function logToFileAndConsole(message, isError = false) {
 }
 
 // These are the keys that we want to ignore when comparing items across environments
-const KEYS_TO_EXCLUDE = require("./config/keysToExclude.cjs");
+const {
+  KEYS_TO_EXCLUDE,
+} = require("./config/keysToExclude.cjs");
 
 // This is the directory where the environment configs are stored
 const envsDir = path.join(__dirname, "envs");
@@ -176,80 +178,84 @@ async function fetchData(envName) {
 
   // Use Promise.all to fetch data for all endpoints in parallel
   await Promise.all(
-    TYPES_OF_DATA.map(async ({ endpoint, displayName, hasPermissions, variable }) => {
-      try {
-        const apiConfig = {
-          method: "get",
-          maxBodyLength: Infinity,
-          url: `${baseReqConfig.portDomain}${endpoint}`,
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            Authorization: `Bearer ${baseReqConfig.accessToken}`,
-          },
-        };
+    TYPES_OF_DATA.map(
+      async ({ endpoint, displayName, hasPermissions, variable }) => {
+        try {
+          const apiConfig = {
+            method: "get",
+            maxBodyLength: Infinity,
+            url: `${baseReqConfig.portDomain}${endpoint}`,
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+              Authorization: `Bearer ${baseReqConfig.accessToken}`,
+            },
+          };
 
-        const typeResponseData = await makeApiRequest(apiConfig);
+          const typeResponseData = await makeApiRequest(apiConfig);
 
-        if (!typeResponseData?.[variable]) {
-          throw new Error("Incorrect response array variable name specified");
-        }
-
-        // Some items have permissions that we need to fetch
-        if (hasPermissions) {
-          let items = [];
-
-          if (Array.isArray(typeResponseData[variable])) {
-            // Create an array of promises for each item's permission request
-            const itemPromises = typeResponseData[variable].map(
-              async (item) => {
-                try {
-                  const permissionConfig = {
-                    method: "get",
-                    maxBodyLength: Infinity,
-                    url: `${baseReqConfig.portDomain}${endpoint}/${item.identifier}/permissions`,
-                    headers: {
-                      "Content-Type": "application/json",
-                      Accept: "application/json",
-                      Authorization: `Bearer ${baseReqConfig.accessToken}`,
-                    },
-                  };
-
-                  const permissionData = await makeApiRequest(permissionConfig);
-
-                  // Enrich the returned item with its associated permissions
-                  return {
-                    ...item,
-                    permissions: permissionData.permissions,
-                  };
-                } catch (error) {
-                  logToFileAndConsole(
-                    `Error fetching permissions for item "${item.identifier}" in environment "${envName}": ${error.message}`,
-                    true
-                  );
-                  // Return item without permissions if request failed
-                  return item;
-                }
-              }
-            );
-
-            // Wait for all promises to resolve in parallel
-            items = await Promise.all(itemPromises);
+          if (!typeResponseData?.[variable]) {
+            throw new Error("Incorrect response array variable name specified");
           }
 
-          // Set the updated array (with permissions retrieved for each item)
-          dataToReturn[displayName] = items;
-        } else {
-          // No permissions to fetch, so just return the data as is
-          dataToReturn[displayName] = typeResponseData[variable];
+          // Some items have permissions that we need to fetch
+          if (hasPermissions) {
+            let items = [];
+
+            if (Array.isArray(typeResponseData[variable])) {
+              // Create an array of promises for each item's permission request
+              const itemPromises = typeResponseData[variable].map(
+                async (item) => {
+                  try {
+                    const permissionConfig = {
+                      method: "get",
+                      maxBodyLength: Infinity,
+                      url: `${baseReqConfig.portDomain}${endpoint}/${item.identifier}/permissions`,
+                      headers: {
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                        Authorization: `Bearer ${baseReqConfig.accessToken}`,
+                      },
+                    };
+
+                    const permissionData = await makeApiRequest(
+                      permissionConfig
+                    );
+
+                    // Enrich the returned item with its associated permissions
+                    return {
+                      ...item,
+                      permissions: permissionData.permissions,
+                    };
+                  } catch (error) {
+                    logToFileAndConsole(
+                      `Error fetching permissions for item "${item.identifier}" in environment "${envName}": ${error.message}`,
+                      true
+                    );
+                    // Return item without permissions if request failed
+                    return item;
+                  }
+                }
+              );
+
+              // Wait for all promises to resolve in parallel
+              items = await Promise.all(itemPromises);
+            }
+
+            // Set the updated array (with permissions retrieved for each item)
+            dataToReturn[displayName] = items;
+          } else {
+            // No permissions to fetch, so just return the data as is
+            dataToReturn[displayName] = typeResponseData[variable];
+          }
+        } catch (error) {
+          logToFileAndConsole(
+            `Error fetching data from endpoint "${endpoint}" for environment "${envName}": ${error.message} (will not write ${variable}.json)`,
+            true
+          );
         }
-      } catch (error) {
-        logToFileAndConsole(
-          `Error fetching data from endpoint "${endpoint}" for environment "${envName}": ${error.message} (will not write ${variable}.json)`,
-          true
-        );
       }
-    })
+    )
   );
 
   return dataToReturn;
@@ -339,7 +345,8 @@ async function prepareOutputDirectory() {
                 const filePath = path.join(envDir, `${key}.json`);
                 const deeplySortedData = sortArrayOfItems(
                   value,
-                  KEYS_TO_EXCLUDE
+                  KEYS_TO_EXCLUDE,
+                  key // Pass the itemType (key) for proper filtering
                 );
                 await writeToFileStream(filePath, deeplySortedData);
               } catch (error) {

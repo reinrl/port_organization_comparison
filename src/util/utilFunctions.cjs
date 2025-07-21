@@ -1,8 +1,11 @@
 const fs = require("fs");
+const { shouldExcludeKey } = require("../config/keysToExclude.cjs");
 
-function deepSortObject(obj, keysToExclude = []) {
+function deepSortObject(obj, keysToExclude = [], itemType) {
   if (Array.isArray(obj)) {
-    const sortedArray = obj.map((item) => deepSortObject(item, keysToExclude));
+    const sortedArray = obj.map((item) =>
+      deepSortObject(item, keysToExclude, itemType)
+    );
 
     // Use sortArrayOfItems if all items are objects with "identifier"
     if (
@@ -14,7 +17,7 @@ function deepSortObject(obj, keysToExclude = []) {
           "identifier" in item
       )
     ) {
-      return sortArrayOfItems(sortedArray, keysToExclude);
+      return sortArrayOfItems(sortedArray, keysToExclude, itemType);
     }
 
     // Sort arrays of primitives
@@ -36,7 +39,7 @@ function deepSortObject(obj, keysToExclude = []) {
   } else if (obj && typeof obj === "object") {
     const sortedObj = {};
     for (const key of Object.keys(obj).sort((a, b) => a.localeCompare(b))) {
-      sortedObj[key] = deepSortObject(obj[key], keysToExclude);
+      sortedObj[key] = deepSortObject(obj[key], keysToExclude, itemType);
     }
     return sortedObj;
   }
@@ -51,23 +54,24 @@ async function listFiles(directory) {
     .map((file) => file.name);
 }
 
-function sortArrayOfItems(items, keysToExclude) {
+function sortArrayOfItems(items, keysToExclude, itemType) {
   const sortedItems = items.sort((a, b) =>
     a.identifier.localeCompare(b.identifier)
   );
   return sortedItems.map((sortedItem) => {
     const filteredItem = removeKeysRecursively(
-      deepSortObject(sortedItem, keysToExclude),
-      keysToExclude
+      deepSortObject(sortedItem, keysToExclude, itemType),
+      keysToExclude,
+      itemType
     );
     return filteredItem;
   });
 }
 
-function removeKeysRecursively(obj, keysToExclude) {
+function removeKeysRecursively(obj, keysToExclude, itemType) {
   if (Array.isArray(obj)) {
     const cleanedArray = obj
-      .map((item) => removeKeysRecursively(item, keysToExclude))
+      .map((item) => removeKeysRecursively(item, keysToExclude, itemType))
       .filter((item) => {
         // Remove empty arrays and empty objects
         if (Array.isArray(item)) return item.length > 0;
@@ -78,8 +82,13 @@ function removeKeysRecursively(obj, keysToExclude) {
     return cleanedArray;
   } else if (obj && typeof obj === "object") {
     const cleanedObj = Object.entries(obj).reduce((acc, [key, value]) => {
-      if (!keysToExclude.includes(key)) {
-        const cleanedValue = removeKeysRecursively(value, keysToExclude);
+      // Use shouldExcludeKey to check if this key should be excluded for this itemType
+      if (!shouldExcludeKey(key, itemType)) {
+        const cleanedValue = removeKeysRecursively(
+          value,
+          keysToExclude,
+          itemType
+        );
         const isEmptyArray =
           Array.isArray(cleanedValue) && cleanedValue.length === 0;
         const isEmptyObject =
