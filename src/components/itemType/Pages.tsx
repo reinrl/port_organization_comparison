@@ -11,6 +11,7 @@ import ItemViewer from "../ItemViewer.tsx";
 export default function Pages() {
   const itemType = "Pages";
   const [typeFilter, setTypeFilter] = useState("");
+  const [excludePermissions, setExcludePermissions] = useState(false);
 
   const leftContents =
     sourceConfig?.[`source${itemType}` as keyof typeof sourceConfig];
@@ -32,18 +33,42 @@ export default function Pages() {
 
     // Filter contents based on selected type
     let filteredLeftContents = leftContents;
-    if (Array.isArray(leftContents) && typeFilter) {
-      filteredLeftContents = leftContents.filter(item => item?.type === typeFilter);
+    if (Array.isArray(leftContents)) {
+      if (typeFilter) {
+        filteredLeftContents = leftContents.filter(item => item?.type === typeFilter);
+      }
+      
+      if (excludePermissions) {
+        filteredLeftContents = filteredLeftContents.map(item => {
+          if (!item) return item;
+          const { permissions, ...rest } = item;
+          return rest;
+        });
+      }
     }
-  
+
     let filteredRightContents = rightContents;
-    if (Array.isArray(rightContents) && typeFilter) {
-      filteredRightContents = rightContents.filter(item => item?.type === typeFilter
-      );
+    if (Array.isArray(rightContents)) {
+      if (typeFilter) {
+        filteredRightContents = rightContents.filter(item => item?.type === typeFilter);
+      }
+      
+      if (excludePermissions) {
+        filteredRightContents = filteredRightContents.map(item => {
+          if (!item) return item;
+          const { permissions, ...rest } = item;
+          return rest;
+        });
+      }
     }
 
   const handleTypeFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setTypeFilter(e.target.value);
+  };
+
+  const handleExcludePermissionsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const isChecked = e.target.checked;
+    setExcludePermissions(isChecked);
   };
 
   return (
@@ -81,6 +106,22 @@ export default function Pages() {
               )}
             </form>
           )}
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <hr />
+          <Form.Group className="mb-3" controlId="excludePermissions">
+            <Form.Check 
+              type="checkbox" 
+              label="Exclude Permissions from Comparison" 
+              checked={excludePermissions}
+              onChange={handleExcludePermissionsChange}
+            />
+            <Form.Text className="text-muted">
+              When checked, permissions will be excluded from the comparison.
+            </Form.Text>
+          </Form.Group>
         </Col>
       </Row>
       <Row>
