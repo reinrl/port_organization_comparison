@@ -14,5 +14,6 @@
 .vscode/**/*
 
 # ignore generated files
+/dist/**/*
 npm-debug.log*
 package-lock.json
