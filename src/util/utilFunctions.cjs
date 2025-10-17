@@ -50,7 +50,7 @@ function deepSortObject(obj, keysToExclude = [], itemType) {
 async function listFiles(directory) {
   const files = await fs.promises.readdir(directory, { withFileTypes: true });
   return files
-    .filter((file) => file.isFile() && file.name.endsWith(".cjs"))
+    .filter((file) => file.isFile() && file.name.endsWith(".json"))
     .map((file) => file.name);
 }
 

@@ -41,9 +41,7 @@ function logToFileAndConsole(message, isError = false) {
 }
 
 // These are the keys that we want to ignore when comparing items across environments
-const {
-  KEYS_TO_EXCLUDE,
-} = require("./config/keysToExclude.cjs");
+const { KEYS_TO_EXCLUDE } = require("./config/keysToExclude.cjs");
 
 // This is the directory where the environment configs are stored
 const envsDir = path.join(__dirname, "envs");
@@ -56,7 +54,13 @@ const envsDir = path.join(__dirname, "envs");
 async function loadEnvironmentConfigs(envsDir) {
   try {
     const envConfigFiles = await listFiles(envsDir);
-    return envConfigFiles.map((file) => require(path.join(envsDir, file)));
+    const configs = [];
+    for (const file of envConfigFiles) {
+      const filePath = path.join(envsDir, file);
+      const fileContent = await fs.promises.readFile(filePath, "utf8");
+      configs.push(JSON.parse(fileContent));
+    }
+    return configs;
   } catch (error) {
     logToFileAndConsole(
       `Error loading environment configs: ${error.message}`,

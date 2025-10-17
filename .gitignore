@@ -7,7 +7,7 @@
 /src/output
 
 # environment files
-/src/envs/**.cjs
+/src/envs/**.json
 /src/util/configs.ts
 
 ### VisualStudioCode ###

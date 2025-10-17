@@ -10,15 +10,16 @@ Clone the repository locally, and install dependencies:
 npm install
 ```
 
-Create one `.cjs` file per environment (Port organization) for both the source and destination in `/src/envs/`. It should follow this format:
+Create one `.json` file per environment (Port organization) for both the source and destination in `/src/envs/`. It should follow this format:
 
-```js
-// file: /src/envs/dev.cjs
+```json
+// file: /src/envs/source.json
 const portConfig = {
   clientId: "string",
   clientSecret: "string",
   envName: "source" | "dest",
   portDomain: "https://api.port.io/v1" | "https://api.us.port.io/v1",
+  "portWebDomain": "https://app.port.io/" | "https://app.us.port.io/",
 };
 
 module.exports = portConfig;
@@ -34,7 +35,7 @@ Execute the configuration data retrieval:
 npm run dev
 ```
 
-Assuming two configured environments (dev and prod), you should see the following file structure generated:
+Assuming two configured environments (source and dest), you should see the following file structure generated:
 
 ```
 /port_organization_comparison
@@ -65,7 +66,7 @@ The web app allows you to view and compare the configuration data between your s
 
 ## Gathering additional types of information
 
-By default, this project has been set up to retrieve actions, blueprints, integrations, pages, scorecards, and webhooks (a subset of integrations). 
+By default, this project has been set up to retrieve actions, blueprints, integrations, pages, scorecards, and webhooks (a subset of integrations).
 
 For each of these types of data, the unique portion of the endpoint URL is configured (`endpoint`), whether or not an additional endpoint for item-specific permissions exists (`hasPermissions` - if true, the process will attempt to iterate through the items and call an endpoint like `${endpoint}/${item.identifier}/permissions` to enrich the item with its configured permissions object), and which variable name to use for the items retrieved from the endpoint (`variable` - necessary because of things like the endpoint for integrations being `/integration` - singular, while the response object includes an array of `integrations` - plural).
 
@@ -102,7 +103,7 @@ module.exports = { keysToExclude };
 
 The comparison tool automatically uses these settings when displaying differences between environments.
 
-## Troubleshooting 
+## Troubleshooting
 
 ### General tips
 
@@ -113,9 +114,9 @@ Efforts have been made to both log helpful information to the console and write 
 If a given organization's clientId and/or clientSecret are not correct (or some other error occurs while attempting to retrieve an access token), you should see an error like the following:
 
 ```bash
-$ npm run start
+$ npm run dev
 
-> port_organization_comparison@1.0.0 start
+> port_organization_comparison@1.1.0 dev
 > node src/index.js
 
 Error processing environment "source": Failed to fetch access token for environment "source":
@@ -124,9 +125,9 @@ Error processing environment "source": Failed to fetch access token for environm
 If the request response is successfull retrieved, but does not contain the expected access token, you should see an error like the following:
 
 ```bash
-$ npm run start
+$ npm run dev
 
-> port_organization_comparison@1.0.0 start
+> port_organization_comparison@1.1.0 dev
 > node src/index.js
 
 Error processing environment "source": Invalid response from access token API
@@ -135,9 +136,9 @@ Error processing environment "source": Invalid response from access token API
 An error retrieving one of the specified data endpoints should result in an error like the following:
 
 ```bash
-$ npm run start
+$ npm run dev
 
-> port_organization_comparison@1.0.0 start
+> port_organization_comparison@1.1.0 dev
 > node src/index.js
 
 Error fetching data from endpoint "/notgood" for environment "source": Request failed with status code 404 (will not write integrations.json)
@@ -146,9 +147,9 @@ Error fetching data from endpoint "/notgood" for environment "source": Request f
 An incorrect variable configured for the response array to return:
 
 ```bash
-$ npm run start
+$ npm run dev
 
-> port_organization_comparison@1.0.0 start
+> port_organization_comparison@1.1.0 dev
 > node src/index.js
 
 Error fetching data from endpoint "/notgood" for environment "source": Incorrect response array variable name specified (will not write integration.json)
@@ -157,9 +158,9 @@ Error fetching data from endpoint "/notgood" for environment "source": Incorrect
 Any error encountered while processing the response from one of specified data endpoints should result in an error like the following:
 
 ```bash
-$ npm run start
+$ npm run dev
 
-> port_organization_comparison@1.0.0 start
+> port_organization_comparison@1.1.0 dev
 > node src/index.js
 
 Error writing file for "notgood" in environment "source": Cannot read properties of undefined (reading 'sort')
@@ -171,4 +172,4 @@ There are some expected errors that might be written out during permission data 
 Error fetching additional data for item ID "serviceEntity" from endpoint "https://api.us.port.io/v1/pages/serviceEntity/permissions" in environment "dest": Request failed with status code 403
 ```
 
-There are actually several different reasons why the permission retrieval subprocess might legitimately hit an error. These can include a page not actually being a Software Catalog page (so it doesn't have a permissions object - instead returning an `HTTP 403` with a message like `Page \"dbt_destinationsEntity\" is not a Software Catalog page.`), or an action returned in the actions array not actually being a self-service action (which returns an `HTTP 422` with a message like `Cannot manage permissions for non self service action`). 
+There are actually several different reasons why the permission retrieval subprocess might legitimately hit an error. These can include a page not actually being a Software Catalog page (so it doesn't have a permissions object - instead returning an `HTTP 403` with a message like `Page \"dbt_destinationsEntity\" is not a Software Catalog page.`), or an action returned in the actions array not actually being a self-service action (which returns an `HTTP 422` with a message like `Cannot manage permissions for non self service action`).
