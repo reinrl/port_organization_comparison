@@ -19,7 +19,6 @@ export default function ActionCheckbox({
         defaultChecked={true}
       />
       <label className="ms-2" htmlFor={identifier}>
-        {" "}
         {description}
         <br />
         (run_url: <span className="fst-italic">{run_url})</span>
