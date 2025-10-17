@@ -1,5 +1,6 @@
 import actions from "../../output/dest/Actions.json";
 import portConfig from "../../envs/dest.json";
+import ActionCheckbox from "./ActionCheckbox";
 
 /**
  * Custom logger function that logs to console with timestamp (browser-compatible)
@@ -97,26 +98,12 @@ export default function CorrectRunUrl() {
     <form onSubmit={handleSubmit}>
       <h1>Correct selected automation run URLs:</h1>
       {automations.map((action, index) => (
-        <div key={index} className="mb-3 d-flex align-items-start">
-          <input
-            type="checkbox"
-            id={action.identifier}
-            name={action.identifier}
-            className="mt-1"
-          />
-          <label className="ms-2" htmlFor={action.identifier}>
-            {" "}
-            {action.description}
-            <br />
-            (run_url:{" "}
-            <span className="fst-italic">
-              {action?.invocationMethod?.mapping?.properties?.run_url})
-            </span>
-          </label>
-          <br />
-          {/*<strong>Action {index + 1}:</strong>
-            <pre>{JSON.stringify(action, null, 2)}</pre>*/}
-        </div>
+        <ActionCheckbox
+          key={index}
+          identifier={action.identifier}
+          description={action.description || ""}
+          run_url={action?.invocationMethod?.mapping?.properties?.run_url || ""}
+        />
       ))}
       <button type="submit" className="btn btn-primary">
         Update dest run URL
