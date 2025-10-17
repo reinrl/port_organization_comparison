@@ -117,19 +117,33 @@ export default function CorrectRunUrl() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <div>
       <h1>Correct selected automation run URLs:</h1>
-      {automations.map((action, index) => (
-        <ActionCheckbox
-          key={index}
-          identifier={action.identifier}
-          description={action.description || ""}
-          run_url={action?.invocationMethod?.mapping?.properties?.run_url || ""}
-        />
-      ))}
-      <button type="submit" className="btn btn-primary">
-        Update dest run URL
-      </button>
-    </form>
+      {automations.length === 0 ? (
+        <p className="alert alert-success">
+          ✅ All automation run URLs are already correct! No work to do.
+        </p>
+      ) : (
+        <form onSubmit={handleSubmit}>
+          <p className="mb-3 text-muted">
+            Found {automations.length} automation
+            {automations.length !== 1 ? "s" : ""} with incorrect run URLs:
+          </p>
+          {automations.map((action, index) => (
+            <ActionCheckbox
+              key={index}
+              identifier={action.identifier}
+              description={action.description || ""}
+              run_url={
+                action?.invocationMethod?.mapping?.properties?.run_url || ""
+              }
+            />
+          ))}
+          <button type="submit" className="btn btn-primary">
+            Update dest run URL
+          </button>
+        </form>
+      )}
+    </div>
   );
 }
