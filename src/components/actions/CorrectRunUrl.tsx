@@ -21,11 +21,33 @@ function logToConsole(message: string, isError: boolean = false): void {
 }
 
 export default function CorrectRunUrl() {
-  const automations = actions.filter(
-    (item) =>
-      item?.trigger?.type === "automation" &&
-      item?.invocationMethod?.mapping?.properties?.run_url
-  );
+  const automations = actions.filter((item) => {
+    // Check if it's an automation with a run_url
+    if (
+      item?.trigger?.type !== "automation" ||
+      !item?.invocationMethod?.mapping?.properties?.run_url
+    ) {
+      return false;
+    }
+
+    try {
+      // Parse URLs to compare protocol and domain
+      const runUrl = new URL(item.invocationMethod.mapping.properties.run_url);
+      const portUrl = new URL(portConfig.portWebDomain);
+
+      // Only include if protocol OR domain are different (need correction)
+      return (
+        runUrl.protocol !== portUrl.protocol || runUrl.host !== portUrl.host
+      );
+    } catch (error) {
+      // If URL parsing fails, exclude this item
+      logToConsole(
+        `Error parsing run_url for ${item.identifier}: ${error}`,
+        true
+      );
+      return false;
+    }
+  });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     // prevent default form submission behavior

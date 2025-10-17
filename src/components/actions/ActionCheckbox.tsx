@@ -16,6 +16,7 @@ export default function ActionCheckbox({
         id={identifier}
         name={identifier}
         className="mt-1"
+        defaultChecked={true}
       />
       <label className="ms-2" htmlFor={identifier}>
         {" "}
