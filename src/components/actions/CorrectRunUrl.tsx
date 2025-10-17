@@ -53,6 +53,8 @@ export default function CorrectRunUrl() {
     // prevent default form submission behavior
     event.preventDefault();
 
+    const automationsToUpdate = [];
+
     // Get form data
     const formData = new FormData(event.currentTarget);
     const checkedIds: string[] = [];
@@ -97,7 +99,7 @@ export default function CorrectRunUrl() {
                 action.invocationMethod.mapping.properties.run_url =
                   url.toString();
                 // Update the action in the automations array
-                automations[actionIdx] = action;
+                automationsToUpdate.push(action);
                 logToConsole(
                   `Updated run_url for ${action.identifier}: ${url.toString()}`
                 );
@@ -114,6 +116,10 @@ export default function CorrectRunUrl() {
     }
 
     logToConsole(`Selected IDs: ${checkedIds.join(", ")}`);
+    logToConsole(`Updating ${automationsToUpdate.length} automations:`);
+    automationsToUpdate.forEach(action => {
+      logToConsole(`  - ${action.identifier}: ${action.invocationMethod?.mapping?.properties?.run_url}`);
+    });
   };
 
   return (
