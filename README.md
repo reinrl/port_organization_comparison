@@ -10,20 +10,7 @@ Clone the repository locally, and install dependencies:
 npm install
 ```
 
-Create one `.json` file per environment (Port organization) for both the source and destination in `/src/envs/`. It should follow this format:
-
-```json
-// file: /src/envs/source.json
-const portConfig = {
-  clientId: "string",
-  clientSecret: "string",
-  envName: "source" | "dest",
-  portDomain: "https://api.port.io/v1" | "https://api.us.port.io/v1",
-  "portWebDomain": "https://app.port.io/" | "https://app.us.port.io/",
-};
-
-module.exports = portConfig;
-```
+Create one `.json` file per environment (Port organization) for both the source and destination in `/src/envs/`. It should follow the format prescribed in `/src/envs/README.md`.
 
 To retrieve your clientId and clientSecret, open your [Port application}(https://app.port.io). Click on the "..." button in the top right corner, and select "Credentials". These values can be found on the "Organization" tab.
 
