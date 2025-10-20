@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "node src/index.cjs && vite",
     "build": "node src/index.cjs && vite build",
-    "preview": "node src/index.cjs && vite preview"
+    "preview": "node src/index.cjs && vite preview",
+    "update-automation-run-urls": "node src/updateAutomationRunUrl.cjs"
   },
   "keywords": [],
   "author": "",
