@@ -110,6 +110,7 @@ The `updateAutomationRunUrl.cjs` utility script helps you automatically fix auto
 ### What it does
 
 The script:
+
 1. Connects to your destination Port environment
 2. Retrieves all actions and identifies automations with `run_url` properties
 3. Compares the run URL domain with the configured Port web domain
@@ -119,11 +120,13 @@ The script:
 ### Usage
 
 **Basic usage** (updates automations immediately):
+
 ```bash
 npm run update-automation-run-urls
 ```
 
 **Dry run mode** (preview what would be updated without making changes):
+
 ```bash
 npm run update-automation-run-urls -- --dry-run
 # or
@@ -133,6 +136,7 @@ npm run update-automation-run-urls -- -d
 ### Configuration
 
 The script uses the `dest.json` configuration file from `/src/envs/` to connect to your Port environment. Make sure this file is properly configured with:
+
 - `clientId` and `clientSecret` for authentication
 - `portDomain` for the API endpoint
 - `portWebDomain` for the correct web application URL that automations should reference
@@ -150,6 +154,7 @@ The script generates two files in the `/src/output/` directory:
 ### Example Output
 
 When automations are found and corrected:
+
 ```
 [2025-10-20T18:17:04.855Z] Found 1 automation(s) that need URL correction:
 [2025-10-20T18:17:04.855Z]   1. create_action_run_link_dbt_project_prod: https://app.port.io/organization/run?runId={{.event.diff.after.id}}
@@ -160,6 +165,7 @@ When automations are found and corrected:
 ```
 
 When all automations are already correct:
+
 ```
 [2025-10-20T18:17:14.830Z] ✅ All automation run URLs are already correct! No work to do.
 ```
