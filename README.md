@@ -103,6 +103,74 @@ module.exports = { keysToExclude };
 
 The comparison tool automatically uses these settings when displaying differences between environments.
 
+## Updating Automation Run URLs
+
+The `updateAutomationRunUrl.cjs` utility script helps you automatically fix automation run URLs that reference incorrect Port domains. This is particularly useful when migrating automations between Port regions (e.g., from `app.port.io` to `app.us.port.io`) or when automations have been imported with incorrect domain references.
+
+### What it does
+
+The script:
+1. Connects to your destination Port environment
+2. Retrieves all actions and identifies automations with `run_url` properties
+3. Compares the run URL domain with the configured Port web domain
+4. Updates any automations where the protocol or domain don't match
+5. Logs all activity and saves detailed results
+
+### Usage
+
+**Basic usage** (updates automations immediately):
+```bash
+npm run update-automation-run-urls
+```
+
+**Dry run mode** (preview what would be updated without making changes):
+```bash
+npm run update-automation-run-urls -- --dry-run
+# or
+npm run update-automation-run-urls -- -d
+```
+
+### Configuration
+
+The script uses the `dest.json` configuration file from `/src/envs/` to connect to your Port environment. Make sure this file is properly configured with:
+- `clientId` and `clientSecret` for authentication
+- `portDomain` for the API endpoint
+- `portWebDomain` for the correct web application URL that automations should reference
+
+### Output
+
+The script generates two files in the `/src/output/` directory:
+
+1. **`automation_update_log.txt`** - Detailed log of the entire process with timestamps
+2. **`automation_update_results.json`** - Structured results including:
+   - Timestamp of execution
+   - Count of successful and failed updates
+   - Details for each automation (identifier, original URL, new URL, success status)
+
+### Example Output
+
+When automations are found and corrected:
+```
+[2025-10-20T18:17:04.855Z] Found 1 automation(s) that need URL correction:
+[2025-10-20T18:17:04.855Z]   1. create_action_run_link_dbt_project_prod: https://app.port.io/organization/run?runId={{.event.diff.after.id}}
+[2025-10-20T18:17:04.855Z] Starting update process for 1 automation(s)...
+[2025-10-20T18:17:04.855Z] Updating create_action_run_link_dbt_project_prod: https://app.port.io/organization/run?runId={{.event.diff.after.id}} → https://app.us.port.io/organization/run?runId={{.event.diff.after.id}}
+[2025-10-20T18:17:04.982Z] Successfully updated automation: create_action_run_link_dbt_project_prod
+[2025-10-20T18:17:04.986Z] Process completed successfully: 1/1 automations updated
+```
+
+When all automations are already correct:
+```
+[2025-10-20T18:17:14.830Z] ✅ All automation run URLs are already correct! No work to do.
+```
+
+### Best Practices
+
+1. **Always run in dry-run mode first** to preview changes before applying them
+2. **Review the log files** after execution to confirm expected changes were made
+3. **Keep the results JSON file** for audit purposes and to track which automations were updated
+4. **Re-run the script** after updates to verify all automations are now correct
+
 ## Troubleshooting
 
 ### General tips
