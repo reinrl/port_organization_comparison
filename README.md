@@ -164,6 +164,149 @@ When all automations are already correct:
 3. **Keep the results JSON file** for audit purposes and to track which automations were updated
 4. **Re-run the script** after updates to verify all automations are now correct
 
+## Validating Page Widget Configurations
+
+The `validatePages.cjs` utility script helps you identify misconfigured page widgets by validating widget property references against your blueprint schemas. This is particularly useful when migrating pages between environments, refactoring blueprints, or troubleshooting page display issues.
+
+### What it does
+
+The script:
+
+1. Reads blueprint and page configuration data from the `/src/output/` directory
+2. Builds a registry of valid properties and relations for each blueprint
+3. Validates all widget configurations on each page, including:
+   - Property references in table columns and filters
+   - Relation paths in dataset rules and `relatedTo` operators
+   - Blueprint references in widget configurations
+   - Nested widgets within dashboard and grouper widgets
+4. Reports violations with detailed context (widget type, widget title, property name, location)
+5. Logs all activity and saves structured validation results
+
+### Usage
+
+**Validate all environments**:
+
+```bash
+npm run validate-pages
+```
+
+**Validate a specific environment**:
+
+```bash
+npm run validate-pages -- --env=source
+# or
+npm run validate-pages -- --env=dest
+```
+
+**Verbose mode** (show detailed logging for debugging):
+
+```bash
+npm run validate-pages -- --verbose
+```
+
+**Combined flags**:
+
+```bash
+npm run validate-pages -- --env=dest --verbose
+```
+
+### Command-Line Options
+
+- `--env=<name>` - Validate only the specified environment (e.g., `source` or `dest`)
+- `--verbose` - Enable detailed logging including blueprint registration and property extraction details
+
+### Prerequisites
+
+The script validates pages using previously fetched configuration data. Before running the validation:
+
+1. Ensure you've run `npm run dev` to fetch the latest configuration data
+2. Verify that `Blueprints.json` and `Pages.json` exist in `/src/output/<env>/` for the environments you want to validate
+
+### Output
+
+The script generates two files in the `/src/output/` directory:
+
+1. **`page_validation_log.txt`** - Detailed log of the validation process with timestamps
+2. **`page_validation_results.json`** - Structured validation results including:
+   - Timestamp and command-line arguments used
+   - Per-page results with violations and warnings
+   - Summary statistics (total pages, pages with errors, violation counts by type)
+   - Widget counts for each page (including nested widgets)
+
+### Example Output
+
+Console output during validation:
+
+```
+[2025-11-25T10:30:00.000Z] [INFO] === Page Validation Started ===
+[2025-11-25T10:30:00.000Z] [INFO] Command-line args: verbose=false, env=dest
+[2025-11-25T10:30:00.000Z] [INFO] Discovered 1 environment(s): dest
+[2025-11-25T10:30:00.000Z] [INFO] Loaded 150 blueprints and 250 pages
+[2025-11-25T10:30:01.000Z] [INFO]
+--- Summary for dest ---
+[2025-11-25T10:30:01.000Z] [INFO] Pages validated: 250
+[2025-11-25T10:30:01.000Z] [INFO] Pages with errors: 12
+[2025-11-25T10:30:01.000Z] [INFO] Total violations: 35
+[2025-11-25T10:30:01.000Z] [INFO] Violations by type:
+[2025-11-25T10:30:01.000Z] [INFO]   - invalid_property: 28
+[2025-11-25T10:30:01.000Z] [INFO]   - missing_blueprint: 7
+```
+
+Sample violation in `page_validation_results.json`:
+
+```json
+{
+  "widgetType": "table-entities-explorer",
+  "widgetTitle": "My Services",
+  "blueprintIdentifier": "service",
+  "invalidProperty": "oldPropertyName",
+  "locationType": "blueprintConfig.propertiesSettings",
+  "violationType": "invalid_property",
+  "message": "Property \"oldPropertyName\" does not exist on blueprint \"service\""
+}
+```
+
+### Understanding Violations
+
+**Violation Types:**
+
+- **`invalid_property`** - A property, mirror property, calculation property, aggregation property, or relation referenced in a widget doesn't exist on the specified blueprint
+- **`missing_blueprint`** - A widget references a blueprint that doesn't exist in your organization
+
+**Location Types:**
+
+- **`blueprintConfig.propertiesSettings`** - Invalid property in table column configuration
+- **`blueprintConfig.filterSettings`** - Invalid property in filter/search rules
+- **`dataset.rules.relatedTo`** - Invalid blueprint or relation in `relatedTo` operator
+- **`dataset.rules.property`** - Invalid property in dataset filter rules
+
+**Rule Nesting Level:**
+
+When violations occur in nested filter rules, the `ruleNestingLevel` field indicates the depth (0 = top level, 1 = first nested level, etc.).
+
+### Common Issues Found
+
+1. **Outdated property names** - Properties renamed or removed from blueprints
+2. **Missing relations** - Relation paths that reference non-existent relations
+3. **Blueprint mismatches** - Widgets configured for the wrong blueprint
+4. **Migration artifacts** - Properties from source environment not present in destination
+5. **Typos** - Misspelled property or blueprint names
+
+### Best Practices
+
+1. **Run after data fetches** - Always validate after running `npm run dev` to ensure you're checking current configurations
+2. **Review before migration** - Validate source environment before migration to identify issues early
+3. **Validate both environments** - Compare violations between source and dest to understand differences
+4. **Use verbose mode for debugging** - When investigating specific issues, use `--verbose` to see detailed processing logs
+5. **Keep validation results** - Store the JSON output for tracking configuration health over time
+
+### Notes
+
+- The validation skips template variables (e.g., `{{blueprint}}`) and doesn't validate their correctness
+- Complex JQ expressions in property paths are flagged as warnings for manual review
+- Nested widgets (in dashboard-widget and grouper widgets) are fully validated and counted
+- Relations can be used directly as displayable properties in table-entities-explorer widgets
+
 ## Troubleshooting
 
 ### General tips
