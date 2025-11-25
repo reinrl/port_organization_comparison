@@ -21,6 +21,7 @@ export default function Items() {
           <ItemViewer
             filteredLeftContents={leftContents}
             filteredRightContents={rightContents}
+            itemType="Items"
           />
         </Col>
       </Row>

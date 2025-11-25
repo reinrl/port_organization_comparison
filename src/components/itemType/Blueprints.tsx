@@ -77,6 +77,7 @@ export default function Blueprints() {
           <ItemViewer
             filteredLeftContents={filteredLeftContents}
             filteredRightContents={filteredRightContents}
+            itemType="Blueprints"
           />
         </Col>
       </Row>

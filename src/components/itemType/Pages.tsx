@@ -15,7 +15,8 @@ export default function Pages() {
 
   const leftContents =
     sourceConfig?.[`source${itemType}` as keyof typeof sourceConfig];
-  const rightContents = destConfig?.[`dest${itemType}` as keyof typeof destConfig];
+  const rightContents =
+    destConfig?.[`dest${itemType}` as keyof typeof destConfig];
 
   // Extract unique types from both arrays
   const uniqueTypes = Array.from(
@@ -31,42 +32,48 @@ export default function Pages() {
     .filter(Boolean)
     .sort((a, b) => String(a).localeCompare(String(b)));
 
-    // Filter contents based on selected type
-    let filteredLeftContents = leftContents;
-    if (Array.isArray(leftContents)) {
-      if (typeFilter) {
-        filteredLeftContents = leftContents.filter(item => item?.type === typeFilter);
-      }
-      
-      if (excludePermissions) {
-        filteredLeftContents = filteredLeftContents.map(item => {
-          if (!item) return item;
-          const { permissions, ...rest } = item;
-          return rest;
-        });
-      }
+  // Filter contents based on selected type
+  let filteredLeftContents = leftContents;
+  if (Array.isArray(leftContents)) {
+    if (typeFilter) {
+      filteredLeftContents = leftContents.filter(
+        (item) => item?.type === typeFilter
+      );
     }
 
-    let filteredRightContents = rightContents;
-    if (Array.isArray(rightContents)) {
-      if (typeFilter) {
-        filteredRightContents = rightContents.filter(item => item?.type === typeFilter);
-      }
-      
-      if (excludePermissions) {
-        filteredRightContents = filteredRightContents.map(item => {
-          if (!item) return item;
-          const { permissions, ...rest } = item;
-          return rest;
-        });
-      }
+    if (excludePermissions) {
+      filteredLeftContents = filteredLeftContents.map((item) => {
+        if (!item) return item;
+        const { permissions, ...rest } = item;
+        return rest;
+      });
     }
+  }
+
+  let filteredRightContents = rightContents;
+  if (Array.isArray(rightContents)) {
+    if (typeFilter) {
+      filteredRightContents = rightContents.filter(
+        (item) => item?.type === typeFilter
+      );
+    }
+
+    if (excludePermissions) {
+      filteredRightContents = filteredRightContents.map((item) => {
+        if (!item) return item;
+        const { permissions, ...rest } = item;
+        return rest;
+      });
+    }
+  }
 
   const handleTypeFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setTypeFilter(e.target.value);
   };
 
-  const handleExcludePermissionsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleExcludePermissionsChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const isChecked = e.target.checked;
     setExcludePermissions(isChecked);
   };
@@ -112,9 +119,9 @@ export default function Pages() {
         <Col>
           <hr />
           <Form.Group className="mb-3" controlId="excludePermissions">
-            <Form.Check 
-              type="checkbox" 
-              label="Exclude Permissions from Comparison" 
+            <Form.Check
+              type="checkbox"
+              label="Exclude Permissions from Comparison"
               checked={excludePermissions}
               onChange={handleExcludePermissionsChange}
             />
@@ -130,6 +137,7 @@ export default function Pages() {
           <ItemViewer
             filteredLeftContents={filteredLeftContents}
             filteredRightContents={filteredRightContents}
+            itemType="Pages"
           />
         </Col>
       </Row>

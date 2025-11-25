@@ -14,7 +14,8 @@ export default function Integrations() {
 
   const leftContents =
     sourceConfig?.[`source${itemType}` as keyof typeof sourceConfig];
-  const rightContents = destConfig?.[`dest${itemType}` as keyof typeof destConfig];
+  const rightContents =
+    destConfig?.[`dest${itemType}` as keyof typeof destConfig];
 
   // Extract unique types from both arrays
   const uniqueTypes = Array.from(
@@ -33,12 +34,15 @@ export default function Integrations() {
   // Filter contents based on selected type
   let filteredLeftContents = leftContents;
   if (Array.isArray(leftContents) && typeFilter) {
-    filteredLeftContents = leftContents.filter(item => item?.installationType === typeFilter);
+    filteredLeftContents = leftContents.filter(
+      (item) => item?.installationType === typeFilter
+    );
   }
 
   let filteredRightContents = rightContents;
   if (Array.isArray(rightContents) && typeFilter) {
-    filteredRightContents = rightContents.filter(item => item?.installationType === typeFilter
+    filteredRightContents = rightContents.filter(
+      (item) => item?.installationType === typeFilter
     );
   }
 
@@ -52,7 +56,7 @@ export default function Integrations() {
         <Col>
           {!!uniqueTypes.length && (
             <form>
-              <label htmlFor="typeFilter">Filter by  installation type: </label>
+              <label htmlFor="typeFilter">Filter by installation type: </label>
               <Form.Select
                 id="typeFilter"
                 name="typeFilter"
@@ -89,6 +93,7 @@ export default function Integrations() {
           <ItemViewer
             filteredLeftContents={filteredLeftContents}
             filteredRightContents={filteredRightContents}
+            itemType="Integrations"
           />
         </Col>
       </Row>

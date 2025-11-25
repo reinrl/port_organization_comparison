@@ -137,6 +137,7 @@ export default function Actions() {
           <ItemViewer
             filteredLeftContents={filteredLeftContents}
             filteredRightContents={filteredRightContents}
+            itemType="Actions"
           />
         </Col>
       </Row>
