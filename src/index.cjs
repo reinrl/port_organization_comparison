@@ -56,6 +56,10 @@ async function loadEnvironmentConfigs(envsDir) {
     const envConfigFiles = await listFiles(envsDir);
     const configs = [];
     for (const file of envConfigFiles) {
+      // Skip files starting with underscore (templates/examples) and README
+      if (file.startsWith("_") || file.toLowerCase() === "readme.md") {
+        continue;
+      }
       const filePath = path.join(envsDir, file);
       const fileContent = await fs.promises.readFile(filePath, "utf8");
       configs.push(JSON.parse(fileContent));
@@ -328,12 +332,8 @@ async function prepareOutputDirectory() {
     const importedConfigs = await loadEnvironmentConfigs(envsDir);
     const environments = importedConfigs.map((config) => config.envName);
 
-    // Initialize file content variables
-    let fileContents = "";
-    let exportables = [];
-
-    // Process all environments in parallel
-    await Promise.all(
+    // Process all environments in parallel and collect results
+    const envResults = await Promise.all(
       environments.map(async (env) => {
         try {
           const envDir = path.join(outputDir, env);
@@ -362,28 +362,44 @@ async function prepareOutputDirectory() {
             })
           );
 
-          // Build configs file content
-          for (const type of TYPES_OF_DATA) {
-            fileContents += `import ${env}${type.displayName} from "../output/${env}/${type.displayName}.json";\n`;
-          }
-          fileContents += `\nconst ${env}Config = {\n`;
-          for (const type of TYPES_OF_DATA) {
-            fileContents += `\t${env}${type.displayName},\n`;
-          }
-          fileContents += `};\n\n`;
-
-          exportables.push(`${env}Config`);
+          // Return the config content for this environment
+          return { env, success: true };
         } catch (error) {
           logToFileAndConsole(
             `Error processing environment "${env}": ${error.message}`,
             true
           );
+          return { env, success: false };
         }
       })
     );
 
+    // Build configs file content sequentially after all data is fetched
+    let fileContents = "";
+    const exportables = [];
+
+    for (const result of envResults) {
+      if (result.success) {
+        const env = result.env;
+
+        // Add imports for this environment
+        for (const type of TYPES_OF_DATA) {
+          fileContents += `import ${env}${type.displayName} from "../output/${env}/${type.displayName}.json";\n`;
+        }
+
+        // Add config object
+        fileContents += `\nconst ${env}Config = {\n`;
+        for (const type of TYPES_OF_DATA) {
+          fileContents += `\t${env}${type.displayName},\n`;
+        }
+        fileContents += `};\n\n`;
+
+        exportables.push(`${env}Config`);
+      }
+    }
+
     // Write the config file using streams
-    fileContents += `export { ${exportables.join(",")} };\n`;
+    fileContents += `export { ${exportables.join(", ")} };\n`;
     await writeToFileStream(configTsFilePath, fileContents);
 
     logToFileAndConsole("Process completed successfully.");
