@@ -8,6 +8,7 @@
     "build": "node src/index.cjs && vite build",
     "preview": "node src/index.cjs && vite preview",
     "update-automation-run-urls": "node src/updateAutomationRunUrl.cjs",
+    "update-user-notifications": "node src/updateUserNotifications.cjs",
     "validate-pages": "node src/validatePages.cjs"
   },
   "keywords": [],
