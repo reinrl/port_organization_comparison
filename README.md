@@ -22,6 +22,8 @@ Execute the configuration data retrieval:
 npm run dev
 ```
 
+**Note:** The `dev` and `build` scripts include the `--force` flag to ensure Vite clears its cache and re-optimizes dependencies. This is necessary because the startup process dynamically generates files (including validation results) that are imported by the application. Without this flag, Vite may cache module resolution failures from previous runs when these files didn't exist yet.
+
 Assuming two configured environments (source and dest), you should see the following file structure generated:
 
 ```

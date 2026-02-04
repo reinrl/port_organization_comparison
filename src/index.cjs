@@ -1,7 +1,7 @@
 require("win-ca"); // Automatically injects Windows root CAs into Node.js
 const axios = require("axios");
-const fs = require("fs");
-const path = require("path");
+const fs = require("node:fs");
+const path = require("node:path");
 const { listFiles, sortArrayOfItems } = require("./util/utilFunctions.cjs");
 // Add additional endpoints here as needed
 const TYPES_OF_DATA = require("./config/dataTypes.cjs");
@@ -42,6 +42,7 @@ function logToFileAndConsole(message, isError = false) {
 
 // These are the keys that we want to ignore when comparing items across environments
 const { KEYS_TO_EXCLUDE } = require("./config/keysToExclude.cjs");
+const { spawn } = require("node:child_process");
 
 // This is the directory where the environment configs are stored
 const envsDir = path.join(__dirname, "envs");
@@ -298,6 +299,27 @@ async function prepareOutputDirectory() {
     // Create fresh directory
     await fs.promises.mkdir(outputDir, { recursive: true });
     logToFileAndConsole("Output directory cleared and recreated.");
+
+    // validate pages by spawning validatePages.cjs
+    await new Promise((resolve, reject) => {
+      const validateProcess = spawn("node", ["src/validatePages.cjs"]);
+
+      validateProcess.stdout.on("data", (data) => {
+        logToFileAndConsole(`validatePages.cjs: ${data}`);
+      });
+
+      validateProcess.stderr.on("data", (data) => {
+        logToFileAndConsole(`validatePages.cjs error: ${data}`, true);
+      });
+
+      validateProcess.on("close", (code) => {
+        if (code === 0) {
+          resolve();
+        } else {
+          reject(new Error(`validatePages.cjs exited with code ${code}`));
+        }
+      });
+    });
 
     return true;
   } catch (error) {
