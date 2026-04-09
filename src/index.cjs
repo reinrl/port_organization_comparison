@@ -300,27 +300,6 @@ async function prepareOutputDirectory() {
     await fs.promises.mkdir(outputDir, { recursive: true });
     logToFileAndConsole("Output directory cleared and recreated.");
 
-    // validate pages by spawning validatePages.cjs
-    await new Promise((resolve, reject) => {
-      const validateProcess = spawn("node", ["src/validatePages.cjs"]);
-
-      validateProcess.stdout.on("data", (data) => {
-        logToFileAndConsole(`validatePages.cjs: ${data}`);
-      });
-
-      validateProcess.stderr.on("data", (data) => {
-        logToFileAndConsole(`validatePages.cjs error: ${data}`, true);
-      });
-
-      validateProcess.on("close", (code) => {
-        if (code === 0) {
-          resolve();
-        } else {
-          reject(new Error(`validatePages.cjs exited with code ${code}`));
-        }
-      });
-    });
-
     return true;
   } catch (error) {
     logToFileAndConsole(
@@ -423,6 +402,27 @@ async function prepareOutputDirectory() {
     // Write the config file using streams
     fileContents += `export { ${exportables.join(", ")} };\n`;
     await writeToFileStream(configTsFilePath, fileContents);
+
+    // Validate pages after all data has been written
+    await new Promise((resolve, reject) => {
+      const validateProcess = spawn("node", ["src/validatePages.cjs"]);
+
+      validateProcess.stdout.on("data", (data) => {
+        logToFileAndConsole(`validatePages.cjs: ${data}`);
+      });
+
+      validateProcess.stderr.on("data", (data) => {
+        logToFileAndConsole(`validatePages.cjs error: ${data}`, true);
+      });
+
+      validateProcess.on("close", (code) => {
+        if (code === 0) {
+          resolve();
+        } else {
+          reject(new Error(`validatePages.cjs exited with code ${code}`));
+        }
+      });
+    });
 
     logToFileAndConsole("Process completed successfully.");
   } catch (error) {

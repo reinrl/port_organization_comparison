@@ -32,6 +32,12 @@ const LOCATION_TYPES = {
   BLUEPRINT_CONFIG_PROPERTIES: "blueprintConfig.propertiesSettings",
 };
 
+// System-level property identifiers that are always valid regardless of blueprint schema.
+// These are Port platform internals recognized as column/property references in widgets.
+const SYSTEM_PROPERTY_IDENTIFIERS = new Set([
+  "FROZEN_RIGHT_COLUMN", // Pins columns to the right side of a table widget
+]);
+
 // Parse command-line arguments
 const args = process.argv.slice(2);
 const isVerbose = args.includes("--verbose");
@@ -143,9 +149,10 @@ function addPropertiesFromObject(targetSet, sourceObject) {
 /**
  * Builds a blueprint property registry for an environment
  * @param {Array} blueprints - Array of blueprint objects
+ * @param {Array} scorecards - Array of scorecard objects (optional)
  * @returns {Map} Map of blueprint ID to properties, relations, and schema info
  */
-function buildBlueprintRegistry(blueprints) {
+function buildBlueprintRegistry(blueprints, scorecards = []) {
   if (!Array.isArray(blueprints)) {
     throw new Error("buildBlueprintRegistry: blueprints must be an array");
   }
@@ -204,6 +211,38 @@ function buildBlueprintRegistry(blueprints) {
       } properties, ${relations.size} relations)`,
       "verbose"
     );
+  }
+
+  // Enrich registry with scorecard identifiers and rule identifiers.
+  // In Port, scorecard results are exposed as properties on entities:
+  //   - The scorecard identifier itself (the level value)
+  //   - Each rule identifier (boolean pass/fail result)
+  if (Array.isArray(scorecards)) {
+    for (const scorecard of scorecards) {
+      if (!scorecard || !scorecard.blueprint || !scorecard.identifier) continue;
+
+      const blueprintData = registry.get(scorecard.blueprint);
+      if (!blueprintData) continue;
+
+      // Add the scorecard identifier as a valid property
+      blueprintData.properties.add(scorecard.identifier);
+
+      // Add each rule identifier as a valid property
+      if (Array.isArray(scorecard.rules)) {
+        for (const rule of scorecard.rules) {
+          if (rule && rule.identifier) {
+            blueprintData.properties.add(rule.identifier);
+          }
+        }
+      }
+
+      log(
+        `Scorecard "${scorecard.identifier}" enriched blueprint "${scorecard.blueprint}" with ${
+          1 + (scorecard.rules?.length || 0)
+        } scorecard properties`,
+        "verbose"
+      );
+    }
   }
 
   return registry;
@@ -349,6 +388,11 @@ function validateProperty(property, blueprintId, registry) {
   // Skip template variables
   if (hasTemplateVariables(property)) {
     return { valid: true, skipped: true, reason: "template_variable" };
+  }
+
+  // Skip known system-level identifiers (platform internals, not blueprint properties)
+  if (SYSTEM_PROPERTY_IDENTIFIERS.has(property)) {
+    return { valid: true, skipped: true, reason: "system_identifier" };
   }
 
   // Check for complex paths that need manual review
@@ -957,6 +1001,7 @@ async function main() {
 
       const blueprintsPath = path.join(outputDir, env, "Blueprints.json");
       const pagesPath = path.join(outputDir, env, "Pages.json");
+      const scorecardsPath = path.join(outputDir, env, "Scorecards.json");
 
       // Check if files exist
       if (!fs.existsSync(blueprintsPath)) {
@@ -976,13 +1021,22 @@ async function main() {
       const blueprints = await readJsonFile(blueprintsPath);
       const pages = await readJsonFile(pagesPath);
 
+      // Load scorecards if available (used to enrich the blueprint registry)
+      let scorecards = [];
+      if (fs.existsSync(scorecardsPath)) {
+        scorecards = await readJsonFile(scorecardsPath);
+        log(`Loaded ${scorecards.length} scorecards`, "info");
+      } else {
+        log(`Scorecards.json not found for environment "${env}", scorecard properties will not be validated`, "warning");
+      }
+
       log(
         `Loaded ${blueprints.length} blueprints and ${pages.length} pages`,
         "info"
       );
 
       // Build blueprint registry
-      const registry = buildBlueprintRegistry(blueprints);
+      const registry = buildBlueprintRegistry(blueprints, scorecards);
       log(`Built registry with ${registry.size} blueprints`, "verbose");
 
       // Validate pages
