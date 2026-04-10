@@ -68,10 +68,10 @@ function sortArrayOfItems(items, keysToExclude, itemType) {
   });
 }
 
-function removeKeysRecursively(obj, keysToExclude, itemType) {
+function removeKeysRecursively(obj, keysToExclude, itemType, depth = 0) {
   if (Array.isArray(obj)) {
     const cleanedArray = obj
-      .map((item) => removeKeysRecursively(item, keysToExclude, itemType))
+      .map((item) => removeKeysRecursively(item, keysToExclude, itemType, depth))
       .filter((item) => {
         // Remove empty arrays and empty objects
         if (Array.isArray(item)) return item.length > 0;
@@ -82,12 +82,13 @@ function removeKeysRecursively(obj, keysToExclude, itemType) {
     return cleanedArray;
   } else if (obj && typeof obj === "object") {
     const cleanedObj = Object.entries(obj).reduce((acc, [key, value]) => {
-      // Use shouldExcludeKey to check if this key should be excluded for this itemType
-      if (!shouldExcludeKey(key, itemType)) {
+      // Use shouldExcludeKey to check if this key should be excluded for this itemType and depth
+      if (!shouldExcludeKey(key, itemType, depth)) {
         const cleanedValue = removeKeysRecursively(
           value,
           keysToExclude,
-          itemType
+          itemType,
+          depth + 1
         );
         const isEmptyArray =
           Array.isArray(cleanedValue) && cleanedValue.length === 0;
