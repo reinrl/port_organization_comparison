@@ -1,5 +1,6 @@
 require("win-ca"); // Automatically injects Windows root CAs into Node.js
 const axios = require("axios");
+const axiosInstance = axios.create({ timeout: 60000 }); // 60 s; prevents hanging if API is unresponsive
 const fs = require("node:fs");
 const path = require("node:path");
 const { listFiles, sortArrayOfItems } = require("./util/utilFunctions.cjs");
@@ -107,7 +108,7 @@ async function fetchAccessToken(envName) {
       }),
     };
 
-    const response = await axios.request(accessTokenConfig);
+    const response = await axiosInstance.request(accessTokenConfig);
 
     if (!response.data?.accessToken) {
       throw new Error("Invalid response from access token API");
@@ -131,7 +132,7 @@ async function fetchAccessToken(envName) {
  */
 async function makeApiRequest(config) {
   try {
-    const response = await axios.request(config);
+    const response = await axiosInstance.request(config);
     return response.data;
   } catch (error) {
     const status = error.response?.status || "unknown";
@@ -204,7 +205,10 @@ async function fetchData(envName) {
           const typeResponseData = await makeApiRequest(apiConfig);
 
           if (!typeResponseData?.[variable]) {
-            throw new Error("Incorrect response array variable name specified");
+            const availableKeys = Object.keys(typeResponseData ?? {}).join(", ") || "(empty response)";
+            throw new Error(
+              `Variable "${variable}" not found in API response. Actual top-level keys: [${availableKeys}]. Update the 'variable' field in dataTypes.cjs for endpoint "${endpoint}".`
+            );
           }
 
           // Some items have permissions that we need to fetch
@@ -407,6 +411,12 @@ async function prepareOutputDirectory() {
     await new Promise((resolve, reject) => {
       const validateProcess = spawn("node", ["src/validatePages.cjs"]);
 
+      // Kill the subprocess if it doesn't finish within 60 s so index.cjs can still exit
+      const spawnTimeout = setTimeout(() => {
+        validateProcess.kill();
+        reject(new Error("validatePages.cjs timed out after 60 s"));
+      }, 60000);
+
       validateProcess.stdout.on("data", (data) => {
         logToFileAndConsole(`validatePages.cjs: ${data}`);
       });
@@ -416,6 +426,7 @@ async function prepareOutputDirectory() {
       });
 
       validateProcess.on("close", (code) => {
+        clearTimeout(spawnTimeout);
         if (code === 0) {
           resolve();
         } else {
@@ -428,9 +439,9 @@ async function prepareOutputDirectory() {
   } catch (error) {
     logToFileAndConsole(`Unhandled error: ${error.message}`, true);
   } finally {
-    // Ensure log stream is closed
+    // Ensure log stream is closed and fully flushed before the process exits
     if (logStream) {
-      logStream.end();
+      await new Promise((resolve) => logStream.end(resolve));
     }
   }
 })();
