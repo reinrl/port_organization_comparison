@@ -11,6 +11,7 @@ import ItemViewer from "../ItemViewer.tsx";
 export default function Blueprints() {
   const itemType = "Blueprints";
   const [excludePermissions, setExcludePermissions] = useState(false);
+  const [searchText, setSearchText] = useState("");
 
   const leftContents = sourceConfig?.[
     `source${itemType}` as keyof typeof sourceConfig
@@ -19,9 +20,19 @@ export default function Blueprints() {
     `dest${itemType}` as keyof typeof destConfig
   ] as any[];
 
+  const lowerSearch = searchText.toLowerCase();
+
   // Filter contents based on selected identifier
   let filteredLeftContents: any[] = leftContents || [];
   if (Array.isArray(leftContents)) {
+    if (searchText) {
+      filteredLeftContents = filteredLeftContents.filter(
+        (item) =>
+          item?.identifier?.toLowerCase().includes(lowerSearch) ||
+          item?.title?.toLowerCase().includes(lowerSearch)
+      );
+    }
+
     if (excludePermissions) {
       filteredLeftContents = (filteredLeftContents as any[]).map((item) => {
         if (!item) return item;
@@ -35,6 +46,14 @@ export default function Blueprints() {
 
   let filteredRightContents: any[] = rightContents || [];
   if (Array.isArray(rightContents)) {
+    if (searchText) {
+      filteredRightContents = filteredRightContents.filter(
+        (item) =>
+          item?.identifier?.toLowerCase().includes(lowerSearch) ||
+          item?.title?.toLowerCase().includes(lowerSearch)
+      );
+    }
+
     if (excludePermissions) {
       filteredRightContents = (filteredRightContents as any[]).map((item) => {
         if (!item) return item;
@@ -53,8 +72,25 @@ export default function Blueprints() {
     setExcludePermissions(isChecked);
   };
 
+  const handleSearchTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(e.target.value);
+  };
+
   return (
     <Container fluid>
+      <Row>
+        <Col>
+          <Form.Group className="mb-3" controlId="searchText">
+            <Form.Label>Search by identifier or title</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Search by identifier or title..."
+              value={searchText}
+              onChange={handleSearchTextChange}
+            />
+          </Form.Group>
+        </Col>
+      </Row>
       <Row>
         <Col>
           <hr />

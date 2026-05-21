@@ -12,6 +12,7 @@ export default function Actions() {
   const itemType = "Actions";
   const [typeFilter, setTypeFilter] = useState("");
   const [excludePermissions, setExcludePermissions] = useState(false);
+  const [searchText, setSearchText] = useState("");
 
   const leftContents =
     sourceConfig?.[`source${itemType}` as keyof typeof sourceConfig];
@@ -32,12 +33,22 @@ export default function Actions() {
     .filter(Boolean)
     .sort((a, b) => String(a).localeCompare(String(b)));
 
+  const lowerSearch = searchText.toLowerCase();
+
   // Filter contents based on selected type
   let filteredLeftContents = leftContents;
   if (Array.isArray(leftContents)) {
     if (typeFilter) {
       filteredLeftContents = leftContents.filter(
         (item) => item?.trigger?.type === typeFilter
+      );
+    }
+
+    if (searchText) {
+      filteredLeftContents = filteredLeftContents.filter(
+        (item) =>
+          item?.identifier?.toLowerCase().includes(lowerSearch) ||
+          item?.title?.toLowerCase().includes(lowerSearch)
       );
     }
 
@@ -55,6 +66,14 @@ export default function Actions() {
     if (typeFilter) {
       filteredRightContents = rightContents.filter(
         (item) => item?.trigger?.type === typeFilter
+      );
+    }
+
+    if (searchText) {
+      filteredRightContents = filteredRightContents.filter(
+        (item) =>
+          item?.identifier?.toLowerCase().includes(lowerSearch) ||
+          item?.title?.toLowerCase().includes(lowerSearch)
       );
     }
 
@@ -78,8 +97,25 @@ export default function Actions() {
     setExcludePermissions(isChecked);
   };
 
+  const handleSearchTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(e.target.value);
+  };
+
   return (
     <Container fluid>
+      <Row>
+        <Col>
+          <Form.Group className="mb-3" controlId="searchText">
+            <Form.Label>Search by identifier or title</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Search by identifier or title..."
+              value={searchText}
+              onChange={handleSearchTextChange}
+            />
+          </Form.Group>
+        </Col>
+      </Row>
       <Row>
         <Col>
           {!!uniqueTypes.length && (
