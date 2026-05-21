@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import Accordion from "react-bootstrap/Accordion";
 import Alert from "react-bootstrap/Alert";
 import Badge from "react-bootstrap/Badge";
@@ -15,6 +16,17 @@ export default function ItemViewer({
   filteredRightContents,
   itemType,
 }: Readonly<ItemViewerProps>) {
+  const [isDarkTheme, setIsDarkTheme] = useState(
+    () => document.documentElement.dataset.bsTheme === "dark"
+  );
+
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      setIsDarkTheme(document.documentElement.dataset.bsTheme === "dark");
+    });
+    observer.observe(document.documentElement, { attributeFilter: ["data-bs-theme"] });
+    return () => observer.disconnect();
+  }, []);
   // Helper function to get validation info for a page
   const getValidationInfo = (identifier: string) => {
     if (itemType !== "Pages") {
@@ -202,6 +214,7 @@ export default function ItemViewer({
                     newValue={rightItemAsString}
                     rightTitle="Destination"
                     splitView={true}
+                    useDarkTheme={isDarkTheme}
                   />
                 )}
               </Accordion.Body>

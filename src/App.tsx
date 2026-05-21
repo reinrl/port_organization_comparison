@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -6,6 +8,17 @@ import NavBarItem from "./components/NavBarItem";
 import Content from "./components/Content";
 
 export default function App() {
+  const [theme, setTheme] = useState<"light" | "dark">(() => {
+    const saved = localStorage.getItem("theme");
+    if (saved === "light" || saved === "dark") return saved;
+    return globalThis.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  });
+
+  useEffect(() => {
+    document.documentElement.dataset.bsTheme = theme;
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
   const urlParams = new URLSearchParams(window.location.search);
   const itemType = urlParams.get("itemType");
 
@@ -65,6 +78,15 @@ export default function App() {
               href="/?itemType=Webhooks"
               label="Webhooks"
             />
+          </Nav>
+          <Nav className="ms-auto">
+            <Button
+              variant="outline-secondary"
+              size="sm"
+              onClick={() => setTheme(t => t === "dark" ? "light" : "dark")}
+            >
+              {theme === "dark" ? "Show me the light!" : "Dark mode, please!"}
+            </Button>
           </Nav>
         </Container>
       </Navbar>
