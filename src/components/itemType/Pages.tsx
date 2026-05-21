@@ -13,6 +13,7 @@ export default function Pages() {
   const [typeFilter, setTypeFilter] = useState("");
   const [excludePermissions, setExcludePermissions] = useState(false);
   const [searchText, setSearchText] = useState("");
+  const [presenceFilter, setPresenceFilter] = useState("");
 
   const leftContents =
     sourceConfig?.[`source${itemType}` as keyof typeof sourceConfig];
@@ -86,6 +87,32 @@ export default function Pages() {
     }
   }
 
+  if (presenceFilter === "not-in-destination") {
+    const rightIdentifiers = new Set(
+      (Array.isArray(filteredRightContents) ? filteredRightContents : []).map(
+        (item: any) => item?.identifier
+      )
+    );
+    filteredLeftContents = Array.isArray(filteredLeftContents)
+      ? filteredLeftContents.filter(
+          (item: any) => !rightIdentifiers.has(item?.identifier)
+        )
+      : filteredLeftContents;
+    filteredRightContents = [];
+  } else if (presenceFilter === "not-in-source") {
+    const leftIdentifiers = new Set(
+      (Array.isArray(filteredLeftContents) ? filteredLeftContents : []).map(
+        (item: any) => item?.identifier
+      )
+    );
+    filteredLeftContents = [];
+    filteredRightContents = Array.isArray(filteredRightContents)
+      ? filteredRightContents.filter(
+          (item: any) => !leftIdentifiers.has(item?.identifier)
+        )
+      : filteredRightContents;
+  }
+
   const handleTypeFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setTypeFilter(e.target.value);
   };
@@ -101,6 +128,12 @@ export default function Pages() {
     setSearchText(e.target.value);
   };
 
+  const handlePresenceFilterChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setPresenceFilter(e.target.value);
+  };
+
   return (
     <Container fluid>
       <Row>
@@ -113,6 +146,22 @@ export default function Pages() {
               value={searchText}
               onChange={handleSearchTextChange}
             />
+          </Form.Group>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <Form.Group className="mb-3" controlId="presenceFilter">
+            <Form.Label>Filter by presence</Form.Label>
+            <Form.Select
+              id="presenceFilter"
+              value={presenceFilter}
+              onChange={handlePresenceFilterChange}
+            >
+              <option value="">show all</option>
+              <option value="not-in-source">not in source</option>
+              <option value="not-in-destination">not in destination</option>
+            </Form.Select>
           </Form.Group>
         </Col>
       </Row>
