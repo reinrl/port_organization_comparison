@@ -333,8 +333,10 @@ async function prepareOutputDirectory() {
       await fs.promises.rm(configTsFilePath, { force: true });
     }
 
-    // Get all environment configs
-    const importedConfigs = await loadEnvironmentConfigs(envsDir);
+    // Get all environment configs, sorted by envSortOrder (ascending; omitted = last)
+    const importedConfigs = (await loadEnvironmentConfigs(envsDir)).sort(
+      (a, b) => (a.envSortOrder ?? Infinity) - (b.envSortOrder ?? Infinity)
+    );
     const environments = importedConfigs.map((config) => config.envName);
 
     // Process all environments in parallel and collect results
@@ -381,30 +383,38 @@ async function prepareOutputDirectory() {
 
     // Build configs file content sequentially after all data is fetched
     let fileContents = "";
-    const exportables = [];
+    const allEnvEntries = [];
+    const envNamesList = [];
+    const displayNameEntries = [];
 
     for (const result of envResults) {
       if (result.success) {
         const env = result.env;
+        const envConfig = importedConfigs.find((c) => c.envName === env);
+        const displayName = envConfig?.displayName ?? env;
 
         // Add imports for this environment
         for (const type of TYPES_OF_DATA) {
           fileContents += `import ${env}${type.displayName} from "../output/${env}/${type.displayName}.json";\n`;
         }
+        fileContents += "\n";
 
-        // Add config object
-        fileContents += `\nconst ${env}Config = {\n`;
-        for (const type of TYPES_OF_DATA) {
-          fileContents += `\t${env}${type.displayName},\n`;
-        }
-        fileContents += `};\n\n`;
-
-        exportables.push(`${env}Config`);
+        allEnvEntries.push(
+          `  ${env}: { ${TYPES_OF_DATA.map((t) => `${t.displayName}: ${env}${t.displayName}`).join(", ")} }`
+        );
+        envNamesList.push(`"${env}"`);
+        displayNameEntries.push(`  ${env}: "${displayName}"`);
       }
     }
 
+    // Write the three named exports
+    fileContents += `export const allEnvConfigs: Record<string, Record<string, unknown[]>> = {\n`;
+    fileContents += allEnvEntries.join(",\n") + "\n};\n\n";
+    fileContents += `export const envNames: string[] = [${envNamesList.join(", ")}];\n\n`;
+    fileContents += `export const displayNames: Record<string, string> = {\n`;
+    fileContents += displayNameEntries.join(",\n") + "\n};\n";
+
     // Write the config file using streams
-    fileContents += `export { ${exportables.join(", ")} };\n`;
     await writeToFileStream(configTsFilePath, fileContents);
 
     // Validate pages after all data has been written
