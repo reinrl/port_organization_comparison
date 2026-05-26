@@ -6,6 +6,7 @@ import Navbar from "react-bootstrap/Navbar";
 
 import NavBarItem from "./components/NavBarItem";
 import Content from "./components/Content";
+import { useEnvSelection } from "./contexts/EnvSelectionContext";
 
 export default function App() {
   const [theme, setTheme] = useState<"light" | "dark">(() => {
@@ -29,6 +30,12 @@ export default function App() {
     mediaQuery.addEventListener("change", handleChange);
     return () => mediaQuery.removeEventListener("change", handleChange);
   }, []);
+
+  const { sourceEnv, destEnv, availableEnvs } = useEnvSelection();
+  const sourceName =
+    availableEnvs.find((e) => e.envName === sourceEnv)?.displayName ?? sourceEnv;
+  const destName =
+    availableEnvs.find((e) => e.envName === destEnv)?.displayName ?? destEnv;
 
   const urlParams = new URLSearchParams(window.location.search);
   const itemType = urlParams.get("itemType");
@@ -90,7 +97,12 @@ export default function App() {
               label="Webhooks"
             />
           </Nav>
-          <Nav className="ms-auto">
+          <Nav className="ms-auto align-items-center gap-3">
+            <Nav.Item>
+              <span className="text-muted small">
+                {sourceName} &rarr; {destName}
+              </span>
+            </Nav.Item>
             <Button
               variant="outline-secondary"
               size="sm"

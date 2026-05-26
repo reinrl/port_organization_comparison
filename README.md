@@ -10,11 +10,9 @@ Clone the repository locally, and install dependencies:
 npm install
 ```
 
-Create one `.json` file per environment (Port organization) for both the source and destination in `/src/envs/`. It should follow the format prescribed in `/src/envs/README.md`.
+Create one `.json` file per environment (Port organization) in `/src/envs/`. It should follow the format prescribed in `/src/envs/README.md`. You can configure as many environments as you like — all non-underscore-prefixed files in that folder will be fetched at startup.
 
-To retrieve your clientId and clientSecret, open your [Port application}(https://app.port.io). Click on the "..." button in the top right corner, and select "Credentials". These values can be found on the "Organization" tab.
-
-**Note:** This project is only intended to compare two environments at a time, as the output for file differences only contains a left (source) and right (destination) pane.
+To retrieve your clientId and clientSecret, open your [Port application](https://app.port.io). Click on the "..." button in the top right corner, and select "Credentials". These values can be found on the "Organization" tab.
 
 Execute the configuration data retrieval:
 
@@ -24,34 +22,31 @@ npm run dev
 
 **Note:** The `dev` and `build` scripts include the `--force` flag to ensure Vite clears its cache and re-optimizes dependencies. This is necessary because the startup process dynamically generates files (including validation results) that are imported by the application. Without this flag, Vite may cache module resolution failures from previous runs when these files didn't exist yet.
 
-Assuming two configured environments (source and dest), you should see the following file structure generated:
+One output folder per configured environment will be generated under `/src/output/`. For example, with `dev.json`, `beta.json`, and `prod.json` configured:
 
 ```
 /port_organization_comparison
-└── /output
-    ├── /source
+└── /src/output
+    ├── /dev
     │   ├── Actions.json
     │   ├── Blueprints.json
     │   ├── Integrations.json
     │   ├── Pages.json
     │   ├── Scorecards.json
     │   └── Webhooks.json
-    └── /dest
-    │   ├── Actions.json
-    │   ├── Blueprints.json
-    │   ├── Integrations.json
-    │   ├── Pages.json
-    │   ├── Scorecards.json
-    │   └── Webhooks.json
+    ├── /beta
+    │   └── (same structure)
+    └── /prod
+        └── (same structure)
 ```
 
 Once the file generation is complete, a small web app is started:
 
 ![Home page of the comparison web app](home.jpg)
 
-The web app allows you to view and compare the configuration data between your source and destination organizations. Select different data types from the navigation to see detailed comparisons:
+The home page presents two dropdowns — **Source** and **Destination** — populated with all configured environments. Select the pair you want to compare; the selection persists across browser refreshes. Select different data types from the navigation to see detailed comparisons:
 
-![Example diff](actions_diff.jpg)
+![Example diff](blueprints_diff.jpg)
 
 ## Gathering additional types of information
 
@@ -124,11 +119,13 @@ npm run update-automation-run-urls -- -d
 
 ### Configuration
 
-The script uses the `dest.json` configuration file from `/src/envs/` to connect to your Port environment. Make sure this file is properly configured with:
+The script uses the environment config file in `/src/envs/` whose `envName` matches the `--env` argument (defaults to the last environment by sort order if not specified). Make sure the target config is properly configured with:
 
 - `clientId` and `clientSecret` for authentication
 - `portDomain` for the API endpoint
 - `portWebDomain` for the correct web application URL that automations should reference
+
+(for full details/sample configuration, see `/src/envs/README.md`)
 
 ### Output
 
@@ -195,9 +192,9 @@ npm run validate-pages
 **Validate a specific environment**:
 
 ```bash
-npm run validate-pages -- --env=source
+npm run validate-pages -- --env=dev
 # or
-npm run validate-pages -- --env=dest
+npm run validate-pages -- --env=prod
 ```
 
 **Verbose mode** (show detailed logging for debugging):
@@ -214,7 +211,7 @@ npm run validate-pages -- --env=dest --verbose
 
 ### Command-Line Options
 
-- `--env=<name>` - Validate only the specified environment (e.g., `source` or `dest`)
+- `--env=<name>` - Validate only the specified environment (e.g., `dev` or `prod`); must match the `envName` in the corresponding config file
 - `--verbose` - Enable detailed logging including blueprint registration and property extraction details
 
 ### Prerequisites

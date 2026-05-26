@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { sourceConfig, destConfig } from "../util/configs.ts";
+import { allEnvConfigs } from "../util/configs.ts";
+import { useEnvSelection } from "../contexts/EnvSelectionContext.tsx";
 
 interface UseItemFilterOptions {
   itemType: string;
@@ -37,12 +38,10 @@ export function useItemFilter({
   const [typeFilter, setTypeFilter] = useState("");
   const [excludePermissions, setExcludePermissions] = useState(false);
 
-  const rawLeft = itemType
-    ? sourceConfig?.[`source${itemType}` as keyof typeof sourceConfig]
-    : undefined;
-  const rawRight = itemType
-    ? destConfig?.[`dest${itemType}` as keyof typeof destConfig]
-    : undefined;
+  const { sourceEnv, destEnv } = useEnvSelection();
+
+  const rawLeft = itemType ? allEnvConfigs[sourceEnv]?.[itemType] : undefined;
+  const rawRight = itemType ? allEnvConfigs[destEnv]?.[itemType] : undefined;
 
   const leftArray: any[] = Array.isArray(rawLeft) ? rawLeft : [];
   const rightArray: any[] = Array.isArray(rawRight) ? rawRight : [];
