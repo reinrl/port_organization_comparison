@@ -1,4 +1,7 @@
 import { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFilter, faLightbulb as faLightbulbSolid } from "@fortawesome/free-solid-svg-icons";
+import { faLightbulb as faLightbulbRegular } from "@fortawesome/free-regular-svg-icons";
 import Badge from "react-bootstrap/Badge";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
@@ -114,8 +117,9 @@ export default function App() {
                 size="sm"
                 onClick={() => setIsFilterPanelOpen((v) => !v)}
                 className="d-flex align-items-center gap-1"
+                title={isFilterPanelOpen ? "Hide available filters" : "Show available filters"}
               >
-                Filters
+                <FontAwesomeIcon icon={faFilter} />
                 {activeFilterCount > 0 && (
                   <Badge bg="primary" pill>
                     {activeFilterCount}
@@ -127,8 +131,10 @@ export default function App() {
               variant="outline-secondary"
               size="sm"
               onClick={() => setTheme(t => t === "dark" ? "light" : "dark")}
+              className="d-flex align-items-center"
+              title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
             >
-              {theme === "dark" ? "Show me the light!" : "Dark mode, please!"}
+              <FontAwesomeIcon icon={theme === "light" ? faLightbulbSolid : faLightbulbRegular} />
             </Button>
           </Nav>
         </Container>
