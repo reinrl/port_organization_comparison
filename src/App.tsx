@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Badge from "react-bootstrap/Badge";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
@@ -6,7 +7,9 @@ import Navbar from "react-bootstrap/Navbar";
 
 import NavBarItem from "./components/NavBarItem";
 import Content from "./components/Content";
+import FilterPanel from "./components/FilterPanel";
 import { useEnvSelection } from "./contexts/EnvSelectionContext";
+import { useFilterContext } from "./contexts/FilterContext";
 
 export default function App() {
   const [theme, setTheme] = useState<"light" | "dark">(() => {
@@ -32,6 +35,7 @@ export default function App() {
   }, []);
 
   const { sourceEnv, destEnv, availableEnvs } = useEnvSelection();
+  const { activeItemType, isFilterPanelOpen, setIsFilterPanelOpen, activeFilterCount } = useFilterContext();
   const sourceName =
     availableEnvs.find((e) => e.envName === sourceEnv)?.displayName ?? sourceEnv;
   const destName =
@@ -66,7 +70,8 @@ export default function App() {
 
   return (
     <>
-      <Navbar expand="lg" className="bg-body-tertiary" sticky="top">
+    <div className="sticky-top">
+      <Navbar expand="lg" className="bg-body-tertiary">
         <Container>
           <Nav className="me-auto" activeKey={activeKey}>
             <NavBarItem eventKey="home" href="/" label="Home" />
@@ -103,6 +108,21 @@ export default function App() {
                 {sourceName} &rarr; {destName}
               </span>
             </Nav.Item>
+            {activeItemType && (
+              <Button
+                variant={isFilterPanelOpen ? "secondary" : "outline-secondary"}
+                size="sm"
+                onClick={() => setIsFilterPanelOpen((v) => !v)}
+                className="d-flex align-items-center gap-1"
+              >
+                Filters
+                {activeFilterCount > 0 && (
+                  <Badge bg="primary" pill>
+                    {activeFilterCount}
+                  </Badge>
+                )}
+              </Button>
+            )}
             <Button
               variant="outline-secondary"
               size="sm"
@@ -113,6 +133,8 @@ export default function App() {
           </Nav>
         </Container>
       </Navbar>
+      <FilterPanel />
+    </div>
       <Content item={itemType} />
     </>
   );

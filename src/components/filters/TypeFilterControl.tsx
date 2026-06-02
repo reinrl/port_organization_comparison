@@ -1,11 +1,9 @@
-import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
 interface TypeFilterControlProps {
   uniqueTypes: string[];
   value: string;
   onChange: React.ChangeEventHandler<HTMLSelectElement>;
-  onClear: () => void;
   label: string;
   allLabel: string;
 }
@@ -14,15 +12,14 @@ export default function TypeFilterControl({
   uniqueTypes,
   value,
   onChange,
-  onClear,
   label,
   allLabel,
 }: Readonly<TypeFilterControlProps>) {
   if (!uniqueTypes.length) return null;
 
   return (
-    <form>
-      <label htmlFor="typeFilter">{label}: </label>
+    <Form.Group className="mb-3" controlId="typeFilter">
+      <Form.Label htmlFor="typeFilter">{label}: </Form.Label>
       <Form.Select
         id="typeFilter"
         name="typeFilter"
@@ -36,16 +33,6 @@ export default function TypeFilterControl({
           </option>
         ))}
       </Form.Select>
-      {value && (
-        <div style={{ marginTop: "10px" }}>
-          <small>
-            Currently filtering by type: <strong>{value}</strong>{" "}
-            <Button variant="secondary" onClick={onClear}>
-              Clear filter
-            </Button>
-          </small>
-        </div>
-      )}
-    </form>
+    </Form.Group>
   );
 }
