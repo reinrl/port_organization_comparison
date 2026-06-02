@@ -2,15 +2,15 @@ import { useState, useMemo } from "react";
 import { allEnvConfigs } from "../util/configs.ts";
 import { useEnvSelection } from "../contexts/EnvSelectionContext.tsx";
 
-function deepOmitUpdatedAt(value: any): any {
+function deepOmitKeys(value: any, keys: ReadonlySet<string>): any {
   if (Array.isArray(value)) {
-    return value.map(deepOmitUpdatedAt);
+    return value.map((v) => deepOmitKeys(v, keys));
   }
   if (value !== null && typeof value === "object") {
     const result: Record<string, any> = {};
     for (const [k, v] of Object.entries(value)) {
-      if (k !== "updatedAt" && k !== "updatedBy") {
-        result[k] = deepOmitUpdatedAt(v);
+      if (!keys.has(k)) {
+        result[k] = deepOmitKeys(v, keys);
       }
     }
     return result;
@@ -18,21 +18,9 @@ function deepOmitUpdatedAt(value: any): any {
   return value;
 }
 
-function deepOmitCreatedAt(value: any): any {
-  if (Array.isArray(value)) {
-    return value.map(deepOmitCreatedAt);
-  }
-  if (value !== null && typeof value === "object") {
-    const result: Record<string, any> = {};
-    for (const [k, v] of Object.entries(value)) {
-      if (k !== "createdAt" && k !== "createdBy") {
-        result[k] = deepOmitCreatedAt(v);
-      }
-    }
-    return result;
-  }
-  return value;
-}
+const UPDATED_AT_KEYS = new Set(["updatedAt", "updatedBy"]);
+const CREATED_AT_KEYS = new Set(["createdAt", "createdBy"]);
+const UPDATED_AND_CREATED_AT_KEYS = new Set(["updatedAt", "updatedBy", "createdAt", "createdBy"]);
 
 interface UseItemFilterOptions {
   itemType: string;
@@ -123,12 +111,12 @@ export function useItemFilter({
         });
       }
 
-      if (excludeUpdatedAt) {
-        result = result.map((item) => (item ? deepOmitUpdatedAt(item) : item));
-      }
-
-      if (excludeCreatedAt) {
-        result = result.map((item) => (item ? deepOmitCreatedAt(item) : item));
+      if (excludeUpdatedAt && excludeCreatedAt) {
+        result = result.map((item) => (item ? deepOmitKeys(item, UPDATED_AND_CREATED_AT_KEYS) : item));
+      } else if (excludeUpdatedAt) {
+        result = result.map((item) => (item ? deepOmitKeys(item, UPDATED_AT_KEYS) : item));
+      } else if (excludeCreatedAt) {
+        result = result.map((item) => (item ? deepOmitKeys(item, CREATED_AT_KEYS) : item));
       }
 
       return result;
