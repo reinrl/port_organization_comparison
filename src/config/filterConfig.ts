@@ -2,6 +2,7 @@ export interface FilterConfig {
   typeFieldGetter?: (item: any) => any;
   hasPermissions?: boolean;
   hasExcludeUpdatedAt?: boolean;
+  hasExcludeCreatedAt?: boolean;
   typeFilterLabel?: string;
   typeAllLabel?: string;
 }
@@ -23,6 +24,7 @@ export const filterConfig: Record<string, FilterConfig> = {
     typeFieldGetter: (item: any) => item?.type,
     hasPermissions: true,
     hasExcludeUpdatedAt: true,
+    hasExcludeCreatedAt: true,
   },
   Scorecards: {},
   Webhooks: {},

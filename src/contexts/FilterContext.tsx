@@ -20,6 +20,8 @@ interface FilterContextValue {
   setExcludePermissions: React.Dispatch<React.SetStateAction<boolean>>;
   excludeUpdatedAt: boolean;
   setExcludeUpdatedAt: React.Dispatch<React.SetStateAction<boolean>>;
+  excludeCreatedAt: boolean;
+  setExcludeCreatedAt: React.Dispatch<React.SetStateAction<boolean>>;
   typeFilterLabel: string;
   typeAllLabel: string;
 }
@@ -43,8 +45,9 @@ function FilterProviderInner({ activeItemType, children }: Readonly<{ activeItem
     filterResult.searchText !== "",
     filterResult.presenceFilter !== "",
     filterResult.typeFilter !== "",
-    filterResult.excludePermissions,
-    filterResult.excludeUpdatedAt,
+    config.hasPermissions && filterResult.excludePermissions,
+    config.hasExcludeUpdatedAt && filterResult.excludeUpdatedAt,
+    config.hasExcludeCreatedAt && filterResult.excludeCreatedAt,
   ].filter(Boolean).length;
 
   const value = useMemo(
@@ -56,7 +59,7 @@ function FilterProviderInner({ activeItemType, children }: Readonly<{ activeItem
       ...filterResult,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [activeItemType, isFilterPanelOpen, activeFilterCount, filterResult.filteredLeft, filterResult.filteredRight, filterResult.searchText, filterResult.presenceFilter, filterResult.typeFilter, filterResult.excludePermissions, filterResult.excludeUpdatedAt, filterResult.uniqueTypes]
+    [activeItemType, isFilterPanelOpen, activeFilterCount, filterResult.filteredLeft, filterResult.filteredRight, filterResult.searchText, filterResult.presenceFilter, filterResult.typeFilter, filterResult.excludePermissions, filterResult.excludeUpdatedAt, filterResult.excludeCreatedAt, filterResult.uniqueTypes]
   );
 
   return (

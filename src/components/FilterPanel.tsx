@@ -7,6 +7,7 @@ import { useFilterContext } from "../contexts/FilterContext.tsx";
 import { filterConfig } from "../config/filterConfig.ts";
 import ExcludePermissionsControl from "./filters/ExcludePermissionsControl.tsx";
 import ExcludeUpdatedAtControl from "./filters/ExcludeUpdatedAtControl.tsx";
+import ExcludeCreatedAtControl from "./filters/ExcludeCreatedAtControl.tsx";
 import PresenceFilterControl from "./filters/PresenceFilterControl.tsx";
 import SearchControl from "./filters/SearchControl.tsx";
 import TypeFilterControl from "./filters/TypeFilterControl.tsx";
@@ -28,6 +29,8 @@ export default function FilterPanel() {
     setExcludePermissions,
     excludeUpdatedAt,
     setExcludeUpdatedAt,
+    excludeCreatedAt,
+    setExcludeCreatedAt,
   } = useFilterContext();
 
   if (!activeItemType) return null;
@@ -75,6 +78,14 @@ export default function FilterPanel() {
                 <ExcludeUpdatedAtControl
                   checked={excludeUpdatedAt}
                   onChange={(e) => setExcludeUpdatedAt(e.target.checked)}
+                />
+              </Col>
+            )}
+            {config.hasExcludeCreatedAt && (
+              <Col xs="auto">
+                <ExcludeCreatedAtControl
+                  checked={excludeCreatedAt}
+                  onChange={(e) => setExcludeCreatedAt(e.target.checked)}
                 />
               </Col>
             )}

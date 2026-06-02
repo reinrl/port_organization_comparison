@@ -24,6 +24,8 @@ interface UseItemFilterResult {
   setExcludePermissions: React.Dispatch<React.SetStateAction<boolean>>;
   excludeUpdatedAt: boolean;
   setExcludeUpdatedAt: React.Dispatch<React.SetStateAction<boolean>>;
+  excludeCreatedAt: boolean;
+  setExcludeCreatedAt: React.Dispatch<React.SetStateAction<boolean>>;
   typeFilterLabel: string;
   typeAllLabel: string;
 }
@@ -38,8 +40,9 @@ export function useItemFilter({
   const [searchText, setSearchText] = useState("");
   const [presenceFilter, setPresenceFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
-  const [excludePermissions, setExcludePermissions] = useState(false);
-  const [excludeUpdatedAt, setExcludeUpdatedAt] = useState(false);
+  const [excludePermissions, setExcludePermissions] = useState(true);
+  const [excludeUpdatedAt, setExcludeUpdatedAt] = useState(true);
+  const [excludeCreatedAt, setExcludeCreatedAt] = useState(true);
 
   const { sourceEnv, destEnv } = useEnvSelection();
 
@@ -79,6 +82,22 @@ export function useItemFilter({
     return value;
   }
 
+  function deepOmitCreatedAt(value: any): any {
+    if (Array.isArray(value)) {
+      return value.map(deepOmitCreatedAt);
+    }
+    if (value !== null && typeof value === "object") {
+      const result: Record<string, any> = {};
+      for (const [k, v] of Object.entries(value)) {
+        if (k !== "createdAt" && k !== "createdBy") {
+          result[k] = deepOmitCreatedAt(v);
+        }
+      }
+      return result;
+    }
+    return value;
+  }
+
   function applyFilters(items: any[]): any[] {
     let result = items;
 
@@ -104,6 +123,10 @@ export function useItemFilter({
 
     if (excludeUpdatedAt) {
       result = result.map((item) => (item ? deepOmitUpdatedAt(item) : item));
+    }
+
+    if (excludeCreatedAt) {
+      result = result.map((item) => (item ? deepOmitCreatedAt(item) : item));
     }
 
     return result;
@@ -141,6 +164,8 @@ export function useItemFilter({
     setExcludePermissions,
     excludeUpdatedAt,
     setExcludeUpdatedAt,
+    excludeCreatedAt,
+    setExcludeCreatedAt,
     typeFilterLabel,
     typeAllLabel,
   };
