@@ -22,6 +22,8 @@ interface UseItemFilterResult {
   uniqueTypes: string[];
   excludePermissions: boolean;
   setExcludePermissions: React.Dispatch<React.SetStateAction<boolean>>;
+  excludeUpdatedAt: boolean;
+  setExcludeUpdatedAt: React.Dispatch<React.SetStateAction<boolean>>;
   typeFilterLabel: string;
   typeAllLabel: string;
 }
@@ -37,6 +39,7 @@ export function useItemFilter({
   const [presenceFilter, setPresenceFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
   const [excludePermissions, setExcludePermissions] = useState(false);
+  const [excludeUpdatedAt, setExcludeUpdatedAt] = useState(false);
 
   const { sourceEnv, destEnv } = useEnvSelection();
 
@@ -60,6 +63,22 @@ export function useItemFilter({
 
   const lowerSearch = searchText.toLowerCase();
 
+  function deepOmitUpdatedAt(value: any): any {
+    if (Array.isArray(value)) {
+      return value.map(deepOmitUpdatedAt);
+    }
+    if (value !== null && typeof value === "object") {
+      const result: Record<string, any> = {};
+      for (const [k, v] of Object.entries(value)) {
+        if (k !== "updatedAt" && k !== "updatedBy") {
+          result[k] = deepOmitUpdatedAt(v);
+        }
+      }
+      return result;
+    }
+    return value;
+  }
+
   function applyFilters(items: any[]): any[] {
     let result = items;
 
@@ -81,6 +100,10 @@ export function useItemFilter({
         const { permissions, ...rest } = item;
         return rest;
       });
+    }
+
+    if (excludeUpdatedAt) {
+      result = result.map((item) => (item ? deepOmitUpdatedAt(item) : item));
     }
 
     return result;
@@ -116,6 +139,8 @@ export function useItemFilter({
     uniqueTypes,
     excludePermissions,
     setExcludePermissions,
+    excludeUpdatedAt,
+    setExcludeUpdatedAt,
     typeFilterLabel,
     typeAllLabel,
   };

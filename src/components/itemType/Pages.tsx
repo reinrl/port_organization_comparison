@@ -4,6 +4,7 @@ import Row from "react-bootstrap/Row";
 
 import { useItemFilter } from "../../hooks/useItemFilter.ts";
 import ExcludePermissionsControl from "../filters/ExcludePermissionsControl.tsx";
+import ExcludeUpdatedAtControl from "../filters/ExcludeUpdatedAtControl.tsx";
 import PresenceFilterControl from "../filters/PresenceFilterControl.tsx";
 import SearchControl from "../filters/SearchControl.tsx";
 import TypeFilterControl from "../filters/TypeFilterControl.tsx";
@@ -22,6 +23,8 @@ export default function Pages() {
     uniqueTypes,
     excludePermissions,
     setExcludePermissions,
+    excludeUpdatedAt,
+    setExcludeUpdatedAt,
     typeFilterLabel,
     typeAllLabel,
   } = useItemFilter({
@@ -60,12 +63,17 @@ export default function Pages() {
           />
         </Col>
       </Row>
-      <Row>
+      <Row className="mt-3">
         <Col>
-          <hr />
           <ExcludePermissionsControl
             checked={excludePermissions}
             onChange={(e) => setExcludePermissions(e.target.checked)}
+          />
+        </Col>
+        <Col>
+          <ExcludeUpdatedAtControl
+            checked={excludeUpdatedAt}
+            onChange={(e) => setExcludeUpdatedAt(e.target.checked)}
           />
         </Col>
       </Row>
