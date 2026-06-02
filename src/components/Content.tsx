@@ -1,27 +1,25 @@
-import Actions from "./itemType/Actions";
-import Blueprints from "./itemType/Blueprints";
+import Container from "react-bootstrap/Container";
+
+import { useFilterContext } from "../contexts/FilterContext.tsx";
 import Home from "./itemType/Home";
-import Integrations from "./itemType/Integrations";
-import Items from "./itemType/Items";
-import Pages from "./itemType/Pages";
+import ItemViewer from "./ItemViewer";
 
 interface ContentProps {
   item: string | null;
 }
 
 export default function Content({ item }: Readonly<ContentProps>) {
-  switch (item) {
-    case null:
-      return <Home />;
-    case "Actions":
-      return <Actions />;
-    case "Blueprints":
-      return <Blueprints />;
-    case "Integrations":
-      return <Integrations />;
-    case "Pages":
-      return <Pages />;
-    default:
-      return <Items />;
-  }
+  const { filteredLeft, filteredRight } = useFilterContext();
+
+  if (item === null) return <Home />;
+
+  return (
+    <Container fluid>
+      <ItemViewer
+        filteredLeftContents={filteredLeft}
+        filteredRightContents={filteredRight}
+        itemType={item}
+      />
+    </Container>
+  );
 }
