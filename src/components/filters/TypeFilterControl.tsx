@@ -19,7 +19,7 @@ export default function TypeFilterControl({
 
   return (
     <Form.Group className="mb-3" controlId="typeFilter">
-      <Form.Label htmlFor="typeFilter">{label}: </Form.Label>
+      <Form.Label>{label}: </Form.Label>
       <Form.Select
         id="typeFilter"
         name="typeFilter"
