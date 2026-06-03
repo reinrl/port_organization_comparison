@@ -4,7 +4,6 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 
 import { useFilterContext } from "../contexts/FilterContext.tsx";
-import { filterConfig } from "../config/filterConfig.ts";
 import ExcludePermissionsControl from "./filters/ExcludePermissionsControl.tsx";
 import ExcludeUpdatedAtControl from "./filters/ExcludeUpdatedAtControl.tsx";
 import ExcludeCreatedAtControl from "./filters/ExcludeCreatedAtControl.tsx";
@@ -16,6 +15,10 @@ export default function FilterPanel() {
   const {
     activeItemType,
     isFilterPanelOpen,
+    hasTypeFilter,
+    hasPermissions,
+    hasExcludeUpdatedAt,
+    hasExcludeCreatedAt,
     searchText,
     setSearchText,
     presenceFilter,
@@ -35,8 +38,6 @@ export default function FilterPanel() {
 
   if (!activeItemType) return null;
 
-  const config = filterConfig[activeItemType] ?? {};
-
   return (
     <Collapse in={isFilterPanelOpen}>
       <div>
@@ -54,7 +55,7 @@ export default function FilterPanel() {
                 onChange={(e) => setPresenceFilter(e.target.value)}
               />
             </Col>
-            {config.typeFieldGetter && (
+            {hasTypeFilter && (
               <Col xs="auto">
                 <TypeFilterControl
                   uniqueTypes={uniqueTypes}
@@ -65,7 +66,7 @@ export default function FilterPanel() {
                 />
               </Col>
             )}
-            {config.hasPermissions && (
+            {hasPermissions && (
               <Col xs="auto">
                 <ExcludePermissionsControl
                   checked={excludePermissions}
@@ -73,7 +74,7 @@ export default function FilterPanel() {
                 />
               </Col>
             )}
-            {config.hasExcludeUpdatedAt && (
+            {hasExcludeUpdatedAt && (
               <Col xs="auto">
                 <ExcludeUpdatedAtControl
                   checked={excludeUpdatedAt}
@@ -81,7 +82,7 @@ export default function FilterPanel() {
                 />
               </Col>
             )}
-            {config.hasExcludeCreatedAt && (
+            {hasExcludeCreatedAt && (
               <Col xs="auto">
                 <ExcludeCreatedAtControl
                   checked={excludeCreatedAt}

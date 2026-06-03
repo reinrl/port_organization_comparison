@@ -7,6 +7,10 @@ interface FilterContextValue {
   isFilterPanelOpen: boolean;
   setIsFilterPanelOpen: React.Dispatch<React.SetStateAction<boolean>>;
   activeFilterCount: number;
+  hasTypeFilter: boolean;
+  hasPermissions: boolean;
+  hasExcludeUpdatedAt: boolean;
+  hasExcludeCreatedAt: boolean;
   filteredLeft: any[];
   filteredRight: any[];
   searchText: string;
@@ -32,6 +36,10 @@ function FilterProviderInner({ activeItemType, children }: Readonly<{ activeItem
   const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
 
   const config = activeItemType ? (filterConfig[activeItemType] ?? {}) : {};
+  const hasTypeFilter = !!config.typeFieldGetter;
+  const hasPermissions = !!config.hasPermissions;
+  const hasExcludeUpdatedAt = !!config.hasExcludeUpdatedAt;
+  const hasExcludeCreatedAt = !!config.hasExcludeCreatedAt;
 
   const filterResult = useItemFilter({
     itemType: activeItemType ?? "",
@@ -60,9 +68,9 @@ function FilterProviderInner({ activeItemType, children }: Readonly<{ activeItem
     searchText !== "",
     presenceFilter !== "",
     typeFilter !== "",
-    config.hasPermissions && excludePermissions,
-    config.hasExcludeUpdatedAt && excludeUpdatedAt,
-    config.hasExcludeCreatedAt && excludeCreatedAt,
+    hasPermissions && excludePermissions,
+    hasExcludeUpdatedAt && excludeUpdatedAt,
+    hasExcludeCreatedAt && excludeCreatedAt,
   ].filter(Boolean).length;
 
   const value = useMemo(
@@ -71,6 +79,10 @@ function FilterProviderInner({ activeItemType, children }: Readonly<{ activeItem
       isFilterPanelOpen,
       setIsFilterPanelOpen,
       activeFilterCount,
+      hasTypeFilter,
+      hasPermissions,
+      hasExcludeUpdatedAt,
+      hasExcludeCreatedAt,
       filteredLeft,
       filteredRight,
       searchText, setSearchText,
@@ -84,6 +96,7 @@ function FilterProviderInner({ activeItemType, children }: Readonly<{ activeItem
     }),
     [
       activeItemType, isFilterPanelOpen, activeFilterCount,
+      hasTypeFilter, hasPermissions, hasExcludeUpdatedAt, hasExcludeCreatedAt,
       filteredLeft, filteredRight,
       searchText, setSearchText,
       presenceFilter, setPresenceFilter,
