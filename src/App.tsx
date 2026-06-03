@@ -44,32 +44,7 @@ export default function App() {
   const destName =
     availableEnvs.find((e) => e.envName === destEnv)?.displayName ?? destEnv;
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const itemType = urlParams.get("itemType");
-
-  let activeKey;
-  switch (itemType) {
-    case "Actions":
-      activeKey = "Actions";
-      break;
-    case "Blueprints":
-      activeKey = "Blueprints";
-      break;
-    case "Integrations":
-      activeKey = "Integrations";
-      break;
-    case "Pages":
-      activeKey = "Pages";
-      break;
-    case "Scorecards":
-      activeKey = "Scorecards";
-      break;
-      case "Webhooks":
-        activeKey = "Webhooks";
-        break;
-    default:
-      activeKey = "home";
-  }
+  const activeKey = activeItemType ?? "home";
 
   return (
     <>
@@ -141,7 +116,7 @@ export default function App() {
       </Navbar>
       <FilterPanel />
     </div>
-      <Content item={itemType} />
+      <Content item={activeItemType} />
     </>
   );
 }
