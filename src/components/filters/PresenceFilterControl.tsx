@@ -10,7 +10,7 @@ export default function PresenceFilterControl({
   onChange,
 }: Readonly<PresenceFilterControlProps>) {
   return (
-    <Form.Group className="mb-3" controlId="presenceFilter">
+    <Form.Group controlId="presenceFilter">
       <Form.Label>Filter by presence</Form.Label>
       <Form.Select id="presenceFilter" value={value} onChange={onChange}>
         <option value="">show all</option>

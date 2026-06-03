@@ -10,7 +10,7 @@ export default function ExcludeCreatedAtControl({
   onChange,
 }: Readonly<ExcludeCreatedAtControlProps>) {
   return (
-    <Form.Group className="mb-3" controlId="excludeCreatedAt">
+    <Form.Group controlId="excludeCreatedAt">
       <Form.Check
         type="checkbox"
         label="Exclude Created At/By from Comparison"

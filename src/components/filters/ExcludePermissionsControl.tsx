@@ -10,7 +10,7 @@ export default function ExcludePermissionsControl({
   onChange,
 }: Readonly<ExcludePermissionsControlProps>) {
   return (
-    <Form.Group className="mb-3" controlId="excludePermissions">
+    <Form.Group controlId="excludePermissions">
       <Form.Check
         type="checkbox"
         label="Exclude Permissions from Comparison"

@@ -10,7 +10,7 @@ export default function ExcludeUpdatedAtControl({
   onChange,
 }: Readonly<ExcludeUpdatedAtControlProps>) {
   return (
-    <Form.Group className="mb-3" controlId="excludeUpdatedAt">
+    <Form.Group controlId="excludeUpdatedAt">
       <Form.Check
         type="checkbox"
         label="Exclude Updated At/By from Comparison"

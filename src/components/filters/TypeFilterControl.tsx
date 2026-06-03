@@ -18,7 +18,7 @@ export default function TypeFilterControl({
   if (!uniqueTypes.length) return null;
 
   return (
-    <Form.Group className="mb-3" controlId="typeFilter">
+    <Form.Group controlId="typeFilter">
       <Form.Label>{label}: </Form.Label>
       <Form.Select
         id="typeFilter"

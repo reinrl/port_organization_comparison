@@ -7,7 +7,7 @@ interface SearchControlProps {
 
 export default function SearchControl({ value, onChange }: Readonly<SearchControlProps>) {
   return (
-    <Form.Group className="mb-3" controlId="searchText">
+    <Form.Group controlId="searchText">
       <Form.Label>Search by identifier or title</Form.Label>
       <Form.Control
         type="text"
