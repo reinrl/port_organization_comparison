@@ -43,13 +43,26 @@ function FilterProviderInner({ activeItemType, children }: Readonly<{ activeItem
     typeAllLabel: config.typeAllLabel,
   });
 
+  const {
+    filteredLeft,
+    filteredRight,
+    searchText, setSearchText,
+    presenceFilter, setPresenceFilter,
+    typeFilter, setTypeFilter,
+    uniqueTypes,
+    excludePermissions, setExcludePermissions,
+    excludeUpdatedAt, setExcludeUpdatedAt,
+    excludeCreatedAt, setExcludeCreatedAt,
+    typeFilterLabel, typeAllLabel,
+  } = filterResult;
+
   const activeFilterCount = [
-    filterResult.searchText !== "",
-    filterResult.presenceFilter !== "",
-    filterResult.typeFilter !== "",
-    config.hasPermissions && filterResult.excludePermissions,
-    config.hasExcludeUpdatedAt && filterResult.excludeUpdatedAt,
-    config.hasExcludeCreatedAt && filterResult.excludeCreatedAt,
+    searchText !== "",
+    presenceFilter !== "",
+    typeFilter !== "",
+    config.hasPermissions && excludePermissions,
+    config.hasExcludeUpdatedAt && excludeUpdatedAt,
+    config.hasExcludeCreatedAt && excludeCreatedAt,
   ].filter(Boolean).length;
 
   const value = useMemo(
@@ -58,10 +71,29 @@ function FilterProviderInner({ activeItemType, children }: Readonly<{ activeItem
       isFilterPanelOpen,
       setIsFilterPanelOpen,
       activeFilterCount,
-      ...filterResult,
+      filteredLeft,
+      filteredRight,
+      searchText, setSearchText,
+      presenceFilter, setPresenceFilter,
+      typeFilter, setTypeFilter,
+      uniqueTypes,
+      excludePermissions, setExcludePermissions,
+      excludeUpdatedAt, setExcludeUpdatedAt,
+      excludeCreatedAt, setExcludeCreatedAt,
+      typeFilterLabel, typeAllLabel,
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [activeItemType, isFilterPanelOpen, activeFilterCount, filterResult.filteredLeft, filterResult.filteredRight, filterResult.searchText, filterResult.presenceFilter, filterResult.typeFilter, filterResult.excludePermissions, filterResult.excludeUpdatedAt, filterResult.excludeCreatedAt, filterResult.uniqueTypes]
+    [
+      activeItemType, isFilterPanelOpen, activeFilterCount,
+      filteredLeft, filteredRight,
+      searchText, setSearchText,
+      presenceFilter, setPresenceFilter,
+      typeFilter, setTypeFilter,
+      uniqueTypes,
+      excludePermissions, setExcludePermissions,
+      excludeUpdatedAt, setExcludeUpdatedAt,
+      excludeCreatedAt, setExcludeCreatedAt,
+      typeFilterLabel, typeAllLabel,
+    ]
   );
 
   return (
