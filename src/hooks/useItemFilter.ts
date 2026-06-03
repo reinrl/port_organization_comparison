@@ -26,6 +26,8 @@ interface UseItemFilterOptions {
   itemType: string;
   typeFieldGetter?: (item: any) => any;
   hasPermissions?: boolean;
+  hasExcludeUpdatedAt?: boolean;
+  hasExcludeCreatedAt?: boolean;
   typeFilterLabel?: string;
   typeAllLabel?: string;
 }
@@ -54,6 +56,8 @@ export function useItemFilter({
   itemType,
   typeFieldGetter,
   hasPermissions = false,
+  hasExcludeUpdatedAt = false,
+  hasExcludeCreatedAt = false,
   typeFilterLabel = "Filter by type",
   typeAllLabel = "all types",
 }: UseItemFilterOptions): UseItemFilterResult {
@@ -111,11 +115,15 @@ export function useItemFilter({
         });
       }
 
-      if (excludeUpdatedAt && excludeCreatedAt) {
+      // When no toggle exists for a field, always omit it; otherwise respect the checkbox state.
+      const omitUpdatedAt = !hasExcludeUpdatedAt || excludeUpdatedAt;
+      const omitCreatedAt = !hasExcludeCreatedAt || excludeCreatedAt;
+
+      if (omitUpdatedAt && omitCreatedAt) {
         result = result.map((item) => (item ? deepOmitKeys(item, UPDATED_AND_CREATED_AT_KEYS) : item));
-      } else if (excludeUpdatedAt) {
+      } else if (omitUpdatedAt) {
         result = result.map((item) => (item ? deepOmitKeys(item, UPDATED_AT_KEYS) : item));
-      } else if (excludeCreatedAt) {
+      } else if (omitCreatedAt) {
         result = result.map((item) => (item ? deepOmitKeys(item, CREATED_AT_KEYS) : item));
       }
 
@@ -148,6 +156,8 @@ export function useItemFilter({
     typeFilter,
     typeFieldGetter,
     hasPermissions,
+    hasExcludeUpdatedAt,
+    hasExcludeCreatedAt,
     excludePermissions,
     excludeUpdatedAt,
     excludeCreatedAt,

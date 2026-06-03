@@ -37,6 +37,8 @@ function FilterProviderInner({ activeItemType, children }: Readonly<{ activeItem
     itemType: activeItemType ?? "",
     typeFieldGetter: config.typeFieldGetter,
     hasPermissions: config.hasPermissions,
+    hasExcludeUpdatedAt: config.hasExcludeUpdatedAt,
+    hasExcludeCreatedAt: config.hasExcludeCreatedAt,
     typeFilterLabel: config.typeFilterLabel,
     typeAllLabel: config.typeAllLabel,
   });
